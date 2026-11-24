@@ -12,9 +12,7 @@ integrantes.html    Equipo por año (se llena desde data/integrantes.json)
 actividades.html    Charlas, talleres, salidas… con filtros (data/actividades.json)
 proyectos.html      Proyectos de extensión (data/proyectos.json)
 data/               TODO el contenido editable (.json). Ver data/LEEME.md
-assets/css/tokens.css  Colores, tipografías y espaciados (cambie aquí la paleta)
-assets/css/base.css    Reglas base compartidas
-assets/css/seget.css   Estilos de cada sección y página
+assets/css/seget.css   Colores y estilos (los colores están al inicio, en :root)
 assets/js/seget.js     Menú, pie de página y lógica. Correo, Instagram y YouTube están arriba en SEGET = {...}
 assets/img/            Logo, fotos de actividades e integrantes
 ```
