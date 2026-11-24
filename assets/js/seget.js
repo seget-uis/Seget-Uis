@@ -37,8 +37,8 @@ const MENU = [
   {
     texto: "Divulgación",
     hijos: [
-      { href: "proyectos.html", texto: "Proyectos de extensión", id: "proyectos", desc: "Geología con colegios y comunidades", icono: "grupo" },
-      { href: "stands.html", texto: "Stands y ferias", id: "stands", desc: "Ferias, UFEST y días de la ciencia", icono: "stand" },
+      { href: "proyectos.html", texto: "Proyectos de extensión", id: "proyectos", icono: "grupo" },
+      { href: "stands.html", texto: "Stands y ferias", id: "stands", icono: "stand" },
     ],
   },
   { href: "material.html", texto: "Material científico", id: "material" },
