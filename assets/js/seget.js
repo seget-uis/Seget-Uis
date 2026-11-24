@@ -28,10 +28,10 @@ const MENU = [
   {
     texto: "Actividades", href: "actividades.html", id: "actividades",
     hijos: [
-      { href: "actividades.html#charlas", texto: "Charlas", id: "actividades", desc: "Invitados y temas de geología estructural", icono: "charla" },
-      { href: "actividades.html#talleres", texto: "Talleres", id: "actividades", desc: "Práctica con brújula, cortes y software", icono: "taller" },
-      { href: "actividades.html#cursos", texto: "Cursos", id: "actividades", desc: "Formación de varias sesiones", icono: "curso" },
-      { href: "actividades.html#salidas", texto: "Salidas de campo", id: "actividades", desc: "Geología en el terreno", icono: "brujula" },
+      { href: "actividades.html#charlas", texto: "Charlas", id: "actividades", icono: "charla" },
+      { href: "actividades.html#talleres", texto: "Talleres", id: "actividades", icono: "taller" },
+      { href: "actividades.html#cursos", texto: "Cursos", id: "actividades", icono: "curso" },
+      { href: "actividades.html#salidas", texto: "Salidas de campo", id: "actividades", icono: "brujula" },
     ],
   },
   {
@@ -113,7 +113,7 @@ function dibujarHeader() {
             <div class="nav-panel">
               ${m.hijos.map((x) => `<a href="${x.href}"${x.id === actual && !x.href.includes("#") ? ' aria-current="page"' : ""}>
                 <span class="nav-icono">${ICONOS[x.icono] || ""}</span>
-                <span><b>${x.texto}</b><small>${x.desc}</small></span>
+                <span><b>${x.texto}</b>${x.desc ? `<small>${x.desc}</small>` : ""}</span>
               </a>`).join("")}
             </div>
           </div>` : `<a href="${m.href}"${m.id === actual ? ' aria-current="page"' : ""}>${m.texto}</a>`).join("")}
