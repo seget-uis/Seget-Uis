@@ -364,7 +364,6 @@
       "Después socializamos la salida en un conversatorio con las estaciones visitadas y la interpretación de cada grupo."
     ],
     "imagenes": [
-      "assets/img/actividades/2025/rio-claro-a.jpg",
       "assets/img/actividades/2025/rio-claro-b.jpg",
       "assets/img/actividades/2025/rio-claro-c.jpg"
     ]
@@ -379,7 +378,9 @@
     "descripcion": [
       "Medimos planos de foliación y diaclasas e identificamos gneises, esquistos, intrusivos, migmatitas y milonitas. La salida también apoyó la toma de datos de una tesis del semillero."
     ],
-    "imagenes": []
+    "imagenes": [
+      "assets/img/actividades/2025/ensueno-a.jpg"
+    ]
   },
   {
     "titulo": "Curso de interpretación manual de líneas sísmicas en cuencas colombianas (SEGET y SIGAC)",
