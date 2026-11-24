@@ -5,34 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Actividades · SEGET UIS</title>
   <meta name="description" content="Charlas, talleres, cursos, salidas de campo y actividades de apropiación social del conocimiento del SEGET.">
-  <meta name="theme-color" content="#f4efe0">
+  <meta name="theme-color" content="#1f3b2a">
   <meta property="og:title" content="Actividades · SEGET UIS">
   <meta property="og:description" content="Charlas, talleres, cursos, salidas de campo y actividades de apropiación social del conocimiento del SEGET.">
   <meta property="og:image" content="assets/img/actividades/2026/zapatoca-b.jpg">
   <link rel="icon" href="assets/img/logo-seget.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@600&family=Hanken+Grotesk:wght@400;500&family=Newsreader:opsz,wght@6..72,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/seget.css">
   <script src="assets/js/seget.js" defer></script>
 </head>
 <body data-pagina="actividades">
-<a class="skip" href="#main">Saltar al contenido</a>
-<main id="main">
+<main>
   <section class="cabecera">
-    <div class="container">
+    <div class="contenedor">
+      <span class="etiqueta">Actividades</span>
       <h1>Charlas, talleres y salidas de campo</h1>
       <p class="lead">Todo lo que hemos hecho para aprender geología estructural y compartirla con estudiantes y comunidades. Toca una actividad para ver sus fotos.</p>
     </div>
   </section>
-  <section class="seccion seccion--sin-tope">
-    <div class="container">
+  <section class="seccion" style="padding-top:0">
+    <div class="contenedor">
       <div class="filtros-grupo">
         <div class="filtros" id="filtro-cat" role="group" aria-label="Tipo de actividad"></div>
         <div class="filtros" id="filtro-anio" role="group" aria-label="Año"></div>
-        <p id="total-actividades" aria-live="polite"></p>
+        <p class="actividad-meta" id="total-actividades" aria-live="polite"></p>
       </div>
-      <div class="lista-actividades" id="lista-actividades"></div>
+      <div class="rejilla rejilla--3" id="lista-actividades"></div>
     </div>
   </section>
 </main>
