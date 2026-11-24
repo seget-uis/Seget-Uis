@@ -1,5 +1,5 @@
 /* Hallmark · shape: Photographic (draw 72b6c2) · genre: editorial · theme: Garden (deal 1/3, seed student-research-group-structural-f686·42f6066d·2026-11-24·r0) · redesign: full · job: join
- * hero: Poster (/), Banner (/nosotros, /integrantes, /actividades, /proyectos, /404) · nav: floating pill · footer: index columns with a map (by request, after the footer Thomas shared) · imagery: photographs, the user's own 14 (no library) · signature: the folded outcrop on the road to Zapatoca, full-bleed, the group small at its foot for scale
+ * hero: Poster (/), Banner (/nosotros, /integrantes, /actividades, /proyectos, /404) · nav: floating pill · footer: statement · imagery: photographs, the user's own 14 (no library) · signature: the folded outcrop on the road to Zapatoca, full-bleed, the group small at its foot for scale
  * axes: light/roman-serif/chromatic-green · posture: committed · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P, a student group page tends to list everything; let the outcrop and the Cepitá children carry the argument and set the rest as ruled type */
 /* Hallmark · dropped eyebrows "Escuela de Geología · UIS", "Qué hacemos", "Proyecto de extensión 2026", "Lo más reciente", "Líneas de trabajo", "Noticias", "Cómo trabajamos", "Lo que hemos aprendido", "Investigar también es transformar", "Error 404" · gate 54 names the eyebrow; each fact moved to a caption, a heading or the footer */
@@ -10,7 +10,7 @@
 /* Hallmark · dismissed 77 · actividades, integrantes, proyectos and the 404 are list and utility pages whose one section is the filtered list or the message */
 /* Hallmark · waive 77 · Por qué lo hacemos is one paragraph set at 31px across the full row · it is the page's statement between the quotes band and the join section, and a picture there would sit beside the join photo */
 /* Hallmark · dropped the allies section on /nosotros · Thomas asked to remove it from the page */
-/* Hallmark · reworded footer heading "Explora" to "Páginas" · the footer column names the pages of the site beside the new map column */
+/* Hallmark · reworded footer headings "Explora" and "Contacto" to "Páginas" and "Escríbenos" · the statement footer sets them as plain labels beside the closing line */
 @import url("./tokens.css");
 @import url("./base.css");
 
@@ -304,31 +304,24 @@ dialog.detalle::backdrop { background: var(--scrim); }
 .cerrar:active { background: var(--color-paper-3); }
 .cerrar:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
-/* ---------- Pie: banda de tinta con mapa ---------- */
-.footer { padding-block: var(--space-3xl) var(--space-xl); background: var(--color-ink); color: var(--color-sobre-tinta-2); }
-.footer-rejilla { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-xl); }
-.footer-marca { grid-column: 1 / span 4; display: grid; gap: var(--space-lg); align-content: start; }
-.footer-marca .marca { color: var(--color-sobre-tinta); gap: var(--space-sm); }
-.footer-marca .marca img { width: 48px; height: 48px; }
-.footer-marca .marca span { display: grid; gap: var(--space-3xs); }
-.footer-marca .marca small { font-size: var(--text-sm); color: var(--color-sobre-tinta-2); }
-.footer-marca p { max-width: 46ch; }
-.footer-col { grid-column: span 2; display: grid; gap: var(--space-md); align-content: start; }
-.footer-col:nth-child(3) { grid-column: span 3; }
-.footer-mapa { grid-column: span 3; }
-.footer-col h2 { padding-bottom: var(--space-xs); border-bottom: var(--rule-hair) solid var(--color-regla-tinta); font: 500 var(--text-md)/1.4 var(--font-body); color: var(--color-sobre-tinta); letter-spacing: 0; max-width: none; }
-.footer ul { display: grid; gap: var(--space-xs); margin: 0; padding: 0; list-style: none; }
-.footer a { color: var(--color-sobre-tinta); text-decoration: none; border-radius: var(--radius-card); }
-.footer a:hover { text-decoration: underline; text-decoration-color: var(--color-accent-2); }
-.footer a:focus-visible { outline: 2px solid var(--color-accent-2); outline-offset: 2px; }
-.footer-contacto li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--space-sm); align-items: start; overflow-wrap: anywhere; }
-.footer-contacto svg { width: 20px; height: 20px; margin-top: var(--space-3xs); color: var(--color-accent-2); }
-.footer-mapa iframe { display: block; width: 100%; aspect-ratio: 4 / 3; border: 0; border-radius: var(--radius-card); background: var(--color-ink-2); color: var(--color-sobre-tinta); }
+/* ---------- Pie: una frase ---------- */
+.footer { padding-block: var(--space-3xl) var(--space-xl); background: var(--color-paper-2); border-top: var(--rule-hair) solid var(--color-rule); }
+.footer-frase { margin: 0 0 var(--space-2xl); font: 600 var(--text-section)/1.08 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); max-width: 22ch; text-wrap: balance; }
+.footer-rejilla { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-xl); padding-top: var(--space-lg); border-top: var(--rule-hair) solid var(--color-rule-2); }
+.footer-marca { grid-column: 1 / span 5; display: grid; gap: var(--space-md); align-content: start; }
+.footer-marca p { font-size: var(--text-sm); max-width: 52ch; }
+.footer-col { grid-column: span 3; display: grid; gap: var(--space-sm); align-content: start; }
+.footer-col:first-of-type { grid-column: 7 / span 3; }
+.footer-col h2 { font: 500 var(--text-sm)/1.4 var(--font-body); color: var(--color-muted); letter-spacing: 0; max-width: none; }
+.footer ul { display: grid; gap: var(--space-2xs); margin: 0; padding: 0; list-style: none; }
+.footer a { color: var(--color-ink); text-decoration: none; }
+.footer a:hover { text-decoration: underline; text-decoration-color: var(--color-accent); }
+.footer a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .redes { display: flex; gap: var(--space-xs); }
-.redes a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: var(--rule-hair) solid var(--color-regla-tinta); border-radius: var(--radius-card); transition: background-color var(--dur-short) var(--ease-out); }
-.redes a:hover { background: var(--color-regla-tinta); }
+.redes a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-pill); transition: background-color var(--dur-short) var(--ease-out); }
+.redes a:hover { background: var(--color-paper-3); }
 .redes svg { width: 20px; height: 20px; }
-.footer-legal { display: flex; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; margin-top: var(--space-2xl); padding-top: var(--space-lg); border-top: var(--rule-hair) solid var(--color-regla-tinta); font-size: var(--text-sm); color: var(--color-sobre-tinta-2); }
+.footer-legal { display: flex; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; margin-top: var(--space-2xl); font-size: var(--text-sm); color: var(--color-muted); }
 @media (prefers-reduced-motion: reduce) { .redes a { transition: none; } }
 
 /* ---------- Pantallas medianas y móviles ---------- */
@@ -348,11 +341,9 @@ dialog.detalle::backdrop { background: var(--scrim); }
   .proyecto-portada { position: static; }
   .proyecto-portada img { aspect-ratio: 4 / 3; }
   .instagram-rejilla { grid-template-columns: minmax(0, 1fr); }
-  .footer-rejilla > * { grid-column: span 6 !important; }
-  .footer-marca, .footer-mapa { grid-column: 1 / -1 !important; }
+  .footer-rejilla > * { grid-column: 1 / -1 !important; }
 }
 @media (max-width: 40rem) {
-  .footer-rejilla > * { grid-column: 1 / -1 !important; }
   .temas, .lista-actividades, .integrantes, .integrantes--compacto, .videos { grid-template-columns: minmax(0, 1fr); }
   .ultimas > .actividad:not(:first-child) { grid-template-columns: minmax(0, 1fr); }
   .vitrina-fotos { grid-template-columns: minmax(0, 1fr); }
