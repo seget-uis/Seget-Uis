@@ -28,6 +28,10 @@ const ICONOS = {
   linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4v-11Z"/></svg>',
   cvlac: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   roca: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 18 7 8l5 3 4-5 5 12z"/><path d="M3 18h18M8.5 13.5l3 1.5 3.5-3"/></svg>',
+  calendario: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  reloj: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  lugar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+  persona: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
   documento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
@@ -227,6 +231,51 @@ async function paginaInicio() {
     $("#c-integrantes").textContent = actual.grupos.reduce((s, g) => s + g.miembros.length, 0);
   }
   dibujarInstagram(noticias);
+  dibujarProximoEvento();
+}
+
+/* ---------- Próximo evento (portada) ----------
+   Sale de data/eventos.json. Se muestra el evento más cercano cuya fecha no haya pasado;
+   si no hay ninguno, la sección queda oculta. */
+async function dibujarProximoEvento() {
+  const cont = $("#proximo-evento");
+  if (!cont) return;
+  const eventos = await cargar("data/eventos.json");
+  if (!Array.isArray(eventos)) return;
+  const verEjemplos = new URLSearchParams(location.search).has("ejemplos");
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  const diaDe = (f) => { const [a, m, d] = String(f).split("-").map(Number); return new Date(a, (m || 1) - 1, d || 1); };
+  const e = eventos
+    .filter((x) => x.fecha && (verEjemplos || !x.ejemplo) && diaDe(x.fecha) >= hoy)
+    .sort((x, y) => String(x.fecha).localeCompare(String(y.fecha)))[0];
+  if (!e) return;
+  const dia = diaDe(e.fecha);
+  const faltan = Math.round((dia - hoy) / 86400000);
+  const cuando = faltan === 0 ? "Hoy" : faltan === 1 ? "Mañana" : `Faltan ${faltan} días`;
+  let fechaTexto = dia.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  fechaTexto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+  const dato = (icono, texto) => texto ? `<li>${ICONOS[icono]}<span>${esc(texto)}</span></li>` : "";
+  const enlace = e.enlace ? `<a class="boton" href="${esc(e.enlace)}" target="_blank" rel="noopener">${/instagram\.com/.test(e.enlace) ? ICONOS.instagram.replace("<svg", '<svg width="18" height="18"') + " " : ""}${esc(e.textoEnlace || "Más información")}</a>` : "";
+  cont.innerHTML = `
+    <div class="contenedor">
+      <article class="evento">
+        ${e.imagen ? `<a class="evento-flyer" href="${esc(e.imagen)}" target="_blank" rel="noopener" aria-label="Ver el flyer completo"><img src="${esc(e.imagen)}" alt="Flyer: ${esc(e.titulo)}" loading="lazy"></a>` : ""}
+        <div class="evento-cuerpo">
+          <div class="evento-arriba">
+            <span class="etiqueta">Próximo evento</span>
+            <span class="evento-cuenta">${cuando}</span>
+          </div>
+          ${e.tipo ? `<span class="chip" data-cat="${esc(e.tipo)}">${esc(e.tipo)}${e.ejemplo ? " · ejemplo" : ""}</span>` : ""}
+          <h2>${esc(e.titulo)}</h2>
+          <ul class="evento-datos">
+            ${dato("calendario", fechaTexto)}${dato("reloj", e.hora)}${dato("lugar", e.lugar)}${dato("persona", e.ponente)}
+          </ul>
+          ${e.descripcion ? `<p>${esc(e.descripcion)}</p>` : ""}
+          ${enlace ? `<div class="hero-acciones">${enlace}</div>` : ""}
+        </div>
+      </article>
+    </div>`;
+  cont.hidden = false;
 }
 
 function dibujarInstagram(noticias) {

@@ -89,6 +89,32 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
 - Mientras no haya trabajos reales, la página muestra "Muy pronto".
 - Para enlazar directo a una pestaña use `material.html#posters`, `material.html#tesis` o `material.html#articulos`.
 
+## eventos.json
+
+Aviso de **próximo evento** en la portada (debajo de la foto principal). Copie un bloque en la lista:
+
+```json
+{
+  "titulo": "Charla: título de la charla",
+  "tipo": "Charla",
+  "fecha": "2027-02-18",
+  "hora": "4:00 p. m.",
+  "lugar": "Salón 314, edificio JBV, UIS",
+  "ponente": "Nombre del ponente",
+  "descripcion": "Una o dos frases sobre el evento.",
+  "imagen": "assets/img/eventos/flyer-charla.jpg",
+  "enlace": "https://www.instagram.com/p/...",
+  "textoEnlace": "Ver en Instagram"
+}
+```
+
+- `fecha`: año-mes-día. La portada muestra el evento más cercano que todavía no haya pasado, con un aviso de cuántos días faltan. Al día siguiente de la fecha deja de mostrarse solo.
+- Si no hay eventos próximos, la sección no aparece.
+- `imagen`: el flyer que se publica en Instagram (cuadrado). Guárdelo en `assets/img/eventos/`.
+- `enlace`: opcional, por ejemplo la publicación de Instagram o el formulario de inscripción. `textoEnlace` es el texto del botón.
+- `hora`, `lugar`, `ponente` y `descripcion` son opcionales: si están vacíos no se muestran.
+- Los bloques con `"ejemplo": true` no se muestran; para verlos abra `index.html?ejemplos`.
+
 ## noticias.json
 
 Enlaces de publicaciones de Instagram, las más recientes primero (se muestran 3 en la portada).
