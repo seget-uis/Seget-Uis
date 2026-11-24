@@ -7,7 +7,7 @@ Es un sitio estático (HTML, CSS y JavaScript, sin compilar) pensado para public
 
 ```
 index.html          Inicio
-nosotros.html       Quiénes somos, aliados y cómo unirse
+nosotros.html       Quiénes somos y cómo unirse
 integrantes.html    Equipo por año (se llena desde data/integrantes.json)
 actividades.html    Charlas, talleres, salidas… con filtros (data/actividades.json)
 proyectos.html      Proyectos de extensión (data/proyectos.json)
