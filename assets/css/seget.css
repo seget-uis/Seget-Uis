@@ -248,6 +248,7 @@ em.acento { font-style: italic; color: var(--verde); }
 .pestana[aria-pressed="true"] { background: var(--bosque); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
 
 .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.filtros[hidden], .pestanas[hidden] { display: none; }
 .filtro {
   border: 1.5px solid var(--linea); background: var(--papel); color: var(--tinta);
   padding: 8px 16px; border-radius: 999px; font: inherit; font-size: .9rem; font-weight: 500; cursor: pointer;
