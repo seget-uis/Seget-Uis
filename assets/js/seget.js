@@ -10,6 +10,8 @@ const SEGET = {
   instagram: "https://www.instagram.com/seget.uis/",
   correo: "seget.uis@gmail.com",
   youtube: "", // Pegue aquí el enlace del canal de YouTube cuando lo tengan
+  ubicacion: "Edificio Jorge Bautista Vesga (JBV), Universidad Industrial de Santander, Bucaramanga, Santander",
+  mapa: "https://www.google.com/maps?q=Edificio%20Jorge%20Bautista%20Vesga%2C%20Universidad%20Industrial%20de%20Santander%2C%20Bucaramanga&z=17&output=embed",
 };
 
 const MENU = [
@@ -27,6 +29,7 @@ const ICONOS = {
   linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4v-11Z"/></svg>',
   cvlac: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   roca: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 18 7 8l5 3 4-5 5 12z"/><path d="M3 18h18M8.5 13.5l3 1.5 3.5-3"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
 
@@ -47,14 +50,14 @@ async function cargar(ruta) {
   }
 }
 
-/* Divisor de estratos con un pequeño salto de falla */
-function estratosSVG(fondo = "var(--arena)", invertido = false) {
-  return `<svg class="estratos${invertido ? " estratos--invertido" : ""}" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true">
-    <rect width="1200" height="46" fill="${fondo}"/>
-    <path d="M0 14 H640 L668 22 H1200 V46 H0Z" fill="#e2a72e"/>
-    <path d="M0 24 H640 L668 32 H1200 V46 H0Z" fill="#9c8f4e"/>
-    <path d="M0 33 H640 L668 41 H1200 V46 H0Z" fill="#1f3b2a"/>
-    <path d="M630 4 L680 46" stroke="#c4472b" stroke-width="3"/>
+/* Divisor de estratos con un pequeño salto de falla (colores en seget.css) */
+function estratosSVG(invertido = false) {
+  return `<svg class="estratos${invertido ? " estratos--invertido" : ""}" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+    <rect class="e-fondo" width="1200" height="40"/>
+    <path class="e-ocre" d="M0 10 H640 L668 18 H1200 V40 H0Z"/>
+    <path class="e-oliva" d="M0 20 H640 L668 28 H1200 V40 H0Z"/>
+    <path class="e-tinta" d="M0 29 H640 L668 37 H1200 V40 H0Z"/>
+    <path class="e-falla" d="M630 2 L680 40" stroke-width="3" fill="none"/>
   </svg>`;
 }
 
@@ -64,16 +67,16 @@ function dibujarHeader() {
   const h = document.createElement("header");
   h.className = "header";
   h.innerHTML = `
-    <div class="contenedor">
+    <div class="container"><div class="header-barra">
       <a class="marca" href="index.html" aria-label="SEGET, inicio">
-        <img src="assets/img/logo-seget.svg" alt="" width="42" height="42">
-        <span><strong>SEGET</strong><small>Geología Estructural y Tectónica · UIS</small></span>
+        <img src="assets/img/logo-seget.svg" alt="" width="40" height="40">
+        <strong>SEGET</strong>
       </a>
-      <button class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">${ICONOS.menu}</button>
+      <button type="button" class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">${ICONOS.menu}</button>
       <nav class="nav" id="nav" aria-label="Principal">
         ${MENU.map((m) => `<a href="${m.href}"${m.id === actual ? ' aria-current="page"' : ""}>${m.texto}</a>`).join("")}
       </nav>
-    </div>`;
+    </div></div>`;
   document.body.prepend(h);
   const boton = $(".menu-boton", h);
   const nav = $(".nav", h);
@@ -92,31 +95,35 @@ function dibujarFooter() {
     SEGET.youtube ? `<a href="${SEGET.youtube}" target="_blank" rel="noopener" aria-label="YouTube">${ICONOS.youtube}</a>` : "",
   ].join("");
   f.innerHTML = `
-    <div class="contenedor">
+    <div class="container">
       <div class="footer-rejilla">
-        <div>
-          <a class="marca" href="index.html">
-            <img src="assets/img/logo-seget.svg" alt="" width="42" height="42">
+        <div class="footer-marca">
+          <a class="marca" href="index.html" aria-label="SEGET, inicio">
+            <img src="assets/img/logo-seget.svg" alt="" width="48" height="48">
             <span><strong>SEGET</strong><small>Semillero de Geología Estructural y Tectónica</small></span>
           </a>
-          <p>Escuela de Geología · Universidad Industrial de Santander.<br>Adscrito al Grupo de Investigación en Geología Básica y Aplicada (GIGBA).</p>
+          <p>Escuela de Geología, Universidad Industrial de Santander. Adscrito al Grupo de Investigación en Geología Básica y Aplicada (GIGBA).</p>
           <div class="redes">${redes}</div>
         </div>
-        <div>
-          <h4>Explora</h4>
+        <nav class="footer-col" aria-label="Páginas del sitio">
+          <h2>Páginas</h2>
           <ul>${MENU.map((m) => `<li><a href="${m.href}">${m.texto}</a></li>`).join("")}</ul>
-        </div>
-        <div>
-          <h4>Contacto</h4>
-          <ul>
-            <li><a href="mailto:${SEGET.correo}">${SEGET.correo}</a></li>
-            <li><a href="${SEGET.instagram}" target="_blank" rel="noopener">@seget.uis</a></li>
-            <li>Bucaramanga, Santander, Colombia</li>
+        </nav>
+        <div class="footer-col">
+          <h2>Contacto</h2>
+          <ul class="footer-contacto">
+            <li>${ICONOS.pin}<span>${SEGET.ubicacion}</span></li>
+            <li>${ICONOS.correo}<a href="mailto:${SEGET.correo}">${SEGET.correo}</a></li>
+            <li>${ICONOS.instagram}<a href="${SEGET.instagram}" target="_blank" rel="noopener">@seget.uis</a></li>
           </ul>
+        </div>
+        <div class="footer-col footer-mapa">
+          <h2>Encuéntranos</h2>
+          <iframe src="${SEGET.mapa}" title="Mapa: Edificio Jorge Bautista Vesga, UIS, Bucaramanga" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
       </div>
       <div class="footer-legal">
-        <span>© ${new Date().getFullYear()} SEGET · UIS</span>
+        <span>© ${new Date().getFullYear()} SEGET, Universidad Industrial de Santander</span>
         <span>Hecho por integrantes del semillero</span>
       </div>
     </div>`;
@@ -138,7 +145,7 @@ function tarjetaActividad(a) {
     <div class="actividad-cuerpo">
       <span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>
       <h3>${esc(a.titulo)}</h3>
-      <div class="actividad-meta">${esc(a.fecha)}${a.lugar ? " · " + esc(a.lugar) : ""}</div>
+      <div class="actividad-meta"><span>${esc(a.fecha)}</span>${a.lugar ? `<span>${esc(a.lugar)}</span>` : ""}</div>
     </div>`;
   b.addEventListener("click", () => abrirDetalle(a));
   return b;
@@ -155,24 +162,24 @@ function abrirDetalle(a, inicio = 0) {
   const imgs = a.imagenes || [];
   let i = inicio;
   dialogo.innerHTML = `
-    <button class="cerrar" aria-label="Cerrar">×</button>
+    <button type="button" class="cerrar" aria-label="Cerrar">×</button>
     ${imgs.length ? `<div class="detalle-galeria">
       <img src="${esc(imgs[i])}" alt="Foto de la actividad ${esc(a.titulo)}">
-      ${imgs.length > 1 ? `<button class="nav-foto prev" aria-label="Foto anterior">‹</button>
-      <button class="nav-foto next" aria-label="Foto siguiente">›</button>
+      ${imgs.length > 1 ? `<button type="button" class="nav-foto prev" aria-label="Foto anterior">‹</button>
+      <button type="button" class="nav-foto next" aria-label="Foto siguiente">›</button>
       <span class="indice">${i + 1} / ${imgs.length}</span>` : ""}
     </div>` : ""}
     <div class="detalle-texto">
       <span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>
       <h2>${esc(a.titulo)}</h2>
-      <div class="detalle-datos">
-        <span><b>Fecha:</b> ${esc(a.fecha)}</span>
-        ${a.lugar ? `<span><b>Lugar:</b> ${esc(a.lugar)}</span>` : ""}
-        ${a.instructor ? `<span><b>A cargo de:</b> ${esc(a.instructor)}</span>` : ""}
-      </div>
+      <dl class="detalle-datos">
+        <dt>Fecha</dt><dd>${esc(a.fecha)}</dd>
+        ${a.lugar ? `<dt>Lugar</dt><dd>${esc(a.lugar)}</dd>` : ""}
+        ${a.instructor ? `<dt>A cargo de</dt><dd>${esc(a.instructor)}</dd>` : ""}
+      </dl>
       ${(a.descripcion || []).map((p) => `<p>${esc(p)}</p>`).join("")}
-      ${(a.videos || []).length ? `<div class="rejilla rejilla--2 mt-2">${a.videos.map(videoHTML).join("")}</div>` : ""}
-      ${a.enlace ? `<p class="mt-2"><a class="enlace-flecha" href="${esc(a.enlace)}" target="_blank" rel="noopener">Más información</a></p>` : ""}
+      ${(a.videos || []).length ? `<div class="videos">${a.videos.map(videoHTML).join("")}</div>` : ""}
+      ${a.enlace ? `<p><a class="enlace" href="${esc(a.enlace)}" target="_blank" rel="noopener">Más información</a></p>` : ""}
     </div>`;
   $(".cerrar", dialogo).addEventListener("click", () => dialogo.close());
   const mostrar = (d) => {
@@ -192,7 +199,7 @@ function abrirDetalle(a, inicio = 0) {
 function videoHTML(id) {
   // Muestra la miniatura y solo carga YouTube al hacer clic (más liviano)
   return `<button type="button" class="video" data-video="${esc(id)}" aria-label="Reproducir video">
-    <img src="https://i.ytimg.com/vi/${esc(id)}/hqdefault.jpg" alt="" loading="lazy">
+    <img src="https://i.ytimg.com/vi/${esc(id)}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
     <span class="play" aria-hidden="true"></span>
   </button>`;
 }
@@ -231,15 +238,9 @@ function dibujarInstagram(noticias) {
   const cont = $("#instagram");
   if (!cont) return;
   const posts = (noticias && noticias.instagram) || [];
-  if (!posts.length) {
-    cont.innerHTML = `<div class="instagram-vacio">
-      <div><h3>Síguenos en Instagram</h3><p>Allí publicamos cada charla, taller y salida de campo.</p></div>
-      <a class="boton" href="${SEGET.instagram}" target="_blank" rel="noopener">${ICONOS.instagram.replace("<svg", '<svg width="18" height="18"')} @seget.uis</a>
-    </div>`;
-    return;
-  }
+  if (!posts.length) { cont.remove(); return; }
   cont.innerHTML = `<div class="instagram-rejilla">${posts.slice(0, 3).map((u) =>
-    `<blockquote class="instagram-media" data-instgrm-permalink="${esc(u)}" data-instgrm-version="14"><a href="${esc(u)}">Ver en Instagram</a></blockquote>`).join("")}</div>`;
+    `<blockquote class="instagram-media" data-instgrm-permalink="${esc(u)}" data-instgrm-version="14"><a href="${esc(u)}" target="_blank" rel="noopener">Ver la publicación en Instagram</a></blockquote>`).join("")}</div>`;
   const s = document.createElement("script");
   s.src = "https://www.instagram.com/embed.js";
   s.async = true;
@@ -338,12 +339,12 @@ async function paginaProyectos() {
     el.className = "proyecto";
     bloque.append(el);
     el.innerHTML = `
-      <div class="proyecto-portada"><img src="${esc(p.portada)}" alt="" loading="lazy"></div>
-      <div>
-        <span class="etiqueta">Proyecto ${esc(p.anio)}</span>
+      <div class="proyecto-portada"><img src="${esc(p.portada)}" alt="" loading="lazy" width="1080" height="1350"></div>
+      <div class="proyecto-texto">
         <h2>${esc(p.titulo)}</h2>
         <p class="lead">${esc(p.resumen)}</p>
         <dl class="ficha">
+          <dt>Año</dt><dd class="num">${esc(p.anio)}</dd>
           <dt>Modalidad</dt><dd>${esc(p.modalidad)}</dd>
           <dt>Lugar</dt><dd>${esc(p.lugar)}</dd>
           ${(p.aliados || []).length ? `<dt>Aliados</dt><dd>${p.aliados.map(esc).join(", ")}</dd>` : ""}
@@ -357,7 +358,7 @@ async function paginaProyectos() {
     });
     if ((p.videos || []).length) {
       const v = document.createElement("div");
-      v.className = "rejilla rejilla--2 mt-3";
+      v.className = "videos";
       v.innerHTML = p.videos.map(videoHTML).join("");
       bloque.append(v);
     }
@@ -370,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
   dibujarHeader();
   dibujarFooter();
   document.querySelectorAll("[data-estratos]").forEach((n) => {
-    n.outerHTML = estratosSVG(n.dataset.estratos || "var(--arena)", n.hasAttribute("data-invertido"));
+    n.outerHTML = estratosSVG(n.hasAttribute("data-invertido"));
   });
   const p = document.body.dataset.pagina;
   if (p === "inicio") paginaInicio();
