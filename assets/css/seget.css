@@ -233,6 +233,10 @@ em.acento { font-style: italic; color: var(--verde); }
 
 /* ---------- Producción ---------- */
 .material-foto { aspect-ratio: 4 / 3; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip--desarrollo { display: inline-flex; align-items: center; gap: 6px; background: #fbe7d0; color: #8a4b0f; }
+.chip--desarrollo::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: latido 1.8s ease-in-out infinite; }
+@keyframes latido { 50% { opacity: .3; } }
 .material-foto img { object-fit: cover; object-position: top; }
 .pestanas { display: inline-flex; gap: 4px; padding: 5px; margin-bottom: 18px; background: var(--papel); border: 1.5px solid var(--linea); border-radius: 999px; }
 .pestana {

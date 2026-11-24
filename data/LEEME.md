@@ -85,6 +85,7 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
 - `archivo`: el PDF. Guárdelo en `assets/docs/material/` o pegue un enlace de Google Drive. Si está vacío, no aparece el botón de descarga.
 - `enlace`: opcional, por ejemplo el DOI del artículo o el repositorio de la UIS.
 - `director`: solo para tesis.
+- `estado`: solo para tesis. Escriba `"En desarrollo"` si la tesis aún no se ha terminado; la tarjeta muestra una etiqueta "En desarrollo", sale primero y en la pestaña Tesis aparecen los botones Todas / Terminadas / En desarrollo. En `anio` ponga el año en que empezó. Para una tesis terminada, borre el campo o déjelo vacío.
 - Los bloques que tienen `"ejemplo": true` **no se muestran** en la página. Sirven de plantilla; para verlos abra `material.html?ejemplos`. Bórrelos cuando agregue trabajos reales.
 - Mientras no haya trabajos reales, la página muestra "Muy pronto".
 - Para enlazar directo a una pestaña use `material.html#posters`, `material.html#tesis` o `material.html#articulos`.

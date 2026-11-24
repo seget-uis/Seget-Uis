@@ -423,6 +423,8 @@ const TIPOS_MATERIAL = [
   { tipo: "Artículo", texto: "Artículos", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
 ];
 
+const enDesarrollo = (t) => String(t.estado || "").toLowerCase() === "en desarrollo";
+
 function tarjetaMaterial(t) {
   const b = document.createElement("button");
   b.type = "button";
@@ -433,10 +435,10 @@ function tarjetaMaterial(t) {
       ${t.imagen ? `<img src="${esc(t.imagen)}" alt="" loading="lazy">` : `<div class="sin-foto">${ICONOS.documento}</div>`}
     </div>
     <div class="actividad-cuerpo">
-      <span class="chip" data-cat="${esc(t.tipo)}">${esc(t.tipo)}${t.ejemplo ? " · ejemplo" : ""}</span>
+      <div class="chips"><span class="chip" data-cat="${esc(t.tipo)}">${esc(t.tipo)}${t.ejemplo ? " · ejemplo" : ""}</span>${enDesarrollo(t) ? '<span class="chip chip--desarrollo">En desarrollo</span>' : ""}</div>
       <h3>${esc(t.titulo)}</h3>
       ${autores ? `<div class="actividad-meta">${esc(autores)}</div>` : ""}
-      <div class="actividad-meta">${esc(t.anio)}${t.evento ? " · " + esc(t.evento) : ""}</div>
+      <div class="actividad-meta">${enDesarrollo(t) ? "Desde " : ""}${esc(t.anio)}${t.evento ? " · " + esc(t.evento) : ""}</div>
     </div>`;
   b.addEventListener("click", () => abrirMaterial(t));
   return b;
@@ -445,8 +447,8 @@ function tarjetaMaterial(t) {
 function abrirMaterial(t) {
   const datos = {
     titulo: t.titulo,
-    categoria: t.tipo,
-    fecha: t.anio,
+    categoria: enDesarrollo(t) ? `${t.tipo} · En desarrollo` : t.tipo,
+    fecha: enDesarrollo(t) ? `En desarrollo desde ${t.anio}` : t.anio,
     lugar: [t.evento, t.lugar].filter(Boolean).join(", "),
     instructor: [(t.autores || []).filter(Boolean).join(", "), t.director ? `dirigido por ${t.director}` : ""].filter(Boolean).join("; "),
     descripcion: t.resumen ? [t.resumen] : [],
@@ -473,7 +475,7 @@ async function paginaMaterial() {
   const verEjemplos = new URLSearchParams(location.search).has("ejemplos");
   const lista = todos
     .filter((t) => (verEjemplos || !t.ejemplo) && TIPOS_MATERIAL.some((x) => x.tipo === t.tipo))
-    .sort((x, y) => String(y.anio || "").localeCompare(String(x.anio || "")));
+    .sort((x, y) => (enDesarrollo(y) - enDesarrollo(x)) || String(y.anio || "").localeCompare(String(x.anio || "")));
   if (!lista.length) {
     $(".filtros-grupo").hidden = true;
     cont.classList.remove("rejilla", "rejilla--3");
@@ -484,7 +486,26 @@ async function paginaMaterial() {
     return;
   }
   const inicial = TIPOS_MATERIAL.find((x) => "#" + x.hash === location.hash) || TIPOS_MATERIAL[0];
-  const estado = { tipo: inicial.tipo, anio: "Todos" };
+  const estado = { tipo: inicial.tipo, anio: "Todos", fase: "Todas" };
+  // Filtro de estado (terminadas / en desarrollo): solo en la pestaña de tesis y si hay alguna en desarrollo
+  const filtroFase = document.createElement("div");
+  filtroFase.className = "filtros"; filtroFase.setAttribute("role", "group"); filtroFase.setAttribute("aria-label", "Estado de la tesis");
+  $("#filtro-anio-material").before(filtroFase);
+  filtroFase.addEventListener("click", (e) => {
+    const b = e.target.closest(".filtro");
+    if (!b) return;
+    estado.fase = b.dataset.v;
+    estado.anio = "Todos";
+    filtroFase.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    pintarAnios();
+    pintar();
+  });
+  const enFase = (t) => estado.tipo !== "Tesis" || estado.fase === "Todas" || (estado.fase === "En desarrollo") === enDesarrollo(t);
+  function pintarFase() {
+    const tesis = lista.filter((t) => t.tipo === "Tesis");
+    filtroFase.hidden = estado.tipo !== "Tesis" || !tesis.some(enDesarrollo) || tesis.every(enDesarrollo);
+    filtroFase.innerHTML = ["Todas", "Terminadas", "En desarrollo"].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.fase}" data-v="${v}">${v}</button>`).join("");
+  }
   const pestanas = $("#filtro-tipo");
   const filtroAnio = $("#filtro-anio-material");
   pestanas.innerHTML = TIPOS_MATERIAL.map((x) => `<button type="button" class="pestana" aria-pressed="${x.tipo === estado.tipo}" data-v="${esc(x.tipo)}">${esc(x.texto)}</button>`).join("");
@@ -493,8 +514,10 @@ async function paginaMaterial() {
     if (!b || b.dataset.v === estado.tipo) return;
     estado.tipo = b.dataset.v;
     estado.anio = "Todos";
+    estado.fase = "Todas";
     pestanas.querySelectorAll(".pestana").forEach((x) => x.setAttribute("aria-pressed", x === b));
     history.replaceState(null, "", "#" + TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo).hash);
+    pintarFase();
     pintarAnios();
     pintar();
   });
@@ -507,18 +530,19 @@ async function paginaMaterial() {
   });
   // Los años salen solo de los trabajos del tipo elegido
   function pintarAnios() {
-    const anios = [...new Set(lista.filter((t) => t.tipo === estado.tipo).map((t) => String(t.anio || "")).filter(Boolean))];
+    const anios = [...new Set(lista.filter((t) => t.tipo === estado.tipo && enFase(t)).map((t) => String(t.anio || "")).filter(Boolean))];
     filtroAnio.hidden = anios.length < 2;
     filtroAnio.innerHTML = ["Todos", ...anios].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.anio}" data-v="${esc(v)}">${v === "Todos" ? "Todos los años" : esc(v)}</button>`).join("");
   }
   function pintar() {
     const info = TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo);
-    const vis = lista.filter((t) => t.tipo === estado.tipo && (estado.anio === "Todos" || String(t.anio) === estado.anio));
+    const vis = lista.filter((t) => t.tipo === estado.tipo && enFase(t) && (estado.anio === "Todos" || String(t.anio) === estado.anio));
     cont.innerHTML = "";
     $("#total-material").textContent = `${vis.length} ${vis.length === 1 ? info.uno : info.varios}`;
     if (!vis.length) { cont.innerHTML = `<p class="vacio">Todavía no hay ${info.vacio}.</p>`; return; }
     vis.forEach((t) => cont.append(tarjetaMaterial(t)));
   }
+  pintarFase();
   pintarAnios();
   pintar();
 }
