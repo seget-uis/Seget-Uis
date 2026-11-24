@@ -18,8 +18,13 @@ const SEGET = {
 
 const MENU = [
   { href: "index.html", texto: "Inicio", id: "inicio" },
-  { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
-  { href: "integrantes.html", texto: "Integrantes", id: "integrantes" },
+  {
+    texto: "Conócenos",
+    hijos: [
+      { href: "nosotros.html", texto: "¿Quiénes somos?", id: "nosotros", desc: "El semillero, qué estudiamos y por qué", icono: "roca" },
+      { href: "integrantes.html", texto: "Nuestro equipo", id: "integrantes", desc: "Docente orientador, junta directiva e integrantes", icono: "grupo" },
+    ],
+  },
   { href: "actividades.html", texto: "Actividades", id: "actividades" },
   { href: "proyectos.html", texto: "Proyectos", id: "proyectos" },
   { href: "material.html", texto: "Material científico", id: "material" },
@@ -36,6 +41,8 @@ const ICONOS = {
   reloj: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
   lugar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
   persona: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  grupo: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><circle cx="5.5" cy="9.5" r="2.4"/><circle cx="18.5" cy="9.5" r="2.4"/><path d="M12 12.6c3.3 0 6 1.9 6 4.4V19H6v-2c0-2.5 2.7-4.4 6-4.4ZM5.5 13.4c.5 0 1 .05 1.4.15A5.6 5.6 0 0 0 4.6 17v2H1.5v-1.6c0-2.2 1.8-4 4-4ZM18.5 13.4c2.2 0 4 1.8 4 4V19h-3.1v-2a5.6 5.6 0 0 0-2.3-3.45c.45-.1.9-.15 1.4-.15Z"/></svg>',
+  chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
   documento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
@@ -81,7 +88,16 @@ function dibujarHeader() {
       </a>
       <button class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">${ICONOS.menu}</button>
       <nav class="nav" id="nav" aria-label="Principal">
-        ${MENU.map((m) => `<a href="${m.href}"${m.id === actual ? ' aria-current="page"' : ""}>${m.texto}</a>`).join("")}
+        ${MENU.map((m) => m.hijos ? `
+          <div class="nav-grupo">
+            <button type="button" class="nav-desplegar${m.hijos.some((x) => x.id === actual) ? " activo" : ""}" aria-expanded="false">${m.texto} ${ICONOS.chevron}</button>
+            <div class="nav-panel">
+              ${m.hijos.map((x) => `<a href="${x.href}"${x.id === actual ? ' aria-current="page"' : ""}>
+                <span class="nav-icono">${ICONOS[x.icono] || ""}</span>
+                <span><b>${x.texto}</b><small>${x.desc}</small></span>
+              </a>`).join("")}
+            </div>
+          </div>` : `<a href="${m.href}"${m.id === actual ? ' aria-current="page"' : ""}>${m.texto}</a>`).join("")}
       </nav>
     </div>`;
   document.body.prepend(h);
@@ -90,6 +106,23 @@ function dibujarHeader() {
   boton.addEventListener("click", () => {
     const abierto = nav.classList.toggle("abierto");
     boton.setAttribute("aria-expanded", abierto);
+  });
+  // Menú desplegable "Conócenos": se abre al pasar el mouse (CSS) o al tocar el botón
+  h.querySelectorAll(".nav-grupo").forEach((g) => {
+    const b = $(".nav-desplegar", g);
+    b.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const abierto = g.classList.toggle("abierto");
+      b.setAttribute("aria-expanded", abierto);
+    });
+  });
+  document.addEventListener("click", (e) => {
+    h.querySelectorAll(".nav-grupo.abierto").forEach((g) => {
+      if (!g.contains(e.target)) { g.classList.remove("abierto"); $(".nav-desplegar", g).setAttribute("aria-expanded", "false"); }
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") h.querySelectorAll(".nav-grupo.abierto").forEach((g) => { g.classList.remove("abierto"); $(".nav-desplegar", g).setAttribute("aria-expanded", "false"); });
   });
 }
 
@@ -117,7 +150,7 @@ function dibujarFooter() {
         </div>
         <div>
           <h4>Navegación</h4>
-          <ul class="footer-nav">${MENU.map((m) => `<li><a href="${m.href}">${flecha}${m.texto}</a></li>`).join("")}</ul>
+          <ul class="footer-nav">${MENU.flatMap((m) => m.hijos || [m]).map((m) => `<li><a href="${m.href}">${flecha}${m.texto}</a></li>`).join("")}</ul>
         </div>
         <div>
           <h4>Contacto</h4>
