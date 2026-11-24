@@ -100,7 +100,7 @@ em.acento { font-style: italic; color: var(--verde); }
 }
 .header .contenedor { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 .marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--bosque); }
-.marca img { width: 42px; height: 42px; }
+.marca img { width: 48px; height: 45px; object-fit: contain; }
 .marca strong { font-family: var(--serif); font-size: 1.35rem; letter-spacing: .02em; display: block; line-height: 1; }
 .marca small { font-size: .7rem; color: var(--gris); letter-spacing: .04em; }
 .nav { display: flex; gap: 4px; align-items: center; }
@@ -374,6 +374,7 @@ dialog.detalle::backdrop { background: rgba(20, 30, 22, .6); }
 .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 .footer .marca { color: #fff; margin-bottom: 14px; }
 .footer .marca small { color: #c9d6c6; }
+.footer .marca .logo-fondo { width: 60px; height: 60px; padding: 5px; background: #fff; border-radius: 50%; }
 .footer-legal { border-top: 1px solid rgba(255,255,255,.14); margin-top: 40px; padding-top: 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: .82rem; }
 .redes { display: flex; gap: 10px; margin-top: 16px; }
 .redes a { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.1); }

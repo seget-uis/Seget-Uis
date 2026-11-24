@@ -68,7 +68,7 @@ function dibujarHeader() {
   h.innerHTML = `
     <div class="contenedor">
       <a class="marca" href="index.html" aria-label="SEGET, inicio">
-        <img src="assets/img/logo-seget.svg" alt="" width="42" height="42">
+        <img src="assets/img/logo-seget.png" alt="" width="48" height="45">
         <span><strong>SEGET</strong><small>Geología Estructural y Tectónica · UIS</small></span>
       </a>
       <button class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">${ICONOS.menu}</button>
@@ -98,7 +98,7 @@ function dibujarFooter() {
       <div class="footer-rejilla">
         <div>
           <a class="marca" href="index.html">
-            <img src="assets/img/logo-seget.svg" alt="" width="42" height="42">
+            <img class="logo-fondo" src="assets/img/logo-seget.png" alt="" width="48" height="45">
             <span><strong>SEGET</strong><small>Semillero de Geología Estructural y Tectónica</small></span>
           </a>
           <p>Escuela de Geología · Universidad Industrial de Santander.<br>Adscrito al Grupo de Investigación en Geología Básica y Aplicada (GIGBA).</p>
@@ -369,9 +369,9 @@ async function paginaProyectos() {
 
 /* ---------- Material científico (pósters, tesis y artículos) ---------- */
 const TIPOS_MATERIAL = [
-  { tipo: "Póster", texto: "Pósters", hash: "posters", uno: "póster", varios: "pósters" },
-  { tipo: "Tesis", texto: "Tesis", hash: "tesis", uno: "tesis", varios: "tesis" },
-  { tipo: "Artículo", texto: "Artículos", hash: "articulos", uno: "artículo", varios: "artículos" },
+  { tipo: "Póster", texto: "Pósters", hash: "posters", uno: "póster", varios: "pósters", vacio: "pósters publicados" },
+  { tipo: "Tesis", texto: "Tesis", hash: "tesis", uno: "tesis", varios: "tesis", vacio: "tesis publicadas" },
+  { tipo: "Artículo", texto: "Artículos", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
 ];
 
 function tarjetaMaterial(t) {
@@ -467,7 +467,7 @@ async function paginaMaterial() {
     const vis = lista.filter((t) => t.tipo === estado.tipo && (estado.anio === "Todos" || String(t.anio) === estado.anio));
     cont.innerHTML = "";
     $("#total-material").textContent = `${vis.length} ${vis.length === 1 ? info.uno : info.varios}`;
-    if (!vis.length) { cont.innerHTML = `<p class="vacio">Todavía no hay ${info.varios} publicados.</p>`; return; }
+    if (!vis.length) { cont.innerHTML = `<p class="vacio">Todavía no hay ${info.vacio}.</p>`; return; }
     vis.forEach((t) => cont.append(tarjetaMaterial(t)));
   }
   pintarAnios();
