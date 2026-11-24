@@ -62,5 +62,21 @@
     "imagen": "",
     "archivo": "",
     "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título del artículo",
+    "tipo": "Artículo",
+    "anio": "2025",
+    "autores": [
+      "Nombre Apellido",
+      "Nombre Apellido"
+    ],
+    "evento": "Nombre de la revista",
+    "lugar": "",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
   }
 ]

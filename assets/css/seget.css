@@ -229,6 +229,7 @@ em.acento { font-style: italic; color: var(--verde); }
 .chip[data-cat="Curso"] { background: #dfe8f3; color: #23436b; }
 .chip[data-cat="Póster"] { background: var(--ocre-claro); color: #6d5208; }
 .chip[data-cat="Tesis"] { background: #dfe8f3; color: #23436b; }
+.chip[data-cat="Artículo"] { background: #f7d9d1; color: #8a2b17; }
 
 /* ---------- Producción ---------- */
 .material-foto { aspect-ratio: 4 / 3; }
@@ -239,10 +240,8 @@ em.acento { font-style: italic; color: var(--verde); }
   padding: 11px 26px; border-radius: 999px; font: inherit; font-size: 1.02rem; font-weight: 600;
   transition: background .2s, color .2s, box-shadow .2s;
 }
-.pestana span { margin-left: 6px; font-size: .8rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,.08); }
 .pestana:hover { background: var(--verde-claro); }
 .pestana[aria-pressed="true"] { background: var(--bosque); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
-.pestana[aria-pressed="true"] span { background: rgba(255,255,255,.2); }
 
 .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .filtro {

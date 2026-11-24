@@ -61,7 +61,7 @@ Un bloque por proyecto de extensión. `id` es el mismo valor que se pone en `pro
 
 ## material.json
 
-Pósters y tesis del semillero (página **Material científico**). Copie un bloque al inicio de la lista:
+Pósters, tesis y artículos del semillero (página **Material científico**). Copie un bloque al inicio de la lista:
 
 ```json
 {
@@ -79,15 +79,15 @@ Pósters y tesis del semillero (página **Material científico**). Copie un bloq
 }
 ```
 
-- `tipo`: escriba exactamente `Póster` o `Tesis`. La página tiene una pestaña para cada uno y muestra solo los de la pestaña elegida.
+- `tipo`: escriba exactamente `Póster`, `Tesis` o `Artículo`. La página tiene una pestaña para cada uno y muestra solo los de la pestaña elegida.
 - `anio`: los botones de año se crean solos con los años de la pestaña elegida (aparecen cuando hay trabajos de dos años o más).
 - `imagen`: foto o vista previa del póster o de la portada. Guárdela en `assets/img/material/`. Si está vacía se muestra un ícono de documento.
 - `archivo`: el PDF. Guárdelo en `assets/docs/material/` o pegue un enlace de Google Drive. Si está vacío, no aparece el botón de descarga.
-- `enlace`: opcional, por ejemplo el repositorio de la UIS.
+- `enlace`: opcional, por ejemplo el DOI del artículo o el repositorio de la UIS.
 - `director`: solo para tesis.
 - Los bloques que tienen `"ejemplo": true` **no se muestran** en la página. Sirven de plantilla; para verlos abra `material.html?ejemplos`. Bórrelos cuando agregue trabajos reales.
-- Mientras no haya pósters ni tesis reales, la página muestra "Muy pronto".
-- Para enlazar directo a una pestaña use `material.html#posters` o `material.html#tesis`.
+- Mientras no haya trabajos reales, la página muestra "Muy pronto".
+- Para enlazar directo a una pestaña use `material.html#posters`, `material.html#tesis` o `material.html#articulos`.
 
 ## noticias.json
 

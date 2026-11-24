@@ -367,10 +367,11 @@ async function paginaProyectos() {
   });
 }
 
-/* ---------- Material científico (pósters y tesis) ---------- */
+/* ---------- Material científico (pósters, tesis y artículos) ---------- */
 const TIPOS_MATERIAL = [
   { tipo: "Póster", texto: "Pósters", hash: "posters", uno: "póster", varios: "pósters" },
   { tipo: "Tesis", texto: "Tesis", hash: "tesis", uno: "tesis", varios: "tesis" },
+  { tipo: "Artículo", texto: "Artículos", hash: "articulos", uno: "artículo", varios: "artículos" },
 ];
 
 function tarjetaMaterial(t) {
@@ -410,7 +411,7 @@ function abrirMaterial(t) {
   if (t.archivo && texto) {
     const p = document.createElement("p");
     p.className = "mt-2";
-    p.innerHTML = `<a class="boton" href="${esc(t.archivo)}" target="_blank" rel="noopener">${t.tipo === "Póster" ? "Ver el póster" : "Descargar la tesis"}</a>`;
+    p.innerHTML = `<a class="boton" href="${esc(t.archivo)}" target="_blank" rel="noopener">${t.tipo === "Póster" ? "Ver el póster" : t.tipo === "Tesis" ? "Descargar la tesis" : "Leer el artículo"}</a>`;
     texto.append(p);
   }
 }
@@ -428,7 +429,7 @@ async function paginaMaterial() {
     $(".filtros-grupo").hidden = true;
     cont.classList.remove("rejilla", "rejilla--3");
     cont.innerHTML = `<div class="instagram-vacio">
-      <div><h3>Muy pronto</h3><p>Estamos reuniendo los pósters y las tesis del semillero para publicarlos aquí.</p></div>
+      <div><h3>Muy pronto</h3><p>Estamos reuniendo los pósters, las tesis y los artículos para publicarlos aquí.</p></div>
       <a class="boton" href="mailto:${SEGET.correo}">${ICONOS.correo.replace("<svg", '<svg width="18" height="18"')} Escríbenos</a>
     </div>`;
     return;
@@ -437,10 +438,7 @@ async function paginaMaterial() {
   const estado = { tipo: inicial.tipo, anio: "Todos" };
   const pestanas = $("#filtro-tipo");
   const filtroAnio = $("#filtro-anio-material");
-  pestanas.innerHTML = TIPOS_MATERIAL.map((x) => {
-    const n = lista.filter((t) => t.tipo === x.tipo).length;
-    return `<button type="button" class="pestana" aria-pressed="${x.tipo === estado.tipo}" data-v="${esc(x.tipo)}">${esc(x.texto)} <span>${n}</span></button>`;
-  }).join("");
+  pestanas.innerHTML = TIPOS_MATERIAL.map((x) => `<button type="button" class="pestana" aria-pressed="${x.tipo === estado.tipo}" data-v="${esc(x.tipo)}">${esc(x.texto)}</button>`).join("");
   pestanas.addEventListener("click", (e) => {
     const b = e.target.closest(".pestana");
     if (!b || b.dataset.v === estado.tipo) return;
