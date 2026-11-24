@@ -112,7 +112,7 @@ function dibujarFooter() {
             <img class="logo-fondo" src="assets/img/logo-seget.png" alt="" width="48" height="45">
             <span><strong>SEGET · UIS</strong><small>Semillero de Geología Estructural y Tectónica</small></span>
           </a>
-          <p>Estudio, investigación y divulgación de la geología estructural y la tectónica, llevando ese conocimiento a estudiantes y comunidades de Santander.</p>
+          <p>Estudio, investigación y divulgación de la geología estructural y la tectónica.</p>
           <div class="redes">${redes}</div>
         </div>
         <div>
