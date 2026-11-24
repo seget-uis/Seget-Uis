@@ -22,7 +22,7 @@ const MENU = [
     texto: "Conócenos",
     hijos: [
       { href: "nosotros.html", texto: "¿Quiénes somos?", id: "nosotros", desc: "El semillero, qué estudiamos y por qué", icono: "roca" },
-      { href: "integrantes.html", texto: "Nuestro equipo", id: "integrantes", desc: "Docente orientador, junta directiva e integrantes", icono: "grupo" },
+      { href: "integrantes.html", texto: "Nuestro equipo", id: "integrantes", desc: "Docente orientador e integrantes", icono: "grupo" },
     ],
   },
   {

@@ -21,7 +21,7 @@
           ]
         },
         {
-          "nombre": "Junta directiva",
+          "nombre": "Integrantes",
           "miembros": [
             {
               "nombre": "Angélica María Cappacho Alvarez",
@@ -32,12 +32,7 @@
               "linkedin": "",
               "email": "",
               "cvlac": ""
-            }
-          ]
-        },
-        {
-          "nombre": "Integrantes",
-          "miembros": [
+            },
             {
               "nombre": "Ana Valentina Izarra Carrillo",
               "cargo": "Integrante",
@@ -152,7 +147,7 @@
           ]
         },
         {
-          "nombre": "Junta directiva",
+          "nombre": "Integrantes",
           "miembros": [
             {
               "nombre": "Benjamín García Maya",
@@ -163,12 +158,7 @@
               "linkedin": "",
               "email": "",
               "cvlac": ""
-            }
-          ]
-        },
-        {
-          "nombre": "Integrantes",
-          "miembros": [
+            },
             {
               "nombre": "Maria Lucia Cartagena",
               "cargo": "Integrante",
