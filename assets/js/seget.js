@@ -10,7 +10,7 @@ const SEGET = {
   instagram: "https://www.instagram.com/seget.uis/",
   correo: "seget.uis@gmail.com",
   youtube: "https://www.youtube.com/@SEGETUIS",
-  linkedin: "", // Pegue aquí el enlace de LinkedIn cuando lo tengan
+  linkedin: "https://www.linkedin.com/company/semillero-de-investigaci%C3%B3n-en-geolog%C3%ADa-estructural-y-tect%C3%B3nica/",
   telefono: "", // Por ejemplo "+57 (607) 634 4000"; si está vacío no se muestra
   direccion: "Edificio Jorge Bautista Vesga (JBV), Universidad Industrial de Santander, Carrera 27 Calle 9, Bucaramanga, Santander",
   mapa: "https://maps.google.com/maps?q=Edificio%20Jorge%20Bautista%20Vesga%20UIS%20Bucaramanga&z=16&output=embed",
