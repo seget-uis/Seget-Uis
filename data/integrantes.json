@@ -1,356 +1,392 @@
 {
-  "nota": "Las fotos van en assets/img/integrantes/ con el nombre sugerido en 'foto'. Deje un campo vacío (\"\") si no hay dato: la página muestra un espacio de foto por defecto y oculta el enlace.",
-  "periodos": [
+  "nota": "Cada estudiante aparece una sola vez. 'periodos' lista los años en que ha estado; quien tenga el año de 'periodoActual' sale en Integrantes, los demás en Integrantes anteriores. Las fotos van en assets/img/integrantes/. Deje un campo vacío (\"\") si no hay dato.",
+  "periodoActual": "2026",
+  "docentes": [
     {
-      "periodo": "2026",
-      "actual": true,
-      "grupos": [
-        {
-          "nombre": "Docente orientador",
-          "miembros": [
-            {
-              "nombre": "Francisco Alberto Velandia Patiño",
-              "cargo": "Profesor orientador",
-              "programa": "Escuela de Geología UIS",
-              "foto": "",
-              "descripcion": "Geólogo, magíster de la Universidad de Shimane (Japón) y doctor en Geociencias de la Universidad Nacional de Colombia.",
-              "linkedin": "",
-              "email": "favelanp@uis.edu.co",
-              "cvlac": ""
-            }
-          ]
-        },
-        {
-          "nombre": "Junta directiva",
-          "miembros": [
-            {
-              "nombre": "Angélica María Cappacho Alvarez",
-              "cargo": "Estudiante líder",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            }
-          ]
-        },
-        {
-          "nombre": "Integrantes",
-          "miembros": [
-            {
-              "nombre": "Ana Valentina Izarra Carrillo",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Nelson Oriel Ortiz Álvarez",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Marily Quintero Esteves",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Kevin Alexander Higuera Agudelo",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Aura Melissa Núñez Sierra",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Julián Barrera Mendoza",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Mileth Johana González Flórez",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Thomas Leopoldo Quiñonez Pineda",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Angela Lizeth González Sánchez",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            }
-          ]
-        }
+      "nombre": "Francisco Alberto Velandia Patiño",
+      "cargo": "Profesor orientador",
+      "programa": "Escuela de Geología UIS",
+      "foto": "",
+      "descripcion": "Geólogo, magíster de la Universidad de Shimane (Japón) y doctor en Geociencias de la Universidad Nacional de Colombia.",
+      "linkedin": "",
+      "email": "favelanp@uis.edu.co",
+      "cvlac": ""
+    },
+    {
+      "nombre": "Angélica Alvarez",
+      "cargo": "Docente",
+      "programa": "Escuela de Geología UIS",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": ""
+    }
+  ],
+  "integrantes": [
+    {
+      "nombre": "Angélica María Cappacho Alvarez",
+      "cargo": "Estudiante líder",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025",
+        "2026"
       ]
     },
     {
-      "periodo": "2025",
-      "actual": false,
-      "grupos": [
-        {
-          "nombre": "Docente orientador",
-          "miembros": [
-            {
-              "nombre": "Francisco Alberto Velandia Patiño",
-              "cargo": "Profesor orientador",
-              "programa": "Escuela de Geología UIS",
-              "foto": "",
-              "descripcion": "Geólogo, magíster de la Universidad de Shimane (Japón) y doctor en Geociencias de la Universidad Nacional de Colombia.",
-              "linkedin": "",
-              "email": "favelanp@uis.edu.co",
-              "cvlac": ""
-            }
-          ]
-        },
-        {
-          "nombre": "Junta directiva",
-          "miembros": [
-            {
-              "nombre": "Benjamín García Maya",
-              "cargo": "Estudiante líder",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            }
-          ]
-        },
-        {
-          "nombre": "Integrantes",
-          "miembros": [
-            {
-              "nombre": "Maria Lucia Cartagena",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Angélica Cappacho",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Juana Bayona",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Michell Daniela Muñoz",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Daniela Maria Llorente",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Jerson Leonel Bohorquez",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Juan Pablo Garcia",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Santiago Camargo",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Julian Felipe Rincón",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Paula Carolina Herrera",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Maikol Alejandro",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Yireth Natalia Madrid",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Laura Juliana Cristancho",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Maria Gabriela Sanabria",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Maria Cristina Lizcano",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Maria Fernanda Latorre",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Daniel Felipe Hernandez",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            },
-            {
-              "nombre": "Carlos Rene Uribe",
-              "cargo": "Integrante",
-              "programa": "Geología",
-              "foto": "",
-              "descripcion": "",
-              "linkedin": "",
-              "email": "",
-              "cvlac": ""
-            }
-          ]
-        }
+      "nombre": "Ana Valentina Izarra Carrillo",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Nelson Oriel Ortiz Álvarez",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Marily Quintero Esteves",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Kevin Alexander Higuera Agudelo",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Aura Melissa Núñez Sierra",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Julián Barrera Mendoza",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Mileth Johana González Flórez",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Thomas Leopoldo Quiñonez Pineda",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Angela Lizeth González Sánchez",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2026"
+      ]
+    },
+    {
+      "nombre": "Benjamín García Maya",
+      "cargo": "Estudiante líder",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Maria Lucia Cartagena",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Juana Bayona",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Michell Daniela Muñoz",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Daniela Maria Llorente",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Jerson Leonel Bohorquez",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Juan Pablo Garcia",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Santiago Camargo",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Julian Felipe Rincón",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Paula Carolina Herrera",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Maikol Alejandro",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Yireth Natalia Madrid",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Laura Juliana Cristancho",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Maria Gabriela Sanabria",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Maria Cristina Lizcano",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Maria Fernanda Latorre",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Daniel Felipe Hernandez",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
+      ]
+    },
+    {
+      "nombre": "Carlos Rene Uribe",
+      "cargo": "Integrante",
+      "programa": "Geología",
+      "foto": "",
+      "descripcion": "",
+      "linkedin": "",
+      "email": "",
+      "cvlac": "",
+      "periodos": [
+        "2025"
       ]
     }
   ]

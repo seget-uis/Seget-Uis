@@ -22,7 +22,7 @@ const MENU = [
     texto: "Conócenos",
     hijos: [
       { href: "nosotros.html", texto: "¿Quiénes somos?", id: "nosotros", desc: "El semillero, qué estudiamos y por qué", icono: "roca" },
-      { href: "integrantes.html", texto: "Nuestro equipo", id: "integrantes", desc: "Docente orientador, junta directiva e integrantes", icono: "grupo" },
+      { href: "integrantes.html", texto: "Nuestro equipo", id: "integrantes", desc: "Docentes e integrantes", icono: "grupo" },
     ],
   },
   {
@@ -462,26 +462,23 @@ async function paginaIntegrantes() {
   const datos = await cargar("data/integrantes.json");
   const cont = $("#equipo");
   if (!datos) { cont.innerHTML = '<p class="vacio">No se pudo cargar el equipo.</p>'; return; }
-  const sel = $("#periodos");
-  let actual = (datos.periodos.find((p) => p.actual) || datos.periodos[0]).periodo;
-  sel.innerHTML = datos.periodos.map((p) => `<button type="button" class="filtro" data-v="${esc(p.periodo)}" aria-pressed="${p.periodo === actual}">${esc(p.periodo)}${p.actual ? " (actual)" : ""}</button>`).join("");
-  sel.addEventListener("click", (e) => {
-    const b = e.target.closest(".filtro");
-    if (!b) return;
-    actual = b.dataset.v;
-    sel.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
-    pintar();
-  });
-  function pintar() {
-    const p = datos.periodos.find((x) => x.periodo === actual);
-    const compacto = !p.actual;
-    cont.innerHTML = p.grupos.map((g) => `
-      <h2 class="grupo-titulo">${esc(g.nombre)}</h2>
-      <div class="integrantes${compacto && g.miembros.length > 3 ? " integrantes--compacto" : ""}">
-        ${g.miembros.map((m) => tarjetaIntegrante(m, compacto && g.miembros.length > 3)).join("")}
-      </div>`).join("");
-  }
-  pintar();
+  const hoy = String(datos.periodoActual);
+  const todos = datos.integrantes || [];
+  const actuales = todos.filter((m) => (m.periodos || []).map(String).includes(hoy));
+  const anteriores = todos.filter((m) => !actuales.includes(m));
+  const grupo = (titulo, html, clase = "") => `<h2 class="grupo-titulo">${titulo}</h2><div class="integrantes${clase}">${html}</div>`;
+  const anterior = (m) => {
+    const foto = m.foto
+      ? `<img class="foto" src="${esc(m.foto)}" alt="Foto de ${esc(m.nombre)}" loading="lazy">`
+      : `<div class="foto foto--vacia" aria-hidden="true">${esc(iniciales(m.nombre))}</div>`;
+    const cargo = m.cargo && m.cargo !== "Integrante" ? `${esc(m.cargo)} · ` : "";
+    return `<div class="integrante">${foto}<div><h3>${esc(m.nombre)}</h3><span class="periodo-integrante">${cargo}${(m.periodos || []).map(esc).join(", ")}</span></div></div>`;
+  };
+  cont.innerHTML = [
+    (datos.docentes || []).length ? grupo(datos.docentes.length > 1 ? "Docentes" : "Docente", datos.docentes.map((m) => tarjetaIntegrante(m)).join("")) : "",
+    grupo(`Integrantes ${esc(hoy)}`, actuales.map((m) => tarjetaIntegrante(m)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
+    anteriores.length ? grupo("Integrantes anteriores", anteriores.map(anterior).join(""), " integrantes--compacto") : "",
+  ].join("");
 }
 
 async function paginaProyectos() {
