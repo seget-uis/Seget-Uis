@@ -1,0 +1,114 @@
+[
+  {
+    "titulo": "Geoeducación como herramienta para la apropiación del patrimonio geológico en el Geoparque Cañón del Chicamocha: experiencia en Cepitá, Santander",
+    "tipo": "Póster",
+    "anio": "2026",
+    "autores": [
+      "Angélica Cappacho",
+      "Thomás Quiñonez",
+      "Valentina Ortiz",
+      "Daniel Peñaranda"
+    ],
+    "evento": "1er Simposio Internacional Geoparques, Desarrollo Territorial y Convivencia",
+    "lugar": "Universidad Industrial de Santander, Bucaramanga",
+    "resumen": "",
+    "imagen": "assets/img/material/geoeducacion-cepita.jpg",
+    "archivo": "assets/docs/material/geoeducacion-cepita.pdf",
+    "enlace": ""
+  },
+  {
+    "titulo": "Integración de la fotogrametría y modelamiento 3D para la comprensión y el análisis de la geología estructural",
+    "tipo": "Póster",
+    "anio": "2026",
+    "autores": [
+      "Angélica Cappacho Alvarez",
+      "Thomás Quiñonez Pineda"
+    ],
+    "evento": "XVII Semana Técnica de Geología, Ingeniería Geológica y Geociencias",
+    "lugar": "Universidad Industrial de Santander, Bucaramanga",
+    "resumen": "",
+    "imagen": "assets/img/material/fotogrametria-modelamiento-3d.jpg",
+    "archivo": "assets/docs/material/fotogrametria-modelamiento-3d.pdf",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título del póster",
+    "tipo": "Póster",
+    "anio": "2026",
+    "autores": [
+      "Nombre Apellido",
+      "Nombre Apellido"
+    ],
+    "evento": "Nombre del evento donde se presentó",
+    "lugar": "Ciudad",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título de otro póster",
+    "tipo": "Póster",
+    "anio": "2025",
+    "autores": [
+      "Nombre Apellido",
+      "Nombre Apellido"
+    ],
+    "evento": "Otro evento",
+    "lugar": "Ciudad",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título del trabajo de grado",
+    "tipo": "Tesis",
+    "anio": "2025",
+    "autores": [
+      "Nombre Apellido"
+    ],
+    "director": "Nombre del director",
+    "evento": "Trabajo de grado, Escuela de Geología UIS",
+    "lugar": "Bucaramanga",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título de otro trabajo de grado",
+    "tipo": "Tesis",
+    "anio": "2024",
+    "autores": [
+      "Nombre Apellido"
+    ],
+    "director": "Nombre del director",
+    "evento": "Trabajo de grado, Escuela de Geología UIS",
+    "lugar": "Bucaramanga",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título del artículo",
+    "tipo": "Artículo",
+    "anio": "2025",
+    "autores": [
+      "Nombre Apellido",
+      "Nombre Apellido"
+    ],
+    "evento": "Nombre de la revista",
+    "lugar": "",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  }
+]

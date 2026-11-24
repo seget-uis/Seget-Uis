@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Material científico · SEGET UIS</title>
+  <meta name="description" content="Pósters, tesis y artículos hechos por integrantes del Semillero de Geología Estructural y Tectónica de la UIS.">
+  <meta name="theme-color" content="#1f3b2a">
+  <meta property="og:title" content="Material científico · SEGET UIS">
+  <meta property="og:description" content="Pósters, tesis y artículos hechos por integrantes del Semillero de Geología Estructural y Tectónica de la UIS.">
+  <meta property="og:image" content="assets/img/actividades/2026/zapatoca-b.jpg">
+  <link rel="icon" href="assets/img/logo-seget.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/seget.css">
+  <script src="assets/js/seget.js" defer></script>
+</head>
+<body data-pagina="material">
+<main>
+  <section class="cabecera">
+    <div class="contenedor">
+      <span class="etiqueta">Material científico</span>
+      <h1>Pósters, tesis y artículos</h1>
+      <p class="lead">Los pósters que hemos presentado en eventos, los trabajos de grado y los artículos de nuestros integrantes. Elige una pestaña, filtra por año y toca un trabajo para ver más detalles.</p>
+    </div>
+  </section>
+  <section class="seccion" style="padding-top:0">
+    <div class="contenedor">
+      <div class="filtros-grupo">
+        <div class="pestanas" id="filtro-tipo" role="group" aria-label="Tipo de material"></div>
+        <div class="filtros" id="filtro-anio-material" role="group" aria-label="Año"></div>
+        <p class="actividad-meta" id="total-material" aria-live="polite"></p>
+      </div>
+      <div class="rejilla rejilla--3" id="lista-material"></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

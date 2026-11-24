@@ -100,13 +100,13 @@ em.acento { font-style: italic; color: var(--verde); }
 }
 .header .contenedor { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 .marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--bosque); }
-.marca img { width: 42px; height: 42px; }
+.marca img { width: 48px; height: 45px; object-fit: contain; }
 .marca strong { font-family: var(--serif); font-size: 1.35rem; letter-spacing: .02em; display: block; line-height: 1; }
 .marca small { font-size: .7rem; color: var(--gris); letter-spacing: .04em; }
 .nav { display: flex; gap: 4px; align-items: center; }
 .nav a {
   text-decoration: none; color: var(--tinta); font-weight: 500; font-size: .95rem;
-  padding: 8px 14px; border-radius: 999px;
+  padding: 8px 14px; border-radius: 999px; white-space: nowrap;
 }
 .nav a:hover { background: var(--verde-claro); color: var(--bosque); }
 .nav a[aria-current="page"] { background: var(--bosque); color: #fff; }
@@ -114,6 +114,12 @@ em.acento { font-style: italic; color: var(--verde); }
   display: none; background: none; border: 0; padding: 8px; cursor: pointer; color: var(--bosque);
 }
 .menu-boton svg { width: 28px; height: 28px; }
+/* Pantallas medianas: se oculta el subtítulo del logo para que el menú quepa en una línea */
+@media (min-width: 861px) and (max-width: 1100px) {
+  .marca small { display: none; }
+  .nav { gap: 2px; }
+  .nav a { padding: 8px 11px; }
+}
 
 @media (max-width: 860px) {
   .menu-boton { display: block; }
@@ -221,6 +227,21 @@ em.acento { font-style: italic; color: var(--verde); }
 .chip[data-cat="Apropiación social"] { background: #f7d9d1; color: #8a2b17; }
 .chip[data-cat="Stand"] { background: var(--ocre-claro); color: #6d5208; }
 .chip[data-cat="Curso"] { background: #dfe8f3; color: #23436b; }
+.chip[data-cat="Póster"] { background: var(--ocre-claro); color: #6d5208; }
+.chip[data-cat="Tesis"] { background: #dfe8f3; color: #23436b; }
+.chip[data-cat="Artículo"] { background: #f7d9d1; color: #8a2b17; }
+
+/* ---------- Producción ---------- */
+.material-foto { aspect-ratio: 4 / 3; }
+.material-foto img { object-fit: cover; object-position: top; }
+.pestanas { display: inline-flex; gap: 4px; padding: 5px; margin-bottom: 18px; background: var(--papel); border: 1.5px solid var(--linea); border-radius: 999px; }
+.pestana {
+  border: 0; background: transparent; color: var(--tinta); cursor: pointer;
+  padding: 11px 26px; border-radius: 999px; font: inherit; font-size: 1.02rem; font-weight: 600;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+.pestana:hover { background: var(--verde-claro); }
+.pestana[aria-pressed="true"] { background: var(--bosque); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
 
 .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .filtro {
@@ -353,6 +374,7 @@ dialog.detalle::backdrop { background: rgba(20, 30, 22, .6); }
 .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 .footer .marca { color: #fff; margin-bottom: 14px; }
 .footer .marca small { color: #c9d6c6; }
+.footer .marca .logo-fondo { width: 60px; height: 60px; padding: 5px; background: #fff; border-radius: 50%; }
 .footer-legal { border-top: 1px solid rgba(255,255,255,.14); margin-top: 40px; padding-top: 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: .82rem; }
 .redes { display: flex; gap: 10px; margin-top: 16px; }
 .redes a { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.1); }
