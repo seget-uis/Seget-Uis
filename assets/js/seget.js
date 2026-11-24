@@ -238,15 +238,9 @@ function dibujarInstagram(noticias) {
   const cont = $("#instagram");
   if (!cont) return;
   const posts = (noticias && noticias.instagram) || [];
-  if (!posts.length) {
-    cont.innerHTML = `<div class="instagram-vacio">
-      <div><h3>Síguenos en Instagram</h3><p>Allí publicamos cada charla, taller y salida de campo.</p></div>
-      <a class="boton boton--primario" href="${SEGET.instagram}" target="_blank" rel="noopener">${ICONOS.instagram.replace("<svg", '<svg width="20" height="20"')} @seget.uis</a>
-    </div>`;
-    return;
-  }
+  if (!posts.length) { cont.remove(); return; }
   cont.innerHTML = `<div class="instagram-rejilla">${posts.slice(0, 3).map((u) =>
-    `<blockquote class="instagram-media" data-instgrm-permalink="${esc(u)}" data-instgrm-version="14"><a href="${esc(u)}">Ver en Instagram</a></blockquote>`).join("")}</div>`;
+    `<blockquote class="instagram-media" data-instgrm-permalink="${esc(u)}" data-instgrm-version="14"><a href="${esc(u)}" target="_blank" rel="noopener">Ver la publicación en Instagram</a></blockquote>`).join("")}</div>`;
   const s = document.createElement("script");
   s.src = "https://www.instagram.com/embed.js";
   s.async = true;

@@ -177,13 +177,14 @@ a:hover { text-decoration-color: var(--color-accent); }
 .chip[data-cat="Salida de campo"], .chip[data-cat="Apropiación social"] { color: var(--color-ink-2); }
 
 /* ---------- Instagram ---------- */
-.insta { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: var(--space-xl); flex-wrap: wrap; }
-.insta h2 { max-width: none; }
-.instagram-vacio { display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; }
-.instagram-vacio h3 { font-size: var(--text-title); }
-.instagram-vacio p { color: var(--color-muted); }
+.insta { display: flex; align-items: end; justify-content: space-between; gap: var(--space-xl); flex-wrap: wrap; }
+.insta-cabeza { display: grid; gap: var(--space-sm); }
+.insta-cabeza p { color: var(--color-muted); }
+#instagram { margin-top: var(--space-2xl); }
 .instagram-rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); align-items: start; width: 100%; }
-.instagram-rejilla blockquote { margin: 0 !important; min-width: 0 !important; width: 100% !important; }
+.instagram-rejilla blockquote { margin: 0 !important; min-width: 0 !important; width: 100% !important; max-width: none !important; border-radius: var(--radius-card) !important; }
+.instagram-rejilla blockquote { background: var(--color-paper); min-height: 120px; }
+.instagram-rejilla blockquote > a { display: block; padding: var(--space-lg); color: var(--color-ink); }
 
 /* ---------- Únete: banda de tinta ---------- */
 .cita { margin: 0; font: 600 var(--text-display-s)/1.08 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); max-width: 24ch; text-wrap: balance; hanging-punctuation: first; }

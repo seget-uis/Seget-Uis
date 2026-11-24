@@ -40,5 +40,12 @@ Si quieren la dirección corta `https://seget-uis.github.io/`, el repositorio de
 
 - Reemplazar `assets/img/logo-seget.svg` por el logo oficial (puede ser `.png`; cambie la ruta en `assets/js/seget.js`).
 - Fotos, descripciones y LinkedIn de cada integrante en `data/integrantes.json`.
-- Enlaces de publicaciones de Instagram en `data/noticias.json` y el canal de YouTube en `assets/js/seget.js`.
+- Canal de YouTube en `assets/js/seget.js`.
+
+## Últimas publicaciones de Instagram en la portada
+
+La portada muestra las 3 publicaciones que estén en `data/noticias.json`. Hay dos formas de llenarlas:
+
+- **A mano:** pegue los enlaces (`https://www.instagram.com/p/.../`) en la lista `instagram`, la más nueva primero.
+- **Automática:** el flujo `.github/workflows/instagram.yml` las actualiza cada día. Requiere que @seget.uis sea una cuenta profesional (de creador o de empresa) y un token de larga duración de la *API de Instagram con inicio de sesión de Instagram* (se crea en developers.facebook.com con una app de Meta). Guárdelo en el repositorio en *Settings › Secrets and variables › Actions* con el nombre `IG_TOKEN`. El flujo renueva el token en cada ejecución; si se deja de ejecutar más de 60 días, hay que generar uno nuevo.
 - Fechas exactas de las actividades de 2025 (en el acta no aparecen).
