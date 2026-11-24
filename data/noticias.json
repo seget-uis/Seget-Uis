@@ -1,8 +1,4 @@
 {
-  "instagram": [
-    "https://www.instagram.com/p/DfsvPGlDvCD/",
-    "https://www.instagram.com/p/DfiQbOZIDvV/",
-    "https://www.instagram.com/p/Dfa07TTjvlM/"
-  ],
-  "nota": "Las 3 publicaciones más recientes de Instagram (https://www.instagram.com/p/.../), la más nueva primero. Se actualizan solas cada día si el repositorio tiene el secreto IG_TOKEN (ver README); si no, péguelas aquí a mano. Si la lista está vacía, la portada solo muestra el botón para seguir a @seget.uis."
+  "instagram": [],
+  "nota": "Pegue aquí enlaces de publicaciones de Instagram (https://www.instagram.com/p/.../), las más recientes primero. Si la lista está vacía, la portada muestra un botón hacia @seget.uis."
 }
