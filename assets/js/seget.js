@@ -10,6 +10,8 @@ const SEGET = {
   instagram: "https://www.instagram.com/seget.uis/",
   correo: "seget.uis@gmail.com",
   youtube: "", // Pegue aquí el enlace del canal de YouTube cuando lo tengan
+  ubicacion: "Edificio Jorge Bautista Vesga (JBV), Universidad Industrial de Santander, Bucaramanga, Santander",
+  mapa: "https://www.google.com/maps?q=Edificio%20Jorge%20Bautista%20Vesga%2C%20Universidad%20Industrial%20de%20Santander%2C%20Bucaramanga&z=17&output=embed",
 };
 
 const MENU = [
@@ -27,6 +29,7 @@ const ICONOS = {
   linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4v-11Z"/></svg>',
   cvlac: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   roca: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 18 7 8l5 3 4-5 5 12z"/><path d="M3 18h18M8.5 13.5l3 1.5 3.5-3"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
 
@@ -93,31 +96,34 @@ function dibujarFooter() {
   ].join("");
   f.innerHTML = `
     <div class="container">
-      <p class="footer-frase">Nos reunimos cada semana en la Escuela de Geología de la UIS.</p>
       <div class="footer-rejilla">
         <div class="footer-marca">
           <a class="marca" href="index.html" aria-label="SEGET, inicio">
-            <img src="assets/img/logo-seget.svg" alt="" width="40" height="40">
-            <strong>SEGET</strong>
+            <img src="assets/img/logo-seget.svg" alt="" width="48" height="48">
+            <span><strong>SEGET</strong><small>Semillero de Geología Estructural y Tectónica</small></span>
           </a>
           <p>Escuela de Geología, Universidad Industrial de Santander. Adscrito al Grupo de Investigación en Geología Básica y Aplicada (GIGBA).</p>
           <div class="redes">${redes}</div>
         </div>
-        <div class="footer-col">
+        <nav class="footer-col" aria-label="Páginas del sitio">
           <h2>Páginas</h2>
           <ul>${MENU.map((m) => `<li><a href="${m.href}">${m.texto}</a></li>`).join("")}</ul>
-        </div>
+        </nav>
         <div class="footer-col">
-          <h2>Escríbenos</h2>
-          <ul>
-            <li><a href="mailto:${SEGET.correo}">${SEGET.correo}</a></li>
-            <li><a href="${SEGET.instagram}" target="_blank" rel="noopener">@seget.uis</a></li>
-            <li>Bucaramanga, Santander, Colombia</li>
+          <h2>Contacto</h2>
+          <ul class="footer-contacto">
+            <li>${ICONOS.pin}<span>${SEGET.ubicacion}</span></li>
+            <li>${ICONOS.correo}<a href="mailto:${SEGET.correo}">${SEGET.correo}</a></li>
+            <li>${ICONOS.instagram}<a href="${SEGET.instagram}" target="_blank" rel="noopener">@seget.uis</a></li>
           </ul>
+        </div>
+        <div class="footer-col footer-mapa">
+          <h2>Encuéntranos</h2>
+          <iframe src="${SEGET.mapa}" title="Mapa: Edificio Jorge Bautista Vesga, UIS, Bucaramanga" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
       </div>
       <div class="footer-legal">
-        <span>© ${new Date().getFullYear()} SEGET, UIS</span>
+        <span>© ${new Date().getFullYear()} SEGET, Universidad Industrial de Santander</span>
         <span>Hecho por integrantes del semillero</span>
       </div>
     </div>`;
