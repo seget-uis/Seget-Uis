@@ -2,12 +2,14 @@
  * hero: Poster (/), Banner (/nosotros, /integrantes, /actividades, /proyectos, /404) · nav: floating pill · footer: statement · imagery: photographs, the user's own 14 (no library) · signature: the folded outcrop on the road to Zapatoca, full-bleed, the group small at its foot for scale
  * axes: light/roman-serif/chromatic-green · posture: committed · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P, a student group page tends to list everything; let the outcrop and the Cepitá children carry the argument and set the rest as ruled type */
-/* Hallmark · dropped eyebrows "Escuela de Geología · UIS", "Qué hacemos", "Proyecto de extensión 2026", "Lo más reciente", "Líneas de trabajo", "Noticias", "Cómo trabajamos", "Lo que hemos aprendido", "Investigar también es transformar", "Aliados", "Error 404" · gate 54 names the eyebrow; each fact moved to a caption, a heading or the footer */
+/* Hallmark · dropped eyebrows "Escuela de Geología · UIS", "Qué hacemos", "Proyecto de extensión 2026", "Lo más reciente", "Líneas de trabajo", "Noticias", "Cómo trabajamos", "Lo que hemos aprendido", "Investigar también es transformar", "Error 404" · gate 54 names the eyebrow; each fact moved to a caption, a heading or the footer */
 /* Hallmark · dropped the three icon tiles on /nosotros · gate 3 names an icon in a tile above a heading; the headings carry the meaning */
 /* Hallmark · answered F7 · the floating pill nav is the draw's chrome; the bar, its wordmark and its links are one control strip */
 /* Hallmark · waive 39b · button.actividad is a whole activity card · each card is one button that opens its photos, the wiring seget.js already had */
 /* Hallmark · waive 59 · the 64px gap sits between the page header and its filtered list · on actividades and integrantes they are one section, parted by the filter rule */
 /* Hallmark · dismissed 77 · actividades, integrantes, proyectos and the 404 are list and utility pages whose one section is the filtered list or the message */
+/* Hallmark · waive 77 · Por qué lo hacemos is one paragraph set at 31px across the full row · it is the page's statement between the quotes band and the join section, and a picture there would sit beside the join photo */
+/* Hallmark · dropped the allies section on /nosotros · Thomas asked to remove it from the page */
 /* Hallmark · reworded footer headings "Explora" and "Contacto" to "Páginas" and "Escríbenos" · the statement footer sets them as plain labels beside the closing line */
 @import url("./tokens.css");
 @import url("./base.css");
@@ -207,12 +209,8 @@ a:hover { text-decoration-color: var(--color-accent); }
 .citas { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2xl) var(--gap-columns); }
 .citas h2 { grid-column: 1 / -1; font-size: var(--text-title); color: var(--color-sobre-tinta-2); }
 .citas .cita { font-size: var(--text-2xl); line-height: 1.25; max-width: 30ch; }
-.porque-foto { grid-column: 1 / span 6; aspect-ratio: 4 / 3; }
-.porque { grid-column: 8 / -1; display: grid; gap: var(--space-lg); align-content: center; }
-.porque .lead { font: 600 var(--text-xl)/1.35 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); max-width: none; }
-.aliados-cabeza { grid-column: 1 / -1; }
-.aliados { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap-columns); margin: 0; padding: 0; list-style: none; border-top: var(--rule-hair) solid var(--color-rule-2); }
-.aliados > li { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--gap-columns); padding-block: var(--space-lg); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.porque { grid-column: 1 / -1; display: grid; gap: var(--space-lg); }
+.porque .lead { font: 600 var(--text-2xl)/1.3 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); max-width: none; }
 .unirse-texto { grid-column: 1 / span 5; display: grid; gap: var(--space-lg); align-content: center; }
 .unirse-foto { grid-column: 7 / -1; aspect-ratio: 4 / 3; }
 
@@ -329,9 +327,7 @@ dialog.detalle::backdrop { background: var(--scrim); }
 @media (max-width: 60rem) {
   .doce { row-gap: var(--space-xl); }
   .doce > * { grid-column: 1 / -1 !important; }
-  .filas li, .trabajo li, .aliados > li { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
-  .aliados { grid-template-columns: minmax(0, 1fr); }
-  .temas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filas li, .trabajo li,     .temas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-lg); }
   .cifras > div:nth-child(3) { padding-left: 0; border-left: 0; }
   .vitrina-pie { margin-top: 0; }
