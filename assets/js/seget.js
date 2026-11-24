@@ -364,10 +364,10 @@ function dibujarInstagram(noticias) {
 
 // Tipos que muestra cada página: actividades.html muestra formación; stands.html, los stands
 const TIPOS_ACTIVIDAD = {
-  Charla: { plural: "Charlas", hash: "charlas" },
-  Taller: { plural: "Talleres", hash: "talleres" },
-  Curso: { plural: "Cursos", hash: "cursos" },
-  "Salida de campo": { plural: "Salidas de campo", hash: "salidas" },
+  Charla: { plural: "Charlas", hash: "charlas", lead: "Las charlas que ha organizado el semillero." },
+  Taller: { plural: "Talleres", hash: "talleres", lead: "Talleres prácticos de brújula, proyecciones, cortes geológicos y software." },
+  Curso: { plural: "Cursos", hash: "cursos", lead: "Los cursos que ha organizado el semillero." },
+  "Salida de campo": { plural: "Salidas de campo", hash: "salidas", lead: "Salidas para ver y medir la geología en el terreno." },
   Stand: { plural: "Stands", hash: "stands" },
 };
 
@@ -392,26 +392,50 @@ async function paginaActividades() {
       if (!b) return;
       estado[clave] = b.dataset.v;
       raiz.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
-      if (clave === "cat") history.replaceState(null, "", estado.cat === "Todas" ? location.pathname + location.search : "#" + TIPOS_ACTIVIDAD[estado.cat].hash);
+      if (clave === "cat") aplicarModo();
       pintar();
     });
   };
   botones($("#filtro-cat"), cats, "cat", texto);
   botones($("#filtro-anio"), anios, "anio");
+  // Al entrar desde el menú (por ejemplo actividades.html#charlas) la página muestra solo ese tipo:
+  // cambia el título y se ocultan los botones de tipo; los años se calculan solo con ese tipo.
+  const cabecera = { h1: $(".cabecera h1"), lead: $(".cabecera .lead") };
+  const original = { h1: cabecera.h1 && cabecera.h1.textContent, lead: cabecera.lead && cabecera.lead.textContent, titulo: document.title };
+  function aplicarModo() {
+    const fijo = estado.cat !== "Todas" && location.hash;
+    $("#filtro-cat").hidden = !!fijo || cats.length < 3;
+    if (cabecera.h1) cabecera.h1.textContent = fijo ? TIPOS_ACTIVIDAD[estado.cat].plural : original.h1;
+    if (cabecera.lead) cabecera.lead.textContent = fijo && TIPOS_ACTIVIDAD[estado.cat].lead ? TIPOS_ACTIVIDAD[estado.cat].lead + " Toca una para ver sus fotos." : original.lead;
+    document.title = fijo ? `${TIPOS_ACTIVIDAD[estado.cat].plural} · SEGET UIS` : original.titulo;
+    const base = lista.filter((a) => estado.cat === "Todas" || a.categoria === estado.cat);
+    const ans = ["Todos", ...new Set(base.map(anio))];
+    if (!ans.includes(estado.anio)) estado.anio = "Todos";
+    const fa = $("#filtro-anio");
+    fa.hidden = ans.length < 3;
+    fa.innerHTML = ans.map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.anio}" data-v="${esc(v)}">${esc(v)}</button>`).join("");
+  }
   // Si se elige otra opción del menú estando ya en la página
   window.addEventListener("hashchange", () => {
     estado.cat = desdeHash();
+    estado.anio = "Todos";
     $("#filtro-cat").querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x.dataset.v === estado.cat));
+    aplicarModo();
     pintar();
+    window.scrollTo({ top: 0 });
   });
 
   function pintar() {
     const vis = lista.filter((a) => (estado.cat === "Todas" || a.categoria === estado.cat) && (estado.anio === "Todos" || anio(a) === estado.anio));
     cont.innerHTML = "";
-    $("#total-actividades").textContent = `${vis.length} ${vis.length === 1 ? "actividad" : "actividades"}`;
+    const t = TIPOS_ACTIVIDAD[estado.cat];
+    const uno = t && location.hash ? estado.cat.toLowerCase() : "actividad";
+    const varios = t && location.hash ? t.plural.toLowerCase() : "actividades";
+    $("#total-actividades").textContent = `${vis.length} ${vis.length === 1 ? uno : varios}`;
     if (!vis.length) { cont.innerHTML = '<p class="vacio">No hay actividades con ese filtro.</p>'; return; }
     vis.forEach((a) => cont.append(tarjetaActividad(a)));
   }
+  aplicarModo();
   pintar();
 }
 
