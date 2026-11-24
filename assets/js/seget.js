@@ -18,10 +18,29 @@ const SEGET = {
 
 const MENU = [
   { href: "index.html", texto: "Inicio", id: "inicio" },
-  { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
-  { href: "integrantes.html", texto: "Integrantes", id: "integrantes" },
-  { href: "actividades.html", texto: "Actividades", id: "actividades" },
-  { href: "proyectos.html", texto: "Proyectos", id: "proyectos" },
+  {
+    texto: "Conócenos",
+    hijos: [
+      { href: "nosotros.html", texto: "¿Quiénes somos?", id: "nosotros", desc: "El semillero, qué estudiamos y por qué", icono: "roca" },
+      { href: "integrantes.html", texto: "Nuestro equipo", id: "integrantes", desc: "Docente orientador, junta directiva e integrantes", icono: "grupo" },
+    ],
+  },
+  {
+    texto: "Actividades", href: "actividades.html", id: "actividades",
+    hijos: [
+      { href: "actividades.html#charlas", texto: "Charlas", id: "actividades", icono: "charla" },
+      { href: "actividades.html#talleres", texto: "Talleres", id: "actividades", icono: "taller" },
+      { href: "actividades.html#cursos", texto: "Cursos", id: "actividades", icono: "curso" },
+      { href: "actividades.html#salidas", texto: "Salidas de campo", id: "actividades", icono: "brujula" },
+    ],
+  },
+  {
+    texto: "Divulgación",
+    hijos: [
+      { href: "proyectos.html", texto: "Proyectos de extensión", id: "proyectos", icono: "grupo" },
+      { href: "stands.html", texto: "Stands y ferias", id: "stands", icono: "stand" },
+    ],
+  },
   { href: "material.html", texto: "Material científico", id: "material" },
 ];
 
@@ -36,6 +55,13 @@ const ICONOS = {
   reloj: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
   lugar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
   persona: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  grupo: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><circle cx="5.5" cy="9.5" r="2.4"/><circle cx="18.5" cy="9.5" r="2.4"/><path d="M12 12.6c3.3 0 6 1.9 6 4.4V19H6v-2c0-2.5 2.7-4.4 6-4.4ZM5.5 13.4c.5 0 1 .05 1.4.15A5.6 5.6 0 0 0 4.6 17v2H1.5v-1.6c0-2.2 1.8-4 4-4ZM18.5 13.4c2.2 0 4 1.8 4 4V19h-3.1v-2a5.6 5.6 0 0 0-2.3-3.45c.45-.1.9-.15 1.4-.15Z"/></svg>',
+  charla: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg>',
+  taller: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4 2.5-2.5Z"/></svg>',
+  curso: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 7l10-4 10 4-10 4L2 7Z"/><path d="M6 9v5c0 1.7 2.7 3 6 3s6-1.3 6-3V9"/></svg>',
+  brujula: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/></svg>',
+  stand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10 5 4h14l2 6M3 10h18M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 13v8M19 13v8M5 21h14"/></svg>',
+  chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
   documento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
@@ -81,7 +107,16 @@ function dibujarHeader() {
       </a>
       <button class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">${ICONOS.menu}</button>
       <nav class="nav" id="nav" aria-label="Principal">
-        ${MENU.map((m) => `<a href="${m.href}"${m.id === actual ? ' aria-current="page"' : ""}>${m.texto}</a>`).join("")}
+        ${MENU.map((m) => m.hijos ? `
+          <div class="nav-grupo">
+            <button type="button" class="nav-desplegar${m.hijos.some((x) => x.id === actual) ? " activo" : ""}" aria-expanded="false">${m.texto} ${ICONOS.chevron}</button>
+            <div class="nav-panel">
+              ${m.hijos.map((x) => `<a href="${x.href}"${x.id === actual && !x.href.includes("#") ? ' aria-current="page"' : ""}>
+                <span class="nav-icono">${ICONOS[x.icono] || ""}</span>
+                <span><b>${x.texto}</b>${x.desc ? `<small>${x.desc}</small>` : ""}</span>
+              </a>`).join("")}
+            </div>
+          </div>` : `<a href="${m.href}"${m.id === actual ? ' aria-current="page"' : ""}>${m.texto}</a>`).join("")}
       </nav>
     </div>`;
   document.body.prepend(h);
@@ -90,6 +125,23 @@ function dibujarHeader() {
   boton.addEventListener("click", () => {
     const abierto = nav.classList.toggle("abierto");
     boton.setAttribute("aria-expanded", abierto);
+  });
+  // Menú desplegable "Conócenos": se abre al pasar el mouse (CSS) o al tocar el botón
+  h.querySelectorAll(".nav-grupo").forEach((g) => {
+    const b = $(".nav-desplegar", g);
+    b.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const abierto = g.classList.toggle("abierto");
+      b.setAttribute("aria-expanded", abierto);
+    });
+  });
+  document.addEventListener("click", (e) => {
+    h.querySelectorAll(".nav-grupo.abierto").forEach((g) => {
+      if (!g.contains(e.target)) { g.classList.remove("abierto"); $(".nav-desplegar", g).setAttribute("aria-expanded", "false"); }
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") h.querySelectorAll(".nav-grupo.abierto").forEach((g) => { g.classList.remove("abierto"); $(".nav-desplegar", g).setAttribute("aria-expanded", "false"); });
   });
 }
 
@@ -117,7 +169,7 @@ function dibujarFooter() {
         </div>
         <div>
           <h4>Navegación</h4>
-          <ul class="footer-nav">${MENU.map((m) => `<li><a href="${m.href}">${flecha}${m.texto}</a></li>`).join("")}</ul>
+          <ul class="footer-nav">${MENU.flatMap((m) => (m.hijos && !m.href ? m.hijos : [m])).map((m) => `<li><a href="${m.href}">${flecha}${m.texto}</a></li>`).join("")}</ul>
         </div>
         <div>
           <h4>Contacto</h4>
@@ -310,34 +362,55 @@ function dibujarInstagram(noticias) {
   document.body.append(s);
 }
 
+// Tipos que muestra cada página: actividades.html muestra formación; stands.html, los stands
+const TIPOS_ACTIVIDAD = {
+  Charla: { plural: "Charlas", hash: "charlas" },
+  Taller: { plural: "Talleres", hash: "talleres" },
+  Curso: { plural: "Cursos", hash: "cursos" },
+  "Salida de campo": { plural: "Salidas de campo", hash: "salidas" },
+  Stand: { plural: "Stands", hash: "stands" },
+};
+
 async function paginaActividades() {
   const acts = await cargar("data/actividades.json");
   const cont = $("#lista-actividades");
   if (!acts) { cont.innerHTML = '<p class="vacio">No se pudieron cargar las actividades.</p>'; return; }
-  const lista = ordenar(acts);
-  const cats = ["Todas", ...new Set(lista.map((a) => a.categoria))];
+  const permitidas = (cont.dataset.categorias || "").split(",").map((x) => x.trim()).filter(Boolean);
+  const lista = ordenar(acts).filter((a) => !permitidas.length || permitidas.includes(a.categoria));
+  const presentes = new Set(lista.map((a) => a.categoria));
+  const cats = ["Todas", ...(permitidas.length ? permitidas : [...presentes]).filter((c) => presentes.has(c))];
   const anios = ["Todos", ...new Set(lista.map(anio))];
-  const estado = { cat: "Todas", anio: "Todos" };
+  const desdeHash = () => Object.keys(TIPOS_ACTIVIDAD).find((c) => "#" + TIPOS_ACTIVIDAD[c].hash === location.hash && cats.includes(c)) || "Todas";
+  const estado = { cat: desdeHash(), anio: "Todos" };
+  const texto = (v) => (TIPOS_ACTIVIDAD[v] && cats.length > 2 ? TIPOS_ACTIVIDAD[v].plural : v);
 
-  const botones = (raiz, valores, clave) => {
-    raiz.innerHTML = valores.map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado[clave]}" data-v="${esc(v)}">${esc(v)}</button>`).join("");
+  const botones = (raiz, valores, clave, etiqueta = (v) => v) => {
+    raiz.hidden = valores.length < 3;
+    raiz.innerHTML = valores.map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado[clave]}" data-v="${esc(v)}">${esc(etiqueta(v))}</button>`).join("");
     raiz.addEventListener("click", (e) => {
       const b = e.target.closest(".filtro");
       if (!b) return;
       estado[clave] = b.dataset.v;
       raiz.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      if (clave === "cat") history.replaceState(null, "", estado.cat === "Todas" ? location.pathname + location.search : "#" + TIPOS_ACTIVIDAD[estado.cat].hash);
       pintar();
     });
   };
-  botones($("#filtro-cat"), cats, "cat");
+  botones($("#filtro-cat"), cats, "cat", texto);
   botones($("#filtro-anio"), anios, "anio");
+  // Si se elige otra opción del menú estando ya en la página
+  window.addEventListener("hashchange", () => {
+    estado.cat = desdeHash();
+    $("#filtro-cat").querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x.dataset.v === estado.cat));
+    pintar();
+  });
 
   function pintar() {
     const vis = lista.filter((a) => (estado.cat === "Todas" || a.categoria === estado.cat) && (estado.anio === "Todos" || anio(a) === estado.anio));
     cont.innerHTML = "";
+    $("#total-actividades").textContent = `${vis.length} ${vis.length === 1 ? "actividad" : "actividades"}`;
     if (!vis.length) { cont.innerHTML = '<p class="vacio">No hay actividades con ese filtro.</p>'; return; }
     vis.forEach((a) => cont.append(tarjetaActividad(a)));
-    $("#total-actividades").textContent = `${vis.length} ${vis.length === 1 ? "actividad" : "actividades"}`;
   }
   pintar();
 }
@@ -569,7 +642,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   const p = document.body.dataset.pagina;
   if (p === "inicio") paginaInicio();
-  if (p === "actividades") paginaActividades();
+  if (p === "actividades" || p === "stands") paginaActividades();
   if (p === "integrantes") paginaIntegrantes();
   if (p === "proyectos") paginaProyectos();
   if (p === "material") paginaMaterial();
