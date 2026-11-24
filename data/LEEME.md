@@ -37,7 +37,8 @@ Copie un bloque al inicio de la lista:
 
 ## integrantes.json
 
-Cada año es un `periodo` con grupos. El que tiene `"actual": true` se muestra primero.
+Hay dos listas: `docentes` e `integrantes`. Cada estudiante aparece una sola vez, con los años en que ha estado en `periodos`.
+Quien tenga el año de `periodoActual` sale en "Integrantes"; los demás salen en "Integrantes anteriores" con sus años.
 
 ```json
 {
@@ -48,12 +49,13 @@ Cada año es un `periodo` con grupos. El que tiene `"actual": true` se muestra p
   "descripcion": "Biografía corta (una o dos frases).",
   "linkedin": "https://www.linkedin.com/in/usuario/",
   "email": "",
-  "cvlac": ""
+  "cvlac": "",
+  "periodos": ["2025", "2026"]
 }
 ```
 
 Si `foto` está vacía se muestran las iniciales; si `linkedin`, `email` o `cvlac` están vacíos, el botón no aparece.
-Use fotos cuadradas. Al empezar un año nuevo, copie el periodo, cambie el año y ponga `"actual": false` en el anterior.
+Use fotos cuadradas. Al empezar un año nuevo, cambie `periodoActual` y agregue el año a `periodos` de quienes siguen.
 
 ## proyectos.json
 

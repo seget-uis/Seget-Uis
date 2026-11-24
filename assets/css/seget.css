@@ -469,3 +469,4 @@ dialog.detalle::backdrop { background: rgba(20, 30, 22, .6); }
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
 .proyecto-bloque { scroll-margin-top: 90px; }
+.periodo-integrante { display: block; font-size: .78rem; color: var(--gris); margin-top: 2px; }
