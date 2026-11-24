@@ -1,0 +1,15 @@
+[
+  {
+    "ejemplo": true,
+    "titulo": "Charla: título de la próxima charla",
+    "tipo": "Charla",
+    "fecha": "2027-02-18",
+    "hora": "4:00 p. m.",
+    "lugar": "Salón 314, edificio JBV, UIS",
+    "ponente": "Nombre del ponente",
+    "descripcion": "Una o dos frases sobre de qué trata el evento y a quién va dirigido.",
+    "imagen": "assets/img/actividades/2026/charla-rifts-poster.jpg",
+    "enlace": "https://www.instagram.com/seget.uis/",
+    "textoEnlace": "Ver en Instagram"
+  }
+]

@@ -110,5 +110,22 @@
     "imagen": "",
     "archivo": "",
     "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título de una tesis en desarrollo",
+    "tipo": "Tesis",
+    "estado": "En desarrollo",
+    "anio": "2026",
+    "autores": [
+      "Nombre Apellido"
+    ],
+    "director": "Nombre del director",
+    "evento": "Trabajo de grado, Escuela de Geología UIS",
+    "lugar": "Bucaramanga",
+    "resumen": "",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
   }
 ]

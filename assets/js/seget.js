@@ -28,6 +28,10 @@ const ICONOS = {
   linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4v-11Z"/></svg>',
   cvlac: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   roca: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 18 7 8l5 3 4-5 5 12z"/><path d="M3 18h18M8.5 13.5l3 1.5 3.5-3"/></svg>',
+  calendario: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  reloj: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  lugar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+  persona: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
   documento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
@@ -227,6 +231,51 @@ async function paginaInicio() {
     $("#c-integrantes").textContent = actual.grupos.reduce((s, g) => s + g.miembros.length, 0);
   }
   dibujarInstagram(noticias);
+  dibujarProximoEvento();
+}
+
+/* ---------- Próximo evento (portada) ----------
+   Sale de data/eventos.json. Se muestra el evento más cercano cuya fecha no haya pasado;
+   si no hay ninguno, la sección queda oculta. */
+async function dibujarProximoEvento() {
+  const cont = $("#proximo-evento");
+  if (!cont) return;
+  const eventos = await cargar("data/eventos.json");
+  if (!Array.isArray(eventos)) return;
+  const verEjemplos = new URLSearchParams(location.search).has("ejemplos");
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  const diaDe = (f) => { const [a, m, d] = String(f).split("-").map(Number); return new Date(a, (m || 1) - 1, d || 1); };
+  const e = eventos
+    .filter((x) => x.fecha && (verEjemplos || !x.ejemplo) && diaDe(x.fecha) >= hoy)
+    .sort((x, y) => String(x.fecha).localeCompare(String(y.fecha)))[0];
+  if (!e) return;
+  const dia = diaDe(e.fecha);
+  const faltan = Math.round((dia - hoy) / 86400000);
+  const cuando = faltan === 0 ? "Hoy" : faltan === 1 ? "Mañana" : `Faltan ${faltan} días`;
+  let fechaTexto = dia.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  fechaTexto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+  const dato = (icono, texto) => texto ? `<li>${ICONOS[icono]}<span>${esc(texto)}</span></li>` : "";
+  const enlace = e.enlace ? `<a class="boton" href="${esc(e.enlace)}" target="_blank" rel="noopener">${/instagram\.com/.test(e.enlace) ? ICONOS.instagram.replace("<svg", '<svg width="18" height="18"') + " " : ""}${esc(e.textoEnlace || "Más información")}</a>` : "";
+  cont.innerHTML = `
+    <div class="contenedor">
+      <article class="evento">
+        ${e.imagen ? `<a class="evento-flyer" href="${esc(e.imagen)}" target="_blank" rel="noopener" aria-label="Ver el flyer completo"><img src="${esc(e.imagen)}" alt="Flyer: ${esc(e.titulo)}" loading="lazy"></a>` : ""}
+        <div class="evento-cuerpo">
+          <div class="evento-arriba">
+            <span class="etiqueta">Próximo evento</span>
+            <span class="evento-cuenta">${cuando}</span>
+          </div>
+          ${e.tipo ? `<span class="chip" data-cat="${esc(e.tipo)}">${esc(e.tipo)}${e.ejemplo ? " · ejemplo" : ""}</span>` : ""}
+          <h2>${esc(e.titulo)}</h2>
+          <ul class="evento-datos">
+            ${dato("calendario", fechaTexto)}${dato("reloj", e.hora)}${dato("lugar", e.lugar)}${dato("persona", e.ponente)}
+          </ul>
+          ${e.descripcion ? `<p>${esc(e.descripcion)}</p>` : ""}
+          ${enlace ? `<div class="hero-acciones">${enlace}</div>` : ""}
+        </div>
+      </article>
+    </div>`;
+  cont.hidden = false;
 }
 
 function dibujarInstagram(noticias) {
@@ -374,6 +423,8 @@ const TIPOS_MATERIAL = [
   { tipo: "Artículo", texto: "Artículos", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
 ];
 
+const enDesarrollo = (t) => String(t.estado || "").toLowerCase() === "en desarrollo";
+
 function tarjetaMaterial(t) {
   const b = document.createElement("button");
   b.type = "button";
@@ -384,10 +435,10 @@ function tarjetaMaterial(t) {
       ${t.imagen ? `<img src="${esc(t.imagen)}" alt="" loading="lazy">` : `<div class="sin-foto">${ICONOS.documento}</div>`}
     </div>
     <div class="actividad-cuerpo">
-      <span class="chip" data-cat="${esc(t.tipo)}">${esc(t.tipo)}${t.ejemplo ? " · ejemplo" : ""}</span>
+      <div class="chips"><span class="chip" data-cat="${esc(t.tipo)}">${esc(t.tipo)}${t.ejemplo ? " · ejemplo" : ""}</span>${enDesarrollo(t) ? '<span class="chip chip--desarrollo">En desarrollo</span>' : ""}</div>
       <h3>${esc(t.titulo)}</h3>
       ${autores ? `<div class="actividad-meta">${esc(autores)}</div>` : ""}
-      <div class="actividad-meta">${esc(t.anio)}${t.evento ? " · " + esc(t.evento) : ""}</div>
+      <div class="actividad-meta">${enDesarrollo(t) ? "Desde " : ""}${esc(t.anio)}${t.evento ? " · " + esc(t.evento) : ""}</div>
     </div>`;
   b.addEventListener("click", () => abrirMaterial(t));
   return b;
@@ -396,8 +447,8 @@ function tarjetaMaterial(t) {
 function abrirMaterial(t) {
   const datos = {
     titulo: t.titulo,
-    categoria: t.tipo,
-    fecha: t.anio,
+    categoria: enDesarrollo(t) ? `${t.tipo} · En desarrollo` : t.tipo,
+    fecha: enDesarrollo(t) ? `En desarrollo desde ${t.anio}` : t.anio,
     lugar: [t.evento, t.lugar].filter(Boolean).join(", "),
     instructor: [(t.autores || []).filter(Boolean).join(", "), t.director ? `dirigido por ${t.director}` : ""].filter(Boolean).join("; "),
     descripcion: t.resumen ? [t.resumen] : [],
@@ -424,7 +475,7 @@ async function paginaMaterial() {
   const verEjemplos = new URLSearchParams(location.search).has("ejemplos");
   const lista = todos
     .filter((t) => (verEjemplos || !t.ejemplo) && TIPOS_MATERIAL.some((x) => x.tipo === t.tipo))
-    .sort((x, y) => String(y.anio || "").localeCompare(String(x.anio || "")));
+    .sort((x, y) => (enDesarrollo(y) - enDesarrollo(x)) || String(y.anio || "").localeCompare(String(x.anio || "")));
   if (!lista.length) {
     $(".filtros-grupo").hidden = true;
     cont.classList.remove("rejilla", "rejilla--3");
@@ -435,7 +486,26 @@ async function paginaMaterial() {
     return;
   }
   const inicial = TIPOS_MATERIAL.find((x) => "#" + x.hash === location.hash) || TIPOS_MATERIAL[0];
-  const estado = { tipo: inicial.tipo, anio: "Todos" };
+  const estado = { tipo: inicial.tipo, anio: "Todos", fase: "Todas" };
+  // Filtro de estado (terminadas / en desarrollo): solo en la pestaña de tesis y si hay alguna en desarrollo
+  const filtroFase = document.createElement("div");
+  filtroFase.className = "filtros"; filtroFase.setAttribute("role", "group"); filtroFase.setAttribute("aria-label", "Estado de la tesis");
+  $("#filtro-anio-material").before(filtroFase);
+  filtroFase.addEventListener("click", (e) => {
+    const b = e.target.closest(".filtro");
+    if (!b) return;
+    estado.fase = b.dataset.v;
+    estado.anio = "Todos";
+    filtroFase.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    pintarAnios();
+    pintar();
+  });
+  const enFase = (t) => estado.tipo !== "Tesis" || estado.fase === "Todas" || (estado.fase === "En desarrollo") === enDesarrollo(t);
+  function pintarFase() {
+    const tesis = lista.filter((t) => t.tipo === "Tesis");
+    filtroFase.hidden = estado.tipo !== "Tesis" || !tesis.some(enDesarrollo) || tesis.every(enDesarrollo);
+    filtroFase.innerHTML = ["Todas", "Terminadas", "En desarrollo"].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.fase}" data-v="${v}">${v}</button>`).join("");
+  }
   const pestanas = $("#filtro-tipo");
   const filtroAnio = $("#filtro-anio-material");
   pestanas.innerHTML = TIPOS_MATERIAL.map((x) => `<button type="button" class="pestana" aria-pressed="${x.tipo === estado.tipo}" data-v="${esc(x.tipo)}">${esc(x.texto)}</button>`).join("");
@@ -444,8 +514,10 @@ async function paginaMaterial() {
     if (!b || b.dataset.v === estado.tipo) return;
     estado.tipo = b.dataset.v;
     estado.anio = "Todos";
+    estado.fase = "Todas";
     pestanas.querySelectorAll(".pestana").forEach((x) => x.setAttribute("aria-pressed", x === b));
     history.replaceState(null, "", "#" + TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo).hash);
+    pintarFase();
     pintarAnios();
     pintar();
   });
@@ -458,18 +530,19 @@ async function paginaMaterial() {
   });
   // Los años salen solo de los trabajos del tipo elegido
   function pintarAnios() {
-    const anios = [...new Set(lista.filter((t) => t.tipo === estado.tipo).map((t) => String(t.anio || "")).filter(Boolean))];
+    const anios = [...new Set(lista.filter((t) => t.tipo === estado.tipo && enFase(t)).map((t) => String(t.anio || "")).filter(Boolean))];
     filtroAnio.hidden = anios.length < 2;
     filtroAnio.innerHTML = ["Todos", ...anios].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.anio}" data-v="${esc(v)}">${v === "Todos" ? "Todos los años" : esc(v)}</button>`).join("");
   }
   function pintar() {
     const info = TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo);
-    const vis = lista.filter((t) => t.tipo === estado.tipo && (estado.anio === "Todos" || String(t.anio) === estado.anio));
+    const vis = lista.filter((t) => t.tipo === estado.tipo && enFase(t) && (estado.anio === "Todos" || String(t.anio) === estado.anio));
     cont.innerHTML = "";
     $("#total-material").textContent = `${vis.length} ${vis.length === 1 ? info.uno : info.varios}`;
     if (!vis.length) { cont.innerHTML = `<p class="vacio">Todavía no hay ${info.vacio}.</p>`; return; }
     vis.forEach((t) => cont.append(tarjetaMaterial(t)));
   }
+  pintarFase();
   pintarAnios();
   pintar();
 }

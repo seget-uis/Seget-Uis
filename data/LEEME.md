@@ -85,9 +85,36 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
 - `archivo`: el PDF. Guárdelo en `assets/docs/material/` o pegue un enlace de Google Drive. Si está vacío, no aparece el botón de descarga.
 - `enlace`: opcional, por ejemplo el DOI del artículo o el repositorio de la UIS.
 - `director`: solo para tesis.
+- `estado`: solo para tesis. Escriba `"En desarrollo"` si la tesis aún no se ha terminado; la tarjeta muestra una etiqueta "En desarrollo", sale primero y en la pestaña Tesis aparecen los botones Todas / Terminadas / En desarrollo. En `anio` ponga el año en que empezó. Para una tesis terminada, borre el campo o déjelo vacío.
 - Los bloques que tienen `"ejemplo": true` **no se muestran** en la página. Sirven de plantilla; para verlos abra `material.html?ejemplos`. Bórrelos cuando agregue trabajos reales.
 - Mientras no haya trabajos reales, la página muestra "Muy pronto".
 - Para enlazar directo a una pestaña use `material.html#posters`, `material.html#tesis` o `material.html#articulos`.
+
+## eventos.json
+
+Aviso de **próximo evento** en la portada (debajo de la foto principal). Copie un bloque en la lista:
+
+```json
+{
+  "titulo": "Charla: título de la charla",
+  "tipo": "Charla",
+  "fecha": "2027-02-18",
+  "hora": "4:00 p. m.",
+  "lugar": "Salón 314, edificio JBV, UIS",
+  "ponente": "Nombre del ponente",
+  "descripcion": "Una o dos frases sobre el evento.",
+  "imagen": "assets/img/eventos/flyer-charla.jpg",
+  "enlace": "https://www.instagram.com/p/...",
+  "textoEnlace": "Ver en Instagram"
+}
+```
+
+- `fecha`: año-mes-día. La portada muestra el evento más cercano que todavía no haya pasado, con un aviso de cuántos días faltan. Al día siguiente de la fecha deja de mostrarse solo.
+- Si no hay eventos próximos, la sección no aparece.
+- `imagen`: el flyer que se publica en Instagram (cuadrado). Guárdelo en `assets/img/eventos/`.
+- `enlace`: opcional, por ejemplo la publicación de Instagram o el formulario de inscripción. `textoEnlace` es el texto del botón.
+- `hora`, `lugar`, `ponente` y `descripcion` son opcionales: si están vacíos no se muestran.
+- Los bloques con `"ejemplo": true` no se muestran; para verlos abra `index.html?ejemplos`.
 
 ## noticias.json
 
