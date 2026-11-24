@@ -1,0 +1,42 @@
+[
+  {
+    "id": "cepita-2026",
+    "titulo": "Conociendo la geología de Cepitá",
+    "anio": "2026",
+    "modalidad": "Proyecto de extensión en CTeI solidario",
+    "lugar": "Cepitá, Cañón del Chicamocha (Santander)",
+    "aliados": [
+      "Alcaldía de Cepitá",
+      "Semillero Patrimonio Geológico (SPG)"
+    ],
+    "resumen": "Dos días de charlas, caminatas y juegos con la comunidad de Cepitá para entender la Falla de Bucaramanga, el Nido Sísmico y la historia geológica del Cañón del Chicamocha.",
+    "descripcion": [
+      "Llevamos la geología estructural a la comunidad de Cepitá con charlas en el parque principal, actividades prácticas en la biblioteca y recorridos por Loma Colorada y el río Umpalá.",
+      "Para nosotros fue una experiencia recíproca: no solo enseñamos, también escuchamos a la comunidad y aprendimos de su conocimiento del territorio."
+    ],
+    "portada": "assets/img/actividades/2026/cepita-c.jpg",
+    "videos": [
+      "feoVoSB8OTg",
+      "GnB_K3qscBs"
+    ]
+  },
+  {
+    "id": "los-santos-2025",
+    "titulo": "Apropiación social de las bases de geología estructural y tectónica",
+    "anio": "2025",
+    "modalidad": "Proyecto de extensión en CTeI solidario · educación continua (código 6420-5024)",
+    "lugar": "Los Santos (Santander) y UIS",
+    "aliados": [
+      "Institución Educativa La Laguna"
+    ],
+    "resumen": "Talleres teóricos y prácticos y una salida de campo con estudiantes de bachillerato de la Mesa de Los Santos y con estudiantes universitarios.",
+    "descripcion": [
+      "Con estudiantes de la Institución Educativa La Laguna trabajamos el ciclo de las rocas, la tectónica de placas y la geología de Santander, aprendimos a usar la brújula y salimos al camino real Los Santos–Jordán a medir estructuras.",
+      "En la universidad complementamos el proyecto con un ciclo de talleres abiertos de brújulas, cortes geológicos, medición de planos y líneas y proyección estereográfica."
+    ],
+    "portada": "assets/img/actividades/2025/camino-real-a.jpg",
+    "videos": [
+      "AavsXZ7hFlk"
+    ]
+  }
+]

@@ -1,0 +1,457 @@
+[
+  {
+    "titulo": "Feria de semilleros en la Facultad de Salud UIS",
+    "categoria": "Stand",
+    "fecha": "19 y 21 de octubre de 2026",
+    "fechaFin": "2026-10-21",
+    "lugar": "Facultad de Salud UIS, Bucaramanga",
+    "descripcion": [
+      "Junto a otros grupos de investigación de la Escuela de Geología organizamos un stand dirigido a estudiantes de bachillerato. Les mostramos las distintas ramas de la geología, la importancia de la geología estructural y el papel del semillero.",
+      "Exhibimos una muestra representativa de rocas para explicar de forma práctica varios conceptos geológicos."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/feria-salud-d.jpg",
+      "assets/img/actividades/2026/feria-salud-c.jpg",
+      "assets/img/actividades/2026/feria-salud-a.jpg",
+      "assets/img/actividades/2026/feria-salud-b.jpg",
+      "assets/img/actividades/2026/feria-salud-e.jpg"
+    ]
+  },
+  {
+    "titulo": "Salida de campo a la vía Zapatoca",
+    "categoria": "Salida de campo",
+    "fecha": "18 de octubre de 2026",
+    "fechaFin": "2026-10-18",
+    "lugar": "Río Sogamoso, puente Gómez Ortiz, vía a Zapatoca (Santander)",
+    "descripcion": [
+      "En un extenso afloramiento antes del puente Gómez Ortiz reforzamos la identificación de litologías sedimentarias, medimos diaclasas y planos estriados (rake y pitch) y analizamos la cinemática de fallas con criterios de Riedel. También buscamos niveles guía para reconocer saltos estratigráficos generados por fallas poco evidentes.",
+      "Desde el puente, la panorámica de las formaciones Los Santos y Rosablanca nos permitió proyectar datos estructurales, identificar lineamientos regionales y reconocer por criterios geomorfológicos la falla Los Montes y su relación con la falla de Suárez.",
+      "En la última estación trabajamos en dos grupos: uno determinó la cinemática de fallas con estructuras tipo Riedel y escalones, y el otro caracterizó pliegues parásitos para entender la vergencia de la zona. Al final integramos los datos en una interpretación del estilo estructural del área."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/zapatoca-b.jpg",
+      "assets/img/actividades/2026/zapatoca-a.jpg",
+      "assets/img/actividades/2026/zapatoca-c.jpg"
+    ]
+  },
+  {
+    "titulo": "Taller: análisis de esfuerzos con Win-Tensor",
+    "categoria": "Taller",
+    "fecha": "26 de octubre de 2026",
+    "fechaFin": "2026-10-26",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Procesamos los datos cinemáticos y estructurales tomados en la salida de campo al río Sogamoso. Hicimos una capacitación práctica en el software Win-Tensor (entorno, parametrización e importación de datos) y, como resultado, los asistentes dedujeron los tensores de esfuerzo del sector para entender el marco dinámico regional."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/wintensor-b.jpg",
+      "assets/img/actividades/2026/wintensor-a.jpg",
+      "assets/img/actividades/2026/wintensor-c.jpg"
+    ]
+  },
+  {
+    "titulo": "Taller: entendimiento de los mecanismos focales (parte 2)",
+    "categoria": "Taller",
+    "fecha": "16 de octubre de 2026",
+    "fechaFin": "2026-10-16",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Explicamos los datos necesarios para definir la geometría de un mecanismo focal y su relación con el tipo de falla. Cada asistente construyó un diagrama de balón de playa desde cero en papel calcante, calculando el vector de deslizamiento y el polo del plano de falla para ubicar los planos nodales y los ejes P y T."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/mecanismos-2-b.jpg",
+      "assets/img/actividades/2026/mecanismos-2-a.jpg"
+    ]
+  },
+  {
+    "titulo": "Taller: entendimiento de los mecanismos focales (parte 1)",
+    "categoria": "Taller",
+    "fecha": "5 de octubre de 2026",
+    "fechaFin": "2026-10-05",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Vimos qué son los mecanismos focales, cómo se generan y para qué sirven en geología y sismología. Con tres ejercicios prácticos determinamos rumbos y buzamientos, esquematizamos fallas y analizamos sismos representativos del contexto tectónico del Caribe."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/mecanismos-1-a.jpg",
+      "assets/img/actividades/2026/mecanismos-1-b.jpg",
+      "assets/img/actividades/2026/mecanismos-1-c.jpg"
+    ]
+  },
+  {
+    "titulo": "Geolimpiadas UFEST 2026",
+    "categoria": "Stand",
+    "fecha": "30 de septiembre de 2026",
+    "fechaFin": "2026-09-30",
+    "lugar": "Campus UIS, Bucaramanga",
+    "descripcion": [
+      "Estudiantes de distintas carreras de la UIS recorrieron en grupos de cuatro un circuito de obstáculos que simulaba mecanismos tectónicos y exógenos: fallamiento, plegamiento, subducción, erosión y sedimentación.",
+      "Al final enfrentaron un reto cartográfico de cuatro minutos para ubicar en un mapa mundial las placas y microplacas tectónicas."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/geolimpiadas-b.jpg",
+      "assets/img/actividades/2026/geolimpiadas-a.jpg",
+      "assets/img/actividades/2026/geolimpiadas-c.jpg",
+      "assets/img/actividades/2026/geolimpiadas-d.jpg"
+    ]
+  },
+  {
+    "titulo": "No estamos sobre tierra firme: stand UFEST 2026",
+    "categoria": "Stand",
+    "fecha": "29 de septiembre de 2026",
+    "fechaFin": "2026-09-29",
+    "lugar": "Campus UIS, Bucaramanga",
+    "descripcion": [
+      "En el marco del UFEST 2026 llevamos la geología y la tectónica a estudiantes de toda la comunidad UIS. Repetimos la actividad muchas veces para llegar a todos los asistentes, con muestras de roca, material didáctico, modelos tridimensionales y mapas de gran formato."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/ufest-stand-c.jpg",
+      "assets/img/actividades/2026/ufest-stand-a.jpg",
+      "assets/img/actividades/2026/ufest-stand-b.jpg"
+    ]
+  },
+  {
+    "titulo": "Conociendo la geología de Cepitá",
+    "categoria": "Apropiación social",
+    "fecha": "26 y 27 de septiembre de 2026",
+    "fechaFin": "2026-09-27",
+    "lugar": "Cepitá, Cañón del Chicamocha (Santander)",
+    "proyecto": "cepita-2026",
+    "destacada": true,
+    "descripcion": [
+      "Durante dos días compartimos con la comunidad de Cepitá en el parque principal, la biblioteca y el campo. Dimos charlas sobre el ciclo de las rocas, el tiempo geológico, la geología estructural, la geomorfología, el Nido Sísmico de Bucaramanga y la Falla de Bucaramanga, acompañadas de actividades prácticas como identificar rocas, ordenar eventos geológicos y reconocer geoformas del Cañón del Chicamocha.",
+      "Caminamos hacia Loma Colorada para ver el trazo de la Falla de Bucaramanga, geoformas y depósitos aluviales. En la «Búsqueda Geológica» los participantes recorrieron el parque buscando evidencias de procesos como la meteorización y reconocieron técnicas tradicionales de construcción como la tapia pisada.",
+      "Cerramos con una caminata por el río Umpalá, donde enseñamos a tomar datos estructurales, observamos la dinámica del río y reconocimos una falla y un dique basáltico para reconstruir la historia geológica del territorio."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/cepita-c.jpg",
+      "assets/img/actividades/2026/cepita-d.jpg",
+      "assets/img/actividades/2026/cepita-f.jpg",
+      "assets/img/actividades/2026/cepita-g.jpg",
+      "assets/img/actividades/2026/cepita-e.jpg",
+      "assets/img/actividades/2026/cepita-b.jpg",
+      "assets/img/actividades/2026/cepita-a.jpg"
+    ],
+    "videos": [
+      "feoVoSB8OTg",
+      "GnB_K3qscBs"
+    ]
+  },
+  {
+    "titulo": "Charla: contexto geológico de Cepitá y el Cañón del Chicamocha",
+    "categoria": "Charla",
+    "fecha": "14 de septiembre de 2026",
+    "fechaFin": "2026-09-14",
+    "lugar": "Escuela de Geología UIS",
+    "proyecto": "cepita-2026",
+    "descripcion": [
+      "Charla abierta a los integrantes del semillero y a los invitados del Semillero Patrimonio Geológico (SPG). Presentamos el marco regional, local y municipal de Cepitá: sus rasgos estructurales, morfotectónica, cartografía y relaciones geocronológicas, como base para el proyecto de extensión solidaria.",
+      "También discutimos estrategias para acercarnos a la comunidad y divulgar el conocimiento geológico de manera clara y accesible."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/charla-cepita-a.jpg",
+      "assets/img/actividades/2026/charla-cepita-b.jpg"
+    ]
+  },
+  {
+    "titulo": "Charla: aproximación al modelo estructural del Anticlinorio de Los Yariguíes",
+    "categoria": "Charla",
+    "fecha": "7 de septiembre de 2026",
+    "fechaFin": "2026-09-07",
+    "lugar": "Salón JBV 302, UIS",
+    "instructor": "Bredman Sang Rodríguez",
+    "descripcion": [
+      "Se presentaron la estratigrafía y los modelos y propuestas sobre el control estructural del Anticlinorio de Los Yariguíes, y luego los avances del proyecto de grado del expositor junto con su modelo preliminar."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/charla-yariguies-poster.jpg",
+      "assets/img/actividades/2026/charla-yariguies-a.jpg",
+      "assets/img/actividades/2026/charla-yariguies-b.jpg"
+    ]
+  },
+  {
+    "titulo": "Charla: las estructuras de basamento y su papel en la iniciación de rifts continentales",
+    "categoria": "Charla",
+    "fecha": "31 de agosto de 2026",
+    "fechaFin": "2026-08-31",
+    "lugar": "Salón JBV 502, UIS",
+    "instructor": "Angélica Álvarez",
+    "descripcion": [
+      "Análisis estructural del rift de Okavango (Botsuana), considerado la extensión continental más joven. Se recorrieron las etapas de precampo, campo y poscampo, los estudios efectuados y sus desafíos, y la metodología que integró teledetección y geofísica para construir el modelo geológico de la zona."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/charla-rifts-poster.jpg",
+      "assets/img/actividades/2026/charla-rifts-a.jpg",
+      "assets/img/actividades/2026/charla-rifts-b.jpg"
+    ]
+  },
+  {
+    "titulo": "Charla: ¿cómo estimar el aplanamiento y el acortamiento usando AMS?",
+    "categoria": "Charla",
+    "fecha": "14 de mayo de 2026",
+    "fechaFin": "2026-05-14",
+    "lugar": "Salón 314 JBV, UIS",
+    "instructor": "Giovanny Jiménez Díaz",
+    "descripcion": [
+      "La anisotropía de susceptibilidad magnética (AMS) como herramienta para analizar la deformación tectónica, con énfasis en la estimación de procesos de aplanamiento y acortamiento en estudios estructurales."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/charla-ams-poster.jpg"
+    ]
+  },
+  {
+    "titulo": "Taller: la regla de las V en geología estructural",
+    "categoria": "Taller",
+    "fecha": "7 de mayo de 2026",
+    "fechaFin": "2026-05-07",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Repasamos la regla de las V, sus excepciones, trucos y aplicaciones. Luego la pusimos en práctica con imágenes de Google Earth y un taller."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/regla-v-b.jpg",
+      "assets/img/actividades/2026/regla-v-a.jpg"
+    ]
+  },
+  {
+    "titulo": "Cortes geológicos: corte regional de Colombia (sesión 3)",
+    "categoria": "Taller",
+    "fecha": "23 de abril de 2026",
+    "fechaFin": "2026-04-23",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Revisamos avances y seguimos trazando las fallas del corte regional según la configuración tectónica de cada cordillera, teniendo en cuenta su cinemática y vergencia."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/cortes-3-a.jpg",
+      "assets/img/actividades/2026/cortes-3-b.jpg"
+    ]
+  },
+  {
+    "titulo": "Charla: la Falla de Ibagué",
+    "categoria": "Charla",
+    "fecha": "16 de abril de 2026",
+    "fechaFin": "2026-04-16",
+    "lugar": "Salón 314 JBV, UIS",
+    "instructor": "Francisco Velandia",
+    "descripcion": [
+      "El profesor Francisco Velandia expuso sobre la Falla de Ibagué y su importancia en la tectónica regional."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/charla-falla-ibague-poster.jpg",
+      "assets/img/actividades/2026/charla-falla-ibague.jpg"
+    ]
+  },
+  {
+    "titulo": "El criterio de Riedel en muestras de roca (sesión práctica)",
+    "categoria": "Taller",
+    "fecha": "9 de abril de 2026",
+    "fechaFin": "2026-04-09",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Con muestras de roca del semillero buscamos identificar y esquematizar el criterio de Riedel u otros indicadores cinemáticos a partir de una falla maestra definida en cada muestra."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/riedel-2-a.jpg",
+      "assets/img/actividades/2026/riedel-2-b.jpg"
+    ]
+  },
+  {
+    "titulo": "El criterio de Riedel (sesión teórica)",
+    "categoria": "Charla",
+    "fecha": "26 de marzo de 2026",
+    "fechaFin": "2026-03-26",
+    "lugar": "Escuela de Geología UIS",
+    "instructor": "Francisco Velandia",
+    "descripcion": [
+      "Presentación conceptual del criterio de Riedel: la historia y el origen del concepto y sus elementos, como las fracturas P y R′."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/riedel-1-a.jpg",
+      "assets/img/actividades/2026/riedel-1-b.jpg"
+    ]
+  },
+  {
+    "titulo": "Día de la mujer y la niña en la ciencia 2026",
+    "categoria": "Stand",
+    "fecha": "13 y 20 de marzo de 2026",
+    "fechaFin": "2026-03-20",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Stand conmemorativo para niñas de colegios rurales y urbanos de la región. Presentamos el semillero, hablamos de geología estructural y mostramos rocas con evidencias de deformación."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/mujer-ciencia-a.jpg",
+      "assets/img/actividades/2026/mujer-ciencia-b.jpg",
+      "assets/img/actividades/2026/mujer-ciencia-c.jpg"
+    ]
+  },
+  {
+    "titulo": "Cortes geológicos: corte regional de Colombia (sesión 2)",
+    "categoria": "Taller",
+    "fecha": "12 de marzo de 2026",
+    "fechaFin": "2026-03-12",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Continuamos el trazo de fallas del corte regional según la configuración tectónica de cada cordillera, considerando cinemática y vergencia."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/cortes-2-b.jpg",
+      "assets/img/actividades/2026/cortes-2-a.jpg"
+    ]
+  },
+  {
+    "titulo": "Cortes geológicos: corte regional de Colombia (sesión 1)",
+    "categoria": "Taller",
+    "fecha": "5 de marzo de 2026",
+    "fechaFin": "2026-03-05",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Empezamos un corte geológico regional de este a oeste de Colombia que abarca las tres cordilleras y sus principales fallas y pliegues. Trazamos la topografía a mano a partir de Google Earth Pro y del mapa geológico de Colombia del Servicio Geológico Colombiano."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/cortes-1-a.jpg",
+      "assets/img/actividades/2026/cortes-1-b.jpg"
+    ]
+  },
+  {
+    "titulo": "Charla: estratigrafía digital con SDAR y modelos de lenguaje",
+    "categoria": "Charla",
+    "fecha": "13 de febrero de 2026",
+    "fechaFin": "2026-02-13",
+    "lugar": "Escuela de Geología UIS",
+    "instructor": "John Ortiz (Servicio Geológico Colombiano)",
+    "descripcion": [
+      "Estructuración, estandarización y automatización de datos geológicos de campo y laboratorio con la herramienta SDAR e inteligencia artificial basada en modelos de lenguaje (LLM), para organizar, interpretar e integrar información en proyectos estratigráficos."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2026/charla-sdar-llm.jpg"
+    ]
+  },
+  {
+    "titulo": "Charla: configuración estructural y movimientos en masa en la Mesa de Lebrija",
+    "categoria": "Charla",
+    "fecha": "2025",
+    "fechaFin": "2025-11-30",
+    "lugar": "Escuela de Geología UIS",
+    "instructor": "Juan Manuel Duarte",
+    "descripcion": [
+      "Charla sobre la configuración estructural y su influencia en la generación de movimientos en masa en la Mesa de Lebrija y el norte del Anticlinorio de Los Yariguíes."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2025/charla-duarte.jpg"
+    ]
+  },
+  {
+    "titulo": "Stand en la feria de artesanos paleontológicos",
+    "categoria": "Stand",
+    "fecha": "2025",
+    "fechaFin": "2025-11-20",
+    "lugar": "VI Encuentro de museos y colecciones geológicas y paleontológicas (SGC)",
+    "descripcion": [
+      "Participamos con un stand en la feria de artesanos paleontológicos del VI Encuentro de museos y colecciones geológicas y paleontológicas organizado por el Servicio Geológico Colombiano."
+    ],
+    "imagenes": []
+  },
+  {
+    "titulo": "Salida de campo al Valle Medio del Magdalena y Río Claro",
+    "categoria": "Salida de campo",
+    "fecha": "2025",
+    "fechaFin": "2025-11-10",
+    "lugar": "Vía Bucaramanga–Medellín y Reserva de Río Claro, Doradal (Antioquia)",
+    "descripcion": [
+      "En el Valle Medio del Magdalena, sobre la vía Bucaramanga–Barrancabermeja, observamos y medimos evidencias de deformación frágil y dúctil en rocas sedimentarias. En la Reserva de Río Claro vimos deformación dúctil en rocas metamórficas.",
+      "Después socializamos la salida en un conversatorio con las estaciones visitadas y la interpretación de cada grupo."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2025/rio-claro-a.jpg",
+      "assets/img/actividades/2025/rio-claro-b.jpg",
+      "assets/img/actividades/2025/rio-claro-c.jpg"
+    ]
+  },
+  {
+    "titulo": "Salida de campo a la quebrada El Ensueño",
+    "categoria": "Salida de campo",
+    "fecha": "2025",
+    "fechaFin": "2025-10-20",
+    "lugar": "Cascadas El Ensueño, Piedecuesta (Santander)",
+    "instructor": "Angélica Álvarez, Francisco Velandia y Leonardo Palmera",
+    "descripcion": [
+      "Medimos planos de foliación y diaclasas e identificamos gneises, esquistos, intrusivos, migmatitas y milonitas. La salida también apoyó la toma de datos de una tesis del semillero."
+    ],
+    "imagenes": []
+  },
+  {
+    "titulo": "Curso de interpretación manual de líneas sísmicas en cuencas colombianas (SEGET y SIGAC)",
+    "categoria": "Curso",
+    "fecha": "2025 · 4 sesiones",
+    "fechaFin": "2025-09-30",
+    "lugar": "Escuela de Geología UIS",
+    "instructor": "Francisco Velandia y Paul Goyes",
+    "descripcion": [
+      "Curso de cuatro sesiones organizado con el semillero SIGAC. Vimos los conceptos básicos de interpretación sísmica, los fundamentos de adquisición y procesamiento de datos sísmicos y trabajamos en parejas sobre líneas sísmicas reales.",
+      "En la última sesión cada pareja socializó su interpretación para definir el estilo estructural de las cuencas emergentes de Colombia."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2025/sismica-a.jpg",
+      "assets/img/actividades/2025/sismica-b.jpg",
+      "assets/img/actividades/2025/sismica-c.jpg"
+    ]
+  },
+  {
+    "titulo": "Día de la mujer y la niña en la ciencia 2025",
+    "categoria": "Stand",
+    "fecha": "2025",
+    "fechaFin": "2025-03-14",
+    "lugar": "Escuela de Geología UIS",
+    "descripcion": [
+      "Recibimos a cerca de 120 niñas de colegios rurales y urbanos en seis grupos. Presentamos el semillero, mostramos rocas asociadas a deformación y cerramos con una dinámica de preguntas y respuestas."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2025/mujer-ciencia-b.jpg",
+      "assets/img/actividades/2025/mujer-ciencia-a.jpg"
+    ]
+  },
+  {
+    "titulo": "Ciclo de talleres de geología estructural",
+    "categoria": "Taller",
+    "fecha": "2025",
+    "fechaFin": "2025-08-30",
+    "lugar": "Escuela de Geología UIS",
+    "instructor": "Francisco Velandia y Giovanny Jiménez",
+    "descripcion": [
+      "Durante 2025 el semillero desarrolló un ciclo de talleres abiertos: uso de brújulas geológicas (Brunton, cuadrantal, Axis, Geo y Silva), elaboración manual y digital de cortes geológicos con la Plancha 282 del SGC, medición de planos y líneas (trend, plunge, pitch y rake), proyección estereográfica y manifestaciones de la deformación en las rocas."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2025/cortes-c.jpg",
+      "assets/img/actividades/2025/brujulas-a.jpg",
+      "assets/img/actividades/2025/cortes-b.jpg",
+      "assets/img/actividades/2025/cortes-a.jpg",
+      "assets/img/actividades/2025/deformacion.jpg"
+    ]
+  },
+  {
+    "titulo": "Geoeducación en la Institución Educativa La Laguna",
+    "categoria": "Apropiación social",
+    "fecha": "2025",
+    "fechaFin": "2025-06-15",
+    "lugar": "Los Santos y camino real Los Santos–Jordán (Santander)",
+    "proyecto": "los-santos-2025",
+    "destacada": true,
+    "descripcion": [
+      "Jornada de geoeducación con estudiantes de la Institución Educativa La Laguna. En dos talleres vimos el ciclo de las rocas, geología estructural, tectónica de placas y la geología de Colombia y Santander, y practicamos la medición de planos con varias brújulas geológicas.",
+      "Luego salimos al primer tramo del camino real Los Santos–Jordán para identificar geoformas y estructuras, dibujar panorámicas y afloramientos y medir estratificación, estrías y planos de falla. Después procesamos y socializamos esos datos en la universidad."
+    ],
+    "imagenes": [
+      "assets/img/actividades/2025/camino-real-a.jpg",
+      "assets/img/actividades/2025/la-laguna-a.jpg",
+      "assets/img/actividades/2025/la-laguna-b.jpg",
+      "assets/img/actividades/2025/la-laguna-brujula.jpg",
+      "assets/img/actividades/2025/camino-real-b.jpg",
+      "assets/img/actividades/2025/procesamiento-los-santos.jpg"
+    ],
+    "videos": [
+      "AavsXZ7hFlk"
+    ]
+  }
+]

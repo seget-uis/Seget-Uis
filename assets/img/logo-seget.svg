@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="SEGET">
+  <defs>
+    <clipPath id="c"><circle cx="60" cy="60" r="54"/></clipPath>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2c14e"/><stop offset="1" stop-color="#e07a2e"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="57" fill="#fffdf7" stroke="#1f3b2a" stroke-width="5"/>
+  <g clip-path="url(#c)">
+    <path d="M6 72 L30 44 L40 54 L56 28 L70 48 L80 38 L114 72 Z" fill="#4c9a3f"/>
+    <path d="M56 28 L62 37 L57 36 L52 42 Z M30 44 L35 50 L31 49 L27 53 Z" fill="#e9f3e1"/>
+    <rect x="0" y="72" width="120" height="10" fill="#9c8f4e"/>
+    <rect x="0" y="82" width="120" height="40" fill="url(#g)"/>
+    <path d="M0 72 H50 L58 82 L66 72 H120" fill="none" stroke="#1f3b2a" stroke-width="1.5" opacity=".35"/>
+    <path d="M36 72 V96 M84 72 V92" stroke="#c4402b" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <path d="M80 22 C88 20 96 22 102 26 L100 30 C95 28 89 27 84 28 L84 70 L78 70 L78 28 Z" fill="#1f3b2a"/>
+</svg>
