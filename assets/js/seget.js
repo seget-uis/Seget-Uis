@@ -9,7 +9,11 @@
 const SEGET = {
   instagram: "https://www.instagram.com/seget.uis/",
   correo: "seget.uis@gmail.com",
-  youtube: "", // Pegue aquí el enlace del canal de YouTube cuando lo tengan
+  youtube: "https://www.youtube.com/@SEGETUIS",
+  linkedin: "https://www.linkedin.com/company/semillero-de-investigaci%C3%B3n-en-geolog%C3%ADa-estructural-y-tect%C3%B3nica/",
+  telefono: "", // Por ejemplo "+57 (607) 634 4000"; si está vacío no se muestra
+  direccion: "Edificio Jorge Bautista Vesga (JBV), Universidad Industrial de Santander, Carrera 27 Calle 9, Bucaramanga, Santander",
+  mapa: "https://maps.google.com/maps?q=Edificio%20Jorge%20Bautista%20Vesga%20UIS%20Bucaramanga&z=16&output=embed",
 };
 
 const MENU = [
@@ -92,37 +96,46 @@ function dibujarHeader() {
 function dibujarFooter() {
   const f = document.createElement("footer");
   f.className = "footer";
+  const red = (url, nombre, icono) => url ? `<a href="${url}" target="_blank" rel="noopener" aria-label="${nombre}">${icono}</a>` : "";
   const redes = [
-    `<a href="${SEGET.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ICONOS.instagram}</a>`,
-    `<a href="mailto:${SEGET.correo}" aria-label="Correo">${ICONOS.correo}</a>`,
-    SEGET.youtube ? `<a href="${SEGET.youtube}" target="_blank" rel="noopener" aria-label="YouTube">${ICONOS.youtube}</a>` : "",
+    red(SEGET.instagram, "Instagram", ICONOS.instagram),
+    red(SEGET.linkedin, "LinkedIn", ICONOS.linkedin),
+    red(SEGET.youtube, "YouTube", ICONOS.youtube),
   ].join("");
+  const flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>';
+  const telefono = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8Z"/></svg>';
   f.innerHTML = `
     <div class="contenedor">
       <div class="footer-rejilla">
-        <div>
+        <div class="footer-marca">
           <a class="marca" href="index.html">
             <img class="logo-fondo" src="assets/img/logo-seget.png" alt="" width="48" height="45">
-            <span><strong>SEGET</strong><small>Semillero de Geología Estructural y Tectónica</small></span>
+            <span><strong>SEGET · UIS</strong><small>Semillero de Geología Estructural y Tectónica</small></span>
           </a>
-          <p>Escuela de Geología · Universidad Industrial de Santander.<br>Adscrito al Grupo de Investigación en Geología Básica y Aplicada (GIGBA).</p>
+          <p>Estudio, investigación y divulgación de la geología estructural y la tectónica.</p>
           <div class="redes">${redes}</div>
         </div>
         <div>
-          <h4>Explora</h4>
-          <ul>${MENU.map((m) => `<li><a href="${m.href}">${m.texto}</a></li>`).join("")}</ul>
+          <h4>Navegación</h4>
+          <ul class="footer-nav">${MENU.map((m) => `<li><a href="${m.href}">${flecha}${m.texto}</a></li>`).join("")}</ul>
         </div>
         <div>
           <h4>Contacto</h4>
-          <ul>
-            <li><a href="mailto:${SEGET.correo}">${SEGET.correo}</a></li>
-            <li><a href="${SEGET.instagram}" target="_blank" rel="noopener">@seget.uis</a></li>
-            <li>Bucaramanga, Santander, Colombia</li>
+          <ul class="footer-contacto">
+            <li>${ICONOS.lugar}<span>${SEGET.direccion}</span></li>
+            ${SEGET.telefono ? `<li>${telefono}<a href="tel:${SEGET.telefono.replace(/[^+\d]/g, "")}">${SEGET.telefono}</a></li>` : ""}
+            <li>${ICONOS.correo}<a href="mailto:${SEGET.correo}">${SEGET.correo}</a></li>
           </ul>
+        </div>
+        <div>
+          <h4>Encuéntranos</h4>
+          <div class="footer-mapa">
+            <iframe src="${SEGET.mapa}" title="Mapa: Edificio Jorge Bautista Vesga, UIS" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
         </div>
       </div>
       <div class="footer-legal">
-        <span>© ${new Date().getFullYear()} SEGET · UIS</span>
+        <span>© ${new Date().getFullYear()} SEGET · Universidad Industrial de Santander</span>
         <span>Hecho por integrantes del semillero</span>
       </div>
     </div>`;
