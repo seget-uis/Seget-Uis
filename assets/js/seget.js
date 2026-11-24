@@ -476,8 +476,8 @@ async function paginaIntegrantes() {
   };
   cont.innerHTML = [
     (datos.docentes || []).length ? grupo(datos.docentes.length > 1 ? "Docentes" : "Docente", datos.docentes.map((m) => tarjetaIntegrante(m)).join("")) : "",
-    grupo(`Integrantes ${esc(hoy)}`, actuales.map((m) => tarjetaIntegrante(m)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
-    anteriores.length ? grupo("Integrantes anteriores", anteriores.map(anterior).join(""), " integrantes--compacto") : "",
+    grupo("Miembros actuales", actuales.map((m) => tarjetaIntegrante(m)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
+    anteriores.length ? grupo("Antiguos miembros", anteriores.map(anterior).join(""), " integrantes--compacto") : "",
   ].join("");
 }
 
