@@ -415,6 +415,25 @@ async function paginaActividades() {
   pintar();
 }
 
+function tarjetaIntegrante(m, compacto) {
+  const foto = m.foto
+    ? `<img class="foto" src="${esc(m.foto)}" alt="Foto de ${esc(m.nombre)}" loading="lazy">`
+    : `<div class="foto foto--vacia" aria-hidden="true">${esc(iniciales(m.nombre))}</div>`;
+  if (compacto) return `<div class="integrante">${foto}<div><h3>${esc(m.nombre)}</h3></div></div>`;
+  const enlaces = [
+    m.linkedin ? `<a href="${esc(m.linkedin)}" target="_blank" rel="noopener" aria-label="LinkedIn de ${esc(m.nombre)}">${ICONOS.linkedin}</a>` : "",
+    m.email ? `<a href="mailto:${esc(m.email)}" aria-label="Correo de ${esc(m.nombre)}">${ICONOS.correo}</a>` : "",
+    m.cvlac ? `<a href="${esc(m.cvlac)}" target="_blank" rel="noopener" aria-label="CvLAC de ${esc(m.nombre)}">${ICONOS.cvlac}</a>` : "",
+  ].join("");
+  return `<article class="integrante">
+    ${foto}
+    <h3>${esc(m.nombre)}</h3>
+    <div class="cargo">${esc(m.cargo)}</div>
+    ${m.descripcion ? `<p>${esc(m.descripcion)}</p>` : `<p class="pendiente">Descripción próximamente.</p>`}
+    ${enlaces ? `<div class="enlaces">${enlaces}</div>` : ""}
+  </article>`;
+}
+
 async function paginaIntegrantes() {
   const datos = await cargar("data/integrantes.json");
   const cont = $("#equipo");

@@ -121,7 +121,7 @@ em.acento { font-style: italic; color: var(--verde); }
 .nav-desplegar:hover { background: var(--verde-claro); color: var(--bosque); }
 .nav-desplegar.activo { background: var(--bosque); color: #fff; }
 .nav-panel {
-  position: absolute; top: calc(100% + 10px); left: 50%; min-width: 400px; z-index: 30;
+  position: absolute; top: calc(100% + 10px); left: 50%; width: max-content; min-width: 250px; max-width: 420px; z-index: 30;
   background: var(--papel); border: 1px solid var(--linea); border-top: 3px solid var(--verde);
   border-radius: 0 0 14px 14px; box-shadow: 0 18px 40px rgba(31,59,42,.16);
   padding: 10px; display: grid; gap: 2px;
