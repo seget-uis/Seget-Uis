@@ -292,8 +292,9 @@ async function paginaInicio() {
     $("#c-salidas").textContent = salidas;
   }
   if (equipo) {
-    const actual = equipo.periodos.find((p) => p.actual) || equipo.periodos[0];
-    $("#c-integrantes").textContent = actual.grupos.reduce((s, g) => s + g.miembros.length, 0);
+    const hoy = String(equipo.periodoActual);
+    const actuales = (equipo.integrantes || []).filter((m) => (m.periodos || []).map(String).includes(hoy));
+    $("#c-integrantes").textContent = actuales.length + (equipo.docentes || []).length;
   }
   dibujarInstagram(noticias);
   dibujarProximoEvento();
