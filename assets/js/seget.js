@@ -18,6 +18,7 @@ const MENU = [
   { href: "integrantes.html", texto: "Integrantes", id: "integrantes" },
   { href: "actividades.html", texto: "Actividades", id: "actividades" },
   { href: "proyectos.html", texto: "Proyectos", id: "proyectos" },
+  { href: "material.html", texto: "Material científico", id: "material" },
 ];
 
 const ICONOS = {
@@ -27,6 +28,7 @@ const ICONOS = {
   linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4v-11Z"/></svg>',
   cvlac: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   roca: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 18 7 8l5 3 4-5 5 12z"/><path d="M3 18h18M8.5 13.5l3 1.5 3.5-3"/></svg>',
+  documento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
 
@@ -365,6 +367,115 @@ async function paginaProyectos() {
   });
 }
 
+/* ---------- Material científico (pósters y tesis) ---------- */
+const TIPOS_MATERIAL = [
+  { tipo: "Póster", texto: "Pósters", hash: "posters", uno: "póster", varios: "pósters" },
+  { tipo: "Tesis", texto: "Tesis", hash: "tesis", uno: "tesis", varios: "tesis" },
+];
+
+function tarjetaMaterial(t) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "actividad material";
+  const autores = (t.autores || []).filter(Boolean).join(", ");
+  b.innerHTML = `
+    <div class="actividad-foto material-foto">
+      ${t.imagen ? `<img src="${esc(t.imagen)}" alt="" loading="lazy">` : `<div class="sin-foto">${ICONOS.documento}</div>`}
+    </div>
+    <div class="actividad-cuerpo">
+      <span class="chip" data-cat="${esc(t.tipo)}">${esc(t.tipo)}${t.ejemplo ? " · ejemplo" : ""}</span>
+      <h3>${esc(t.titulo)}</h3>
+      ${autores ? `<div class="actividad-meta">${esc(autores)}</div>` : ""}
+      <div class="actividad-meta">${esc(t.anio)}${t.evento ? " · " + esc(t.evento) : ""}</div>
+    </div>`;
+  b.addEventListener("click", () => abrirMaterial(t));
+  return b;
+}
+
+function abrirMaterial(t) {
+  const datos = {
+    titulo: t.titulo,
+    categoria: t.tipo,
+    fecha: t.anio,
+    lugar: [t.evento, t.lugar].filter(Boolean).join(", "),
+    instructor: [(t.autores || []).filter(Boolean).join(", "), t.director ? `dirigido por ${t.director}` : ""].filter(Boolean).join("; "),
+    descripcion: t.resumen ? [t.resumen] : [],
+    imagenes: t.imagen ? [t.imagen] : [],
+    enlace: t.enlace || "",
+  };
+  abrirDetalle(datos);
+  const texto = $(".detalle-texto", dialogo);
+  const etiqueta = $(".detalle-datos span:last-child b", dialogo);
+  if (etiqueta && datos.instructor) etiqueta.textContent = "Autores:";
+  if (t.archivo && texto) {
+    const p = document.createElement("p");
+    p.className = "mt-2";
+    p.innerHTML = `<a class="boton" href="${esc(t.archivo)}" target="_blank" rel="noopener">${t.tipo === "Póster" ? "Ver el póster" : "Descargar la tesis"}</a>`;
+    texto.append(p);
+  }
+}
+
+async function paginaMaterial() {
+  const todos = await cargar("data/material.json");
+  const cont = $("#lista-material");
+  if (!todos) { cont.innerHTML = '<p class="vacio">No se pudo cargar el material.</p>'; return; }
+  // Los bloques con "ejemplo": true solo se ven abriendo la página con ?ejemplos al final de la dirección
+  const verEjemplos = new URLSearchParams(location.search).has("ejemplos");
+  const lista = todos
+    .filter((t) => (verEjemplos || !t.ejemplo) && TIPOS_MATERIAL.some((x) => x.tipo === t.tipo))
+    .sort((x, y) => String(y.anio || "").localeCompare(String(x.anio || "")));
+  if (!lista.length) {
+    $(".filtros-grupo").hidden = true;
+    cont.classList.remove("rejilla", "rejilla--3");
+    cont.innerHTML = `<div class="instagram-vacio">
+      <div><h3>Muy pronto</h3><p>Estamos reuniendo los pósters y las tesis del semillero para publicarlos aquí.</p></div>
+      <a class="boton" href="mailto:${SEGET.correo}">${ICONOS.correo.replace("<svg", '<svg width="18" height="18"')} Escríbenos</a>
+    </div>`;
+    return;
+  }
+  const inicial = TIPOS_MATERIAL.find((x) => "#" + x.hash === location.hash) || TIPOS_MATERIAL[0];
+  const estado = { tipo: inicial.tipo, anio: "Todos" };
+  const pestanas = $("#filtro-tipo");
+  const filtroAnio = $("#filtro-anio-material");
+  pestanas.innerHTML = TIPOS_MATERIAL.map((x) => {
+    const n = lista.filter((t) => t.tipo === x.tipo).length;
+    return `<button type="button" class="pestana" aria-pressed="${x.tipo === estado.tipo}" data-v="${esc(x.tipo)}">${esc(x.texto)} <span>${n}</span></button>`;
+  }).join("");
+  pestanas.addEventListener("click", (e) => {
+    const b = e.target.closest(".pestana");
+    if (!b || b.dataset.v === estado.tipo) return;
+    estado.tipo = b.dataset.v;
+    estado.anio = "Todos";
+    pestanas.querySelectorAll(".pestana").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    history.replaceState(null, "", "#" + TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo).hash);
+    pintarAnios();
+    pintar();
+  });
+  filtroAnio.addEventListener("click", (e) => {
+    const b = e.target.closest(".filtro");
+    if (!b) return;
+    estado.anio = b.dataset.v;
+    filtroAnio.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    pintar();
+  });
+  // Los años salen solo de los trabajos del tipo elegido
+  function pintarAnios() {
+    const anios = [...new Set(lista.filter((t) => t.tipo === estado.tipo).map((t) => String(t.anio || "")).filter(Boolean))];
+    filtroAnio.hidden = anios.length < 2;
+    filtroAnio.innerHTML = ["Todos", ...anios].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.anio}" data-v="${esc(v)}">${v === "Todos" ? "Todos los años" : esc(v)}</button>`).join("");
+  }
+  function pintar() {
+    const info = TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo);
+    const vis = lista.filter((t) => t.tipo === estado.tipo && (estado.anio === "Todos" || String(t.anio) === estado.anio));
+    cont.innerHTML = "";
+    $("#total-material").textContent = `${vis.length} ${vis.length === 1 ? info.uno : info.varios}`;
+    if (!vis.length) { cont.innerHTML = `<p class="vacio">Todavía no hay ${info.varios} publicados.</p>`; return; }
+    vis.forEach((t) => cont.append(tarjetaMaterial(t)));
+  }
+  pintarAnios();
+  pintar();
+}
+
 /* ---------- Arranque ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   dibujarHeader();
@@ -377,4 +488,5 @@ document.addEventListener("DOMContentLoaded", () => {
   if (p === "actividades") paginaActividades();
   if (p === "integrantes") paginaIntegrantes();
   if (p === "proyectos") paginaProyectos();
+  if (p === "material") paginaMaterial();
 });

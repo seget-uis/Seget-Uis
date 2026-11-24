@@ -106,7 +106,7 @@ em.acento { font-style: italic; color: var(--verde); }
 .nav { display: flex; gap: 4px; align-items: center; }
 .nav a {
   text-decoration: none; color: var(--tinta); font-weight: 500; font-size: .95rem;
-  padding: 8px 14px; border-radius: 999px;
+  padding: 8px 14px; border-radius: 999px; white-space: nowrap;
 }
 .nav a:hover { background: var(--verde-claro); color: var(--bosque); }
 .nav a[aria-current="page"] { background: var(--bosque); color: #fff; }
@@ -114,6 +114,12 @@ em.acento { font-style: italic; color: var(--verde); }
   display: none; background: none; border: 0; padding: 8px; cursor: pointer; color: var(--bosque);
 }
 .menu-boton svg { width: 28px; height: 28px; }
+/* Pantallas medianas: se oculta el subtítulo del logo para que el menú quepa en una línea */
+@media (min-width: 861px) and (max-width: 1100px) {
+  .marca small { display: none; }
+  .nav { gap: 2px; }
+  .nav a { padding: 8px 11px; }
+}
 
 @media (max-width: 860px) {
   .menu-boton { display: block; }
@@ -221,6 +227,22 @@ em.acento { font-style: italic; color: var(--verde); }
 .chip[data-cat="Apropiación social"] { background: #f7d9d1; color: #8a2b17; }
 .chip[data-cat="Stand"] { background: var(--ocre-claro); color: #6d5208; }
 .chip[data-cat="Curso"] { background: #dfe8f3; color: #23436b; }
+.chip[data-cat="Póster"] { background: var(--ocre-claro); color: #6d5208; }
+.chip[data-cat="Tesis"] { background: #dfe8f3; color: #23436b; }
+
+/* ---------- Producción ---------- */
+.material-foto { aspect-ratio: 4 / 3; }
+.material-foto img { object-fit: cover; object-position: top; }
+.pestanas { display: inline-flex; gap: 4px; padding: 5px; margin-bottom: 18px; background: var(--papel); border: 1.5px solid var(--linea); border-radius: 999px; }
+.pestana {
+  border: 0; background: transparent; color: var(--tinta); cursor: pointer;
+  padding: 11px 26px; border-radius: 999px; font: inherit; font-size: 1.02rem; font-weight: 600;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+.pestana span { margin-left: 6px; font-size: .8rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,.08); }
+.pestana:hover { background: var(--verde-claro); }
+.pestana[aria-pressed="true"] { background: var(--bosque); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.pestana[aria-pressed="true"] span { background: rgba(255,255,255,.2); }
 
 .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .filtro {

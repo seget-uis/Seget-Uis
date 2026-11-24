@@ -1,0 +1,66 @@
+[
+  {
+    "ejemplo": true,
+    "titulo": "Título del póster",
+    "tipo": "Póster",
+    "anio": "2026",
+    "autores": [
+      "Nombre Apellido",
+      "Nombre Apellido"
+    ],
+    "evento": "Nombre del evento donde se presentó",
+    "lugar": "Ciudad",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título de otro póster",
+    "tipo": "Póster",
+    "anio": "2025",
+    "autores": [
+      "Nombre Apellido",
+      "Nombre Apellido"
+    ],
+    "evento": "Otro evento",
+    "lugar": "Ciudad",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título del trabajo de grado",
+    "tipo": "Tesis",
+    "anio": "2025",
+    "autores": [
+      "Nombre Apellido"
+    ],
+    "director": "Nombre del director",
+    "evento": "Trabajo de grado, Escuela de Geología UIS",
+    "lugar": "Bucaramanga",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  },
+  {
+    "ejemplo": true,
+    "titulo": "Título de otro trabajo de grado",
+    "tipo": "Tesis",
+    "anio": "2024",
+    "autores": [
+      "Nombre Apellido"
+    ],
+    "director": "Nombre del director",
+    "evento": "Trabajo de grado, Escuela de Geología UIS",
+    "lugar": "Bucaramanga",
+    "resumen": "Resumen corto del trabajo (dos o tres frases).",
+    "imagen": "",
+    "archivo": "",
+    "enlace": ""
+  }
+]

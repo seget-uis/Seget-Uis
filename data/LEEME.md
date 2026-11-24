@@ -59,6 +59,36 @@ Use fotos cuadradas. Al empezar un año nuevo, copie el periodo, cambie el año 
 
 Un bloque por proyecto de extensión. `id` es el mismo valor que se pone en `proyecto` de cada actividad.
 
+## material.json
+
+Pósters y tesis del semillero (página **Material científico**). Copie un bloque al inicio de la lista:
+
+```json
+{
+  "titulo": "Título del póster",
+  "tipo": "Póster",
+  "anio": "2026",
+  "autores": ["Nombre Apellido", "Nombre Apellido"],
+  "director": "",
+  "evento": "Nombre del evento, o \"Trabajo de grado, Escuela de Geología UIS\" para una tesis",
+  "lugar": "Ciudad",
+  "resumen": "Resumen corto (dos o tres frases).",
+  "imagen": "assets/img/material/nombre-del-poster.jpg",
+  "archivo": "assets/docs/material/nombre-del-poster.pdf",
+  "enlace": ""
+}
+```
+
+- `tipo`: escriba exactamente `Póster` o `Tesis`. La página tiene una pestaña para cada uno y muestra solo los de la pestaña elegida.
+- `anio`: los botones de año se crean solos con los años de la pestaña elegida (aparecen cuando hay trabajos de dos años o más).
+- `imagen`: foto o vista previa del póster o de la portada. Guárdela en `assets/img/material/`. Si está vacía se muestra un ícono de documento.
+- `archivo`: el PDF. Guárdelo en `assets/docs/material/` o pegue un enlace de Google Drive. Si está vacío, no aparece el botón de descarga.
+- `enlace`: opcional, por ejemplo el repositorio de la UIS.
+- `director`: solo para tesis.
+- Los bloques que tienen `"ejemplo": true` **no se muestran** en la página. Sirven de plantilla; para verlos abra `material.html?ejemplos`. Bórrelos cuando agregue trabajos reales.
+- Mientras no haya pósters ni tesis reales, la página muestra "Muy pronto".
+- Para enlazar directo a una pestaña use `material.html#posters` o `material.html#tesis`.
+
 ## noticias.json
 
 Enlaces de publicaciones de Instagram, las más recientes primero (se muestran 3 en la portada).

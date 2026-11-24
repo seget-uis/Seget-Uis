@@ -11,6 +11,7 @@ nosotros.html       Quiénes somos y cómo unirse
 integrantes.html    Equipo por año (se llena desde data/integrantes.json)
 actividades.html    Charlas, talleres, salidas… con filtros (data/actividades.json)
 proyectos.html      Proyectos de extensión (data/proyectos.json)
+material.html       Material científico: pósters y tesis (data/material.json)
 data/               TODO el contenido editable (.json). Ver data/LEEME.md
 assets/css/seget.css   Colores y estilos (los colores están al inicio, en :root)
 assets/js/seget.js     Menú, pie de página y lógica. Correo, Instagram y YouTube están arriba en SEGET = {...}
