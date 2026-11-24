@@ -292,8 +292,9 @@ async function paginaInicio() {
     $("#c-salidas").textContent = salidas;
   }
   if (equipo) {
-    const actual = equipo.periodos.find((p) => p.actual) || equipo.periodos[0];
-    $("#c-integrantes").textContent = actual.grupos.reduce((s, g) => s + g.miembros.length, 0);
+    const hoy = String(equipo.periodoActual);
+    const actuales = (equipo.integrantes || []).filter((m) => (m.periodos || []).map(String).includes(hoy));
+    $("#c-integrantes").textContent = actuales.length + (equipo.docentes || []).length;
   }
   dibujarInstagram(noticias);
   dibujarProximoEvento();
@@ -476,8 +477,8 @@ async function paginaIntegrantes() {
   };
   cont.innerHTML = [
     (datos.docentes || []).length ? grupo(datos.docentes.length > 1 ? "Docentes" : "Docente", datos.docentes.map((m) => tarjetaIntegrante(m)).join("")) : "",
-    grupo(`Integrantes ${esc(hoy)}`, actuales.map((m) => tarjetaIntegrante(m)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
-    anteriores.length ? grupo("Integrantes anteriores", anteriores.map(anterior).join(""), " integrantes--compacto") : "",
+    grupo("Miembros actuales", actuales.map((m) => tarjetaIntegrante(m)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
+    anteriores.length ? grupo("Antiguos miembros", anteriores.map(anterior).join(""), " integrantes--compacto") : "",
   ].join("");
 }
 
