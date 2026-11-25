@@ -558,7 +558,7 @@ function abrirMaterial(t) {
     categoria: enDesarrollo(t) ? `${t.tipo} · En desarrollo` : t.tipo,
     fecha: enDesarrollo(t) ? `En desarrollo desde ${t.anio}` : t.anio,
     lugar: [t.evento, t.lugar].filter(Boolean).join(", "),
-    instructor: [(t.autores || []).filter(Boolean).join(", "), t.director ? `dirigido por ${t.director}` : ""].filter(Boolean).join("; "),
+    instructor: (t.autores || []).filter(Boolean).join(", "),
     descripcion: t.resumen ? [t.resumen] : [],
     imagenes: t.imagen ? [t.imagen] : [],
     enlace: t.enlace || "",
@@ -566,7 +566,12 @@ function abrirMaterial(t) {
   abrirDetalle(datos);
   const texto = $(".detalle-texto", dialogo);
   const etiqueta = $(".detalle-datos span:last-child b", dialogo);
-  if (etiqueta && datos.instructor) etiqueta.textContent = "Autores:";
+  if (etiqueta && datos.instructor) etiqueta.textContent = (t.autores || []).filter(Boolean).length > 1 ? "Autores:" : "Autor:";
+  // Director y codirector van en líneas aparte de los autores
+  const lista = $(".detalle-datos", dialogo);
+  [["Director:", t.director], ["Codirector:", t.codirector]].forEach(([r, v]) => {
+    if (lista && v) lista.insertAdjacentHTML("beforeend", `<span><b>${r}</b> ${esc(v)}</span>`);
+  });
   if (t.archivo && texto) {
     const p = document.createElement("p");
     p.className = "mt-2";
