@@ -269,7 +269,7 @@ function chipCategoria(c) {
   return `<span class="chip" data-cat="${esc(c)}">${esc(c)}</span>`;
 }
 
-// conTipo: el tipo de actividad solo se nombra en la ficha cuando la lista mezcla tipos (la tarjeta no lleva etiqueta)
+// conTipo: la etiqueta de tipo solo se muestra cuando la lista mezcla tipos de actividad
 function tarjetaActividad(a, conTipo = true) {
   const foto = a.imagenes && a.imagenes[0];
   const n = (a.imagenes || []).length;
@@ -282,6 +282,7 @@ function tarjetaActividad(a, conTipo = true) {
       ${n > 1 ? `<span class="conteo">${n} fotos</span>` : ""}
     </div>
     <div class="actividad-cuerpo">
+      ${conTipo ? `<span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>` : ""}
       <h3>${esc(a.titulo)}</h3>
       <div class="actividad-meta">${esc(a.fecha)}${a.lugar ? " · " + esc(a.lugar) : ""}</div>
     </div>`;
