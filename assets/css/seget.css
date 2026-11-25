@@ -425,18 +425,79 @@ dialog.detalle::backdrop { background: rgba(30, 35, 24, .6); }
 .integrantes--compacto h3 { font-size: .95rem; margin: 0; }
 
 /* ---------- Proyectos ---------- */
-.proyecto { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
-.proyecto-bloque + .proyecto-bloque { margin-top: clamp(56px, 8vw, 96px); padding-top: clamp(56px, 8vw, 96px); border-top: 1px solid var(--linea); }
-.proyecto-portada img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; box-shadow: var(--sombra); }
-.ficha { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: .92rem; margin: 18px 0 22px; padding: 16px 18px; background: var(--arena); border-radius: 12px; }
-.ficha dt { font-weight: 600; color: var(--bosque); }
-.ficha dd { margin: 0; color: var(--gris); }
-.mini-galeria { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 18px; }
-.mini-galeria button { padding: 0; border: 0; border-radius: 8px; overflow: hidden; cursor: pointer; aspect-ratio: 1; background: var(--verde-claro); }
-.mini-galeria img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
-.mini-galeria button:hover img { transform: scale(1.05); }
-@media (max-width: 860px) { .proyecto { grid-template-columns: 1fr; } }
+/* Cada proyecto: texto a la izquierda y una hoja de contactos de cuatro fotos a la derecha.
+   Las fotos se mantienen cerca de su tamaño real porque varias son de baja resolución. */
+.py-seccion { padding-top: 0; }
+#lista-proyectos { border-top: 2px solid var(--bosque); }
+.py-portada { border-bottom: 1px solid var(--linea); scroll-margin-top: calc(var(--alto-header) + 16px); }
+.py-boton { display: grid; grid-template-columns: 6fr 6fr; gap: clamp(24px, 5vw, 80px); align-items: center; width: 100%; padding: clamp(32px, 4vw, 56px) 0; border: 0; background: none; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.py-dato { font-family: var(--mono); font-size: .8rem; color: var(--verde); margin: 0 0 12px; }
+.py-panel h2 { font-size: clamp(1.6rem, 2.6vw, 2.3rem); margin: 0 0 .45em; transition: color .2s var(--ease-out); }
+.py-resumen { color: var(--gris); margin: 0 0 22px; max-width: 52ch; }
+.py-pie { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; margin: 0; padding-top: 14px; border-top: 1px solid var(--linea); font-size: .88rem; color: var(--gris); max-width: 52ch; }
+.py-ver { font-weight: 600; color: var(--bosque); white-space: nowrap; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size .3s var(--ease-out); }
+.py-ver::after { content: " →"; }
+.py-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 640px; justify-self: end; width: 100%; }
+.py-fotos span { aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; background: var(--verde-claro); }
+.py-fotos img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease-out); }
+@media (hover: hover) {
+  .py-boton:hover h2 { color: var(--verde); }
+  .py-boton:hover .py-fotos img { transform: scale(1.03); }
+  .py-boton:hover .py-ver { background-size: 100% 1.5px; }
+}
+.py-boton:active .py-fotos { transform: scale(.995); }
+.py-boton:focus-visible { outline: 3px solid var(--ocre); outline-offset: 4px; border-radius: var(--radio); }
+@media (max-width: 860px) {
+  .py-boton { grid-template-columns: 1fr; }
+  .py-fotos { order: -1; justify-self: stretch; max-width: none; }
+}
 
+/* Ficha completa del proyecto */
+dialog.ficha-proyecto { width: min(1080px, 100% - 32px); max-height: calc(100svh - 48px); padding: 0; border: 0; border-radius: 14px; background: var(--papel); color: var(--tinta); overflow: auto; }
+dialog.ficha-proyecto::backdrop { background: rgba(30, 35, 24, .6); }
+dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
+.ficha-proyecto .ficha-cerrar { position: sticky; top: 14px; float: right; margin: 14px 14px -58px 0; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--papel); font-size: 1.4rem; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
+.fp-cuerpo { padding: clamp(24px, 4vw, 48px); }
+.fp-dato { font-family: var(--mono); font-size: .8rem; color: var(--verde); margin: 0 0 10px; }
+.fp-cuerpo h2 { margin: 0 0 .4em; }
+.fp-cuerpo .lead { margin: 0 0 clamp(24px, 3vw, 36px); }
+.fp-columnas { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
+.fp-sub { font-family: var(--mono); font-size: .8rem; font-weight: 400; color: var(--gris); margin: clamp(28px, 4vw, 40px) 0 12px; }
+.fp-actividades { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--linea); }
+.fp-actividades li { border-bottom: 1px solid var(--linea); }
+.fp-actividades button { width: 100%; display: flex; flex-direction: column; gap: 2px; padding: 12px 0; background: none; border: 0; cursor: pointer; text-align: left; font: inherit; color: var(--tinta); transition: padding-left .25s var(--ease-out); }
+.fp-actividades small { font-size: .85rem; color: var(--gris); white-space: nowrap; }
+@media (hover: hover) { .fp-actividades button:hover { padding-left: 6px; color: var(--bosque); } }
+.fp-fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.fp-fotos button { padding: 0; border: 0; border-radius: 6px; overflow: hidden; aspect-ratio: 1; cursor: pointer; background: var(--verde-claro); }
+.fp-fotos img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease-out); }
+@media (hover: hover) { .fp-fotos button:hover img { transform: scale(1.04); } }
+.fp-videos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 860px) {
+  dialog.ficha-proyecto { width: 100%; max-width: 100%; max-height: 100svh; height: 100svh; border-radius: 0; }
+    .fp-columnas, .fp-videos { grid-template-columns: 1fr; }
+  }
+
+.fp-texto { max-width: 68ch; }
+.fp-texto p:first-child { margin-top: 0; }
+.fp-sub--arriba { margin-top: 0; }
+.fp-columnas > .fp-texto { order: 2; }
+@media (max-width: 860px) { .fp-columnas > .fp-texto { order: 0; } }
+
+/* Movimiento: la raya de arriba se dibuja al cargar; cada fila, al entrar en pantalla,
+   abre sus fotos con el corte diagonal y su texto sube detrás */
+#lista-proyectos { position: relative; border-top: 0; }
+#lista-proyectos::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--bosque); transform-origin: left; }
+.py-anim #lista-proyectos::before { animation: cn-raya-x .9s var(--ease-in-out) both; }
+.py-anim .py-fotos span { animation: cn-corte .9s var(--ease-in-out) both paused; }
+.py-anim .py-fotos span:nth-child(2) { animation-delay: 90ms; }
+.py-anim .py-fotos span:nth-child(3) { animation-delay: 150ms; }
+.py-anim .py-fotos span:nth-child(4) { animation-delay: 190ms; }
+.py-anim .py-dato { animation: cn-aparece .5s var(--ease-out) 80ms both paused; }
+.py-anim .py-panel h2 { --d: 14px; animation: cn-sube .7s var(--ease-out) 40ms both paused; }
+.py-anim .py-resumen { animation: cn-aparece .6s var(--ease-out) 180ms both paused; }
+.py-anim .py-pie { animation: cn-aparece .6s var(--ease-out) 260ms both paused; }
+.py-anim .py-visto *, .py-anim .py-visto { animation-play-state: running !important; }
 /* ---------- Bloque destacado ---------- */
 .destacado { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
 .destacado-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -502,7 +563,6 @@ dialog.detalle::backdrop { background: rgba(30, 35, 24, .6); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
-.proyecto-bloque { scroll-margin-top: 90px; }
 .periodo-integrante { display: block; font-size: .78rem; color: var(--gris); margin-top: 2px; }
 
 /* =========================================================

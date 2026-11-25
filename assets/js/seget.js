@@ -643,46 +643,76 @@ async function paginaIntegrantes() {
   });
 }
 
+/* ---------- Proyectos: una fila por proyecto (texto y cuatro fotos); al tocarla se abre su ficha completa ---------- */
+let fichaProyecto;
+function abrirProyecto(p, rel) {
+  if (!fichaProyecto) {
+    fichaProyecto = document.createElement("dialog");
+    fichaProyecto.className = "ficha-proyecto";
+    fichaProyecto.setAttribute("aria-labelledby", "fp-titulo");
+    document.body.append(fichaProyecto);
+    fichaProyecto.addEventListener("click", (e) => { if (e.target === fichaProyecto) fichaProyecto.close(); });
+    fichaProyecto.addEventListener("close", () => { if (location.hash) history.replaceState(null, "", location.pathname); });
+  }
+  const { fotos, acts } = rel;
+  fichaProyecto.innerHTML = `
+    <button type="button" class="ficha-cerrar" aria-label="Cerrar">×</button>
+    <div class="fp-cuerpo">
+      <p class="fp-dato">${esc(p.anio)} · ${esc(p.lugar)}</p>
+      <h2 id="fp-titulo">${esc(p.titulo)}</h2>
+      <p class="lead">${esc(p.resumen)}</p>
+      <div class="fp-columnas">
+        <div class="fp-texto">${(p.descripcion || []).map((t) => `<p>${esc(t)}</p>`).join("")}</div>
+        ${acts.length ? `<div><h3 class="fp-sub fp-sub--arriba">Actividades del proyecto</h3><ul class="fp-actividades">${acts.map((a, k) => `<li><button type="button" data-a="${k}"><span>${esc(a.titulo)}</span><small>${esc(a.fecha)}</small></button></li>`).join("")}</ul></div>` : ""}
+      </div>
+      ${fotos.length ? `<h3 class="fp-sub">Fotos</h3><div class="fp-fotos">${fotos.map((f, k) => `<button type="button" data-f="${k}" aria-label="Ampliar foto ${k + 1}"><img src="${esc(f.src)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
+      ${(p.videos || []).length ? `<h3 class="fp-sub">Videos</h3><div class="fp-videos">${p.videos.map(videoHTML).join("")}</div>` : ""}
+    </div>`;
+  $(".ficha-cerrar", fichaProyecto).addEventListener("click", () => fichaProyecto.close());
+  fichaProyecto.querySelectorAll("[data-f]").forEach((b) => b.addEventListener("click", () => { const f = fotos[b.dataset.f]; abrirDetalle(f.a, f.i, false); }));
+  fichaProyecto.querySelectorAll("[data-a]").forEach((b) => b.addEventListener("click", () => abrirDetalle(acts[b.dataset.a], 0, false)));
+  if (!fichaProyecto.open) fichaProyecto.showModal();
+  fichaProyecto.scrollTop = 0;
+  history.replaceState(null, "", "#" + p.id);
+}
+
 async function paginaProyectos() {
   const [proys, acts] = await Promise.all([cargar("data/proyectos.json"), cargar("data/actividades.json")]);
   const cont = $("#lista-proyectos");
   if (!proys) { cont.innerHTML = '<p class="vacio">No se pudieron cargar los proyectos.</p>'; return; }
-  cont.innerHTML = "";
-  proys.forEach((p) => {
-    const relacionadas = (acts || []).filter((a) => a.proyecto === p.id);
-    const fotos = relacionadas.flatMap((a) => (a.imagenes || []).map((src, i) => ({ a, src, i }))).slice(0, 8);
-    const bloque = document.createElement("section");
-    bloque.className = "proyecto-bloque";
-    bloque.id = p.id;
-    const el = document.createElement("article");
-    el.className = "proyecto";
-    bloque.append(el);
-    el.innerHTML = `
-      <div class="proyecto-portada"><img src="${esc(p.portada)}" alt="" loading="lazy"></div>
-      <div>
-        <span class="etiqueta">Proyecto ${esc(p.anio)}</span>
-        <h2>${esc(p.titulo)}</h2>
-        <p class="lead">${esc(p.resumen)}</p>
-        <dl class="ficha">
-          <dt>Modalidad</dt><dd>${esc(p.modalidad)}</dd>
-          <dt>Lugar</dt><dd>${esc(p.lugar)}</dd>
-          ${(p.aliados || []).length ? `<dt>Aliados</dt><dd>${p.aliados.map(esc).join(", ")}</dd>` : ""}
-        </dl>
-        ${(p.descripcion || []).map((t) => `<p>${esc(t)}</p>`).join("")}
-        ${fotos.length ? `<div class="mini-galeria">${fotos.map((f, k) => `<button type="button" data-k="${k}" aria-label="Ver foto"><img src="${esc(f.src)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
-      </div>`;
-    el.querySelectorAll(".mini-galeria button").forEach((b) => {
-      const f = fotos[b.dataset.k];
-      b.addEventListener("click", () => abrirDetalle(f.a, f.i));
-    });
-    if ((p.videos || []).length) {
-      const v = document.createElement("div");
-      v.className = "rejilla rejilla--2 mt-3";
-      v.innerHTML = p.videos.map(videoHTML).join("");
-      bloque.append(v);
-    }
-    cont.append(bloque);
+  const datos = proys.map((p) => {
+    const rel = (acts || []).filter((a) => a.proyecto === p.id);
+    return { p, acts: rel, fotos: rel.flatMap((a) => (a.imagenes || []).map((src, i) => ({ a, src, i }))) };
   });
+  const cuenta = (n, uno, varios) => (n ? `${n} ${n === 1 ? uno : varios}` : "");
+  cont.innerHTML = datos.map(({ p, acts: rel, fotos }, k) => {
+    const portada = fotos.find((f) => f.src === p.portada);
+    const cuatro = [portada, ...fotos.filter((f) => f !== portada)].filter(Boolean).slice(0, 4);
+    return `
+    <article class="py-portada" id="${esc(p.id)}">
+      <button type="button" class="py-boton" data-k="${k}" aria-label="Ver el proyecto ${esc(p.titulo)}">
+        <div class="py-panel">
+          <p class="py-dato">${esc(p.anio)} · ${esc(p.lugar)}</p>
+          <h2>${esc(p.titulo)}</h2>
+          <p class="py-resumen">${esc(p.resumen)}</p>
+          <p class="py-pie"><span>${[cuenta(fotos.length, "foto", "fotos"), cuenta((p.videos || []).length, "video", "videos"), cuenta(rel.length, "actividad", "actividades")].filter(Boolean).join(" · ")}</span><span class="py-ver">Ver proyecto</span></p>
+        </div>
+        <div class="py-fotos" data-n="${cuatro.length}">${cuatro.map((f) => `<span><img src="${esc(f.src)}" alt="" loading="lazy"></span>`).join("")}</div>
+      </button>
+    </article>`;
+  }).join("");
+  cont.querySelectorAll(".py-boton").forEach((b) => b.addEventListener("click", () => { const d = datos[b.dataset.k]; abrirProyecto(d.p, d); }));
+  // Cada fila se anima una sola vez al entrar en pantalla (nada con movimiento reducido)
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("py-anim");
+    const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("py-visto"); io.unobserve(e.target); }
+    }), { threshold: 0.25 });
+    cont.querySelectorAll(".py-portada").forEach((el) => io.observe(el));
+  }
+  // proyectos.html#id abre directamente la ficha de ese proyecto
+  const desdeHash = datos.find((d) => "#" + d.p.id === location.hash);
+  if (desdeHash) abrirProyecto(desdeHash.p, desdeHash);
 }
 
 /* ---------- Material científico (pósters, tesis y artículos) ---------- */
