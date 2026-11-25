@@ -302,37 +302,69 @@ function abrirDetalle(a, inicio = 0, conTipo = true) {
   let i = inicio;
   dialogo.innerHTML = `
     <button class="cerrar" aria-label="Cerrar">×</button>
-    ${imgs.length ? `<div class="detalle-galeria">
-      <img src="${esc(imgs[i])}" alt="Foto de la actividad ${esc(a.titulo)}">
-      ${imgs.length > 1 ? `<button class="nav-foto prev" aria-label="Foto anterior">‹</button>
-      <button class="nav-foto next" aria-label="Foto siguiente">›</button>
-      <span class="indice">${i + 1} / ${imgs.length}</span>` : ""}
-    </div>` : ""}
-    <div class="detalle-texto">
-      ${conTipo ? chipCategoria(a.categoria) : ""}
-      <h2>${esc(a.titulo)}</h2>
-      <div class="detalle-datos">
-        <span><b>Fecha:</b> ${esc(a.fecha)}</span>
-        ${a.lugar ? `<span><b>Lugar:</b> ${esc(a.lugar)}</span>` : ""}
-        ${a.instructor ? `<span><b>A cargo de:</b> ${esc(a.instructor)}</span>` : ""}
+    <div class="dt-cuerpo${imgs.length ? " dt-cuerpo--fotos" : ""}">
+      ${imgs.length ? `<div class="dt-fotos detalle-galeria">
+        <img class="dt-foto" src="${esc(imgs[i])}" alt="Foto de la actividad ${esc(a.titulo)}">
+        ${imgs.length > 1 ? `<button class="nav-foto prev" aria-label="Foto anterior">‹</button>
+        <button class="nav-foto next" aria-label="Foto siguiente">›</button>
+        <span class="indice">${i + 1} / ${imgs.length}</span>` : ""}
+      </div>` : ""}
+      <div class="dt-lado">
+        <p class="fp-dato">${conTipo && a.categoria ? esc(a.categoria) + " · " : ""}${esc(a.fecha)}</p>
+        <h2>${esc(a.titulo)}</h2>
+        ${a.lugar || a.instructor ? `<p class="dt-donde">${[a.lugar ? esc(a.lugar) : "", a.instructor ? "A cargo de " + esc(a.instructor) : ""].filter(Boolean).join("<br>")}</p>` : ""}
+        <div class="detalle-texto">
+          ${(a.descripcion || []).map((p) => `<p>${esc(p)}</p>`).join("")}
+          ${(a.videos || []).length ? `<div class="rejilla rejilla--2 mt-2">${a.videos.map(videoHTML).join("")}</div>` : ""}
+          ${a.enlace ? `<p class="mt-2"><a class="enlace-flecha" href="${esc(a.enlace)}" target="_blank" rel="noopener">Más información</a></p>` : ""}
+        </div>
+        ${imgs.length > 1 ? `<div class="dt-miniaturas">${imgs.map((src, n) => `<button type="button" data-n="${n}" aria-label="Ver la foto ${n + 1} de ${imgs.length}" aria-current="${n === i}"><img src="${esc(src)}" alt=""></button>`).join("")}</div>` : ""}
       </div>
-      ${(a.descripcion || []).map((p) => `<p>${esc(p)}</p>`).join("")}
-      ${(a.videos || []).length ? `<div class="rejilla rejilla--2 mt-2">${a.videos.map(videoHTML).join("")}</div>` : ""}
-      ${a.enlace ? `<p class="mt-2"><a class="enlace-flecha" href="${esc(a.enlace)}" target="_blank" rel="noopener">Más información</a></p>` : ""}
+      <div class="dt-resto"></div>
     </div>`;
   $(".cerrar", dialogo).addEventListener("click", () => dialogo.close());
-  const mostrar = (d) => {
-    i = (i + d + imgs.length) % imgs.length;
-    $(".detalle-galeria img", dialogo).src = imgs[i];
+  const mostrar = (d, abs) => {
+    i = abs != null ? abs : (i + d + imgs.length) % imgs.length;
+    dialogo.querySelectorAll(".detalle-galeria img").forEach((im) => { im.src = imgs[i]; });
+    const foto = $(".dt-foto", dialogo);
+    if (foto && foto.animate && !quietoMov()) foto.animate([{ opacity: .35, transform: "scale(.985)" }, { opacity: 1, transform: "none" }], { duration: 220, easing: "cubic-bezier(.23, 1, .32, 1)" });
     $(".indice", dialogo).textContent = `${i + 1} / ${imgs.length}`;
+    dialogo.querySelectorAll(".dt-miniaturas button").forEach((x, n) => x.setAttribute("aria-current", String(n === i)));
   };
   if (imgs.length > 1) {
     $(".prev", dialogo).addEventListener("click", () => mostrar(-1));
     $(".next", dialogo).addEventListener("click", () => mostrar(1));
+    dialogo.querySelectorAll(".dt-miniaturas button").forEach((x) => x.addEventListener("click", () => mostrar(0, +x.dataset.n)));
     dialogo.onkeydown = (e) => { if (e.key === "ArrowLeft") mostrar(-1); if (e.key === "ArrowRight") mostrar(1); };
   } else dialogo.onkeydown = null;
+  // El marco toma la forma de la primera foto (entre cuadrada y 4:3), así casi no se recorta
+  const marco = $(".dt-fotos", dialogo);
+  if (marco) {
+    const ajustar = (im) => { if (im.naturalWidth) { marco.style.aspectRatio = String(Math.min(4 / 3, Math.max(1, im.naturalWidth / im.naturalHeight))); repartirTexto(); } };
+    const primera = $(".dt-foto", marco);
+    if (primera.complete) ajustar(primera); else primera.addEventListener("load", () => ajustar(primera), { once: true });
+  }
+  dialogo.classList.toggle("dt-anim", !quietoMov());
   dialogo.showModal();
   dialogo.scrollTop = 0;
+  repartirTexto();
+}
+
+const quietoMov = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Si el texto es mucho más alto que la foto, los últimos párrafos pasan debajo, a dos columnas,
+// para que la foto y el texto queden parejos y no sobre espacio a ningún lado.
+function repartirTexto() {
+  const fotos = $(".dt-fotos", dialogo), lado = $(".dt-lado", dialogo), resto = $(".dt-resto", dialogo);
+  if (!fotos || !resto || !window.matchMedia("(min-width: 861px)").matches) return;
+  const texto = $(".detalle-texto", lado);
+  const enlace = $(":scope > .mt-2", texto);
+  [...resto.children].forEach((p) => (enlace ? enlace.before(p) : texto.append(p)));
+  resto.hidden = false;
+  const alto = fotos.offsetHeight * 1.05;
+  const ps = [...texto.querySelectorAll(":scope > p:not(.mt-2)")];
+  while (lado.offsetHeight > alto && ps.length > 1) resto.prepend(ps.pop());
+  resto.hidden = !resto.children.length;
 }
 
 function videoHTML(id) {
@@ -814,51 +846,75 @@ function chipsMaterial(t) {
   return chips ? `<div class="chips">${chips}</div>` : "";
 }
 
+const autoresDe = (t) => (t.autores || []).filter(Boolean);
+const pesoArchivo = { "assets/docs/material/geoeducacion-cepita.pdf": "16 MB", "assets/docs/material/fotogrametria-modelamiento-3d.pdf": "7 MB" };
+
+// Pósters: la lámina completa en vertical, con su título entero debajo.
+// Tesis y artículos: una entrada de registro, con el año al margen como en un índice.
 function tarjetaMaterial(t) {
   const b = document.createElement("button");
   b.type = "button";
-  b.className = "actividad material";
-  const autores = (t.autores || []).filter(Boolean).join(", ");
-  b.innerHTML = `
-    <div class="actividad-foto material-foto">
-      ${t.imagen ? `<img src="${esc(t.imagen)}" alt="" loading="lazy">` : `<div class="sin-foto">${ICONOS.documento}</div>`}
-    </div>
-    <div class="actividad-cuerpo">
-      ${chipsMaterial(t)}
-      <h3>${esc(t.titulo)}</h3>
-      ${autores ? `<div class="actividad-meta">${esc(autores)}</div>` : ""}
-      <div class="actividad-meta">${enDesarrollo(t) ? "Desde " : ""}${esc(t.anio)}${t.evento ? " · " + esc(t.evento) : ""}</div>
-    </div>`;
+  const autores = autoresDe(t).join(", ");
+  const anio = `${enDesarrollo(t) ? "Desde " : ""}${esc(t.anio)}`;
+  if (t.tipo === "Póster") {
+    b.className = "mt-lamina";
+    b.innerHTML = `
+      <span class="mt-lamina-hoja">${t.imagen ? `<img src="${esc(t.imagen)}" alt="" loading="lazy">` : `<span class="sin-foto">${ICONOS.documento}</span>`}</span>
+      <span class="mt-lamina-dato">${anio}${t.evento ? " · " + esc(t.evento) : ""}</span>
+      <span class="mt-lamina-titulo">${esc(t.titulo)}</span>
+      ${autores ? `<span class="mt-autores">${esc(autores)}</span>` : ""}
+      ${t.ejemplo ? '<span class="chip">Ejemplo</span>' : ""}`;
+  } else {
+    b.className = "mt-entrada";
+    b.innerHTML = `
+      <span class="mt-entrada-anio">${esc(t.anio)}</span>
+      <span class="mt-entrada-cuerpo">
+        ${chipsMaterial(t)}
+        <span class="mt-entrada-titulo">${esc(t.titulo)}</span>
+        ${autores ? `<span class="mt-autores">${esc(autores)}</span>` : ""}
+        <span class="mt-entrada-meta">${[t.director ? "Dirige " + esc(t.director) : "", t.evento ? esc(t.evento) : ""].filter(Boolean).join(" · ")}</span>
+      </span>
+      <span class="mt-entrada-ver" aria-hidden="true">→</span>`;
+  }
   b.addEventListener("click", () => abrirMaterial(t));
   return b;
 }
 
+// Ficha del trabajo, con la misma composición que la de los proyectos
+let fichaMaterial;
 function abrirMaterial(t) {
-  const datos = {
-    titulo: t.titulo,
-    categoria: estadoTesis(t) || t.tipo,
-    fecha: enDesarrollo(t) ? `En desarrollo desde ${t.anio}` : t.anio,
-    lugar: [t.evento, t.lugar].filter(Boolean).join(", "),
-    instructor: (t.autores || []).filter(Boolean).join(", "),
-    descripcion: t.resumen ? [t.resumen] : [],
-    imagenes: t.imagen ? [t.imagen] : [],
-    enlace: t.enlace || "",
-  };
-  abrirDetalle(datos);
-  const texto = $(".detalle-texto", dialogo);
-  const etiqueta = $(".detalle-datos span:last-child b", dialogo);
-  if (etiqueta && datos.instructor) etiqueta.textContent = (t.autores || []).filter(Boolean).length > 1 ? "Autores:" : "Autor:";
-  // Director y codirector van en líneas aparte de los autores
-  const lista = $(".detalle-datos", dialogo);
-  [["Director:", t.director], ["Codirector:", t.codirector]].forEach(([r, v]) => {
-    if (lista && v) lista.insertAdjacentHTML("beforeend", `<span><b>${r}</b> ${esc(v)}</span>`);
-  });
-  if (t.archivo && texto) {
-    const p = document.createElement("p");
-    p.className = "mt-2";
-    p.innerHTML = `<a class="boton" href="${esc(t.archivo)}" target="_blank" rel="noopener">${t.tipo === "Póster" ? "Ver el póster" : t.tipo === "Tesis" ? "Descargar la tesis" : "Leer el artículo"}</a>`;
-    texto.append(p);
+  if (!fichaMaterial) {
+    fichaMaterial = document.createElement("dialog");
+    fichaMaterial.className = "ficha-proyecto ficha-material";
+    fichaMaterial.setAttribute("aria-labelledby", "fm-titulo");
+    document.body.append(fichaMaterial);
+    fichaMaterial.addEventListener("click", (e) => { if (e.target === fichaMaterial) fichaMaterial.close(); });
   }
+  const autores = autoresDe(t);
+  const filas = [
+    [autores.length > 1 ? "Autores" : "Autoría", autores.join(", ")],
+    ["Dirige", t.director], ["Codirige", t.codirector],
+    [t.tipo === "Artículo" ? "Revista" : t.tipo === "Póster" ? "Evento" : "Programa", t.evento],
+    ["Lugar", t.lugar],
+  ].filter(([, v]) => v);
+  const accion = t.archivo ? `<a class="boton" href="${esc(t.archivo)}" target="_blank" rel="noopener">${t.tipo === "Póster" ? "Ver el póster en PDF" : t.tipo === "Tesis" ? "Descargar la tesis" : "Leer el artículo"}</a>${pesoArchivo[t.archivo] ? `<small class="fm-peso">${pesoArchivo[t.archivo]}</small>` : ""}` : "";
+  const enlace = t.enlace ? `<a class="enlace-flecha" href="${esc(t.enlace)}" target="_blank" rel="noopener">Más información</a>` : "";
+  fichaMaterial.innerHTML = `
+    <button class="ficha-cerrar" aria-label="Cerrar">×</button>
+    <div class="fm-cuerpo${t.imagen ? " fm-cuerpo--lamina" : ""}">
+      ${t.imagen ? `<a class="fm-lamina" href="${esc(t.archivo || t.imagen)}" target="_blank" rel="noopener"><img src="${esc(t.imagen)}" alt="Póster: ${esc(t.titulo)}"></a>` : ""}
+      <div class="fm-texto">
+        <p class="fp-dato">${esc(t.tipo)} · ${enDesarrollo(t) ? "En desarrollo desde " : ""}${esc(t.anio)}</p>
+        <h2 id="fm-titulo">${esc(t.titulo)}</h2>
+        ${chipsMaterial(t)}
+        ${t.resumen ? `<p class="lead">${esc(t.resumen)}</p>` : ""}
+        <dl class="fm-datos">${filas.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+        ${accion || enlace ? `<p class="fm-acciones">${accion}${enlace}</p>` : ""}
+      </div>
+    </div>`;
+  $(".ficha-cerrar", fichaMaterial).addEventListener("click", () => fichaMaterial.close());
+  fichaMaterial.classList.toggle("fm-anim", !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  fichaMaterial.showModal();
 }
 
 async function paginaMaterial() {
@@ -933,12 +989,26 @@ async function paginaMaterial() {
     const vis = lista.filter((t) => t.tipo === estado.tipo && enFase(t) && (estado.anio === "Todos" || String(t.anio) === estado.anio));
     cont.innerHTML = "";
     $("#total-material").textContent = `${vis.length} ${vis.length === 1 ? info.uno : info.varios}`;
+    cont.className = estado.tipo === "Póster" ? "mt-laminas" : "mt-registro";
     if (!vis.length) { cont.innerHTML = `<p class="vacio">Todavía no hay ${info.vacio}.</p>`; return; }
     vis.forEach((t) => cont.append(tarjetaMaterial(t)));
   }
   pintarFase();
   pintarAnios();
   pintar();
+  // Primera carga: las láminas se posan una a una y el registro se escribe de arriba abajo
+  if (!quietoMov() && "IntersectionObserver" in window) {
+    cont.classList.add("mt-entra");
+    [...cont.children].forEach((el, i) => el.style.setProperty("--i", Math.min(i, 6)));
+    const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("mt-visto"); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
+    [...cont.children].forEach((el) => io.observe(el));
+    // Al cambiar de pestaña lo nuevo entra con transicion(), sin esperar al observador
+    const marcar = () => cont.classList.remove("mt-entra");
+    $("#filtro-tipo").addEventListener("click", marcar, { once: true });
+    $("#filtro-anio-material").addEventListener("click", marcar, { once: true });
+  }
 }
 
 /* ---------- Microinteracciones ---------- */

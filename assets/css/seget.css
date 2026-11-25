@@ -874,3 +874,110 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
   .marca strong { font-size: 1.45rem; }
   .marca small { font-size: .68rem; letter-spacing: .02em; white-space: nowrap; }
 }
+
+/* ---------- Material científico: láminas y registro ---------- */
+.mt-laminas { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: clamp(28px, 4vw, 56px) clamp(20px, 3vw, 40px); align-items: start; }
+.mt-lamina { display: flex; flex-direction: column; gap: 8px; padding: 0; border: 0; background: none; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.mt-lamina-hoja { display: block; overflow: hidden; aspect-ratio: 3 / 4; padding: 10px; margin-bottom: 10px; background: #fff; border-radius: 4px; box-shadow: 0 1px 0 var(--linea), 0 10px 28px -14px rgba(30, 35, 24, .45); transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
+.mt-lamina-hoja img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.mt-lamina-hoja .sin-foto svg { width: 56px; height: 56px; }
+.mt-lamina-hoja .sin-foto { height: 100%; display: grid; place-items: center; background: var(--arena); color: var(--gris); }
+.mt-lamina-dato, .mt-entrada-meta { font-family: var(--mono); font-size: .76rem; color: var(--verde); line-height: 1.5; }
+.mt-lamina-titulo { font-family: var(--serif); font-size: 1.3rem; line-height: 1.22; color: var(--tinta); transition: color .2s var(--ease-out); }
+.mt-autores { font-size: .9rem; color: var(--gris); }
+@media (hover: hover) {
+  .mt-lamina:hover .mt-lamina-hoja { transform: translateY(-4px) rotate(-.4deg); box-shadow: 0 1px 0 var(--linea), 0 18px 36px -16px rgba(30, 35, 24, .5); }
+  .mt-lamina:hover .mt-lamina-titulo, .mt-entrada:hover .mt-entrada-titulo { color: var(--verde); }
+  .mt-entrada:hover .mt-entrada-ver { transform: translateX(4px); color: var(--bosque); }
+}
+.mt-lamina:focus-visible, .mt-entrada:focus-visible { outline: 3px solid var(--ocre); outline-offset: 6px; border-radius: 4px; }
+
+.mt-registro { position: relative; max-width: 980px; }
+.mt-registro::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--bosque); transform-origin: left; }
+.mt-entrada { display: grid; grid-template-columns: 96px 1fr 32px; gap: clamp(16px, 3vw, 40px); align-items: start; width: 100%; padding: 26px 0; border: 0; border-bottom: 1px solid var(--linea); background: none; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.mt-entrada-anio { font-family: var(--serif); font-size: 2rem; line-height: 1; color: var(--verde); padding-top: 4px; }
+.mt-entrada-cuerpo { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.mt-entrada-titulo { font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; color: var(--tinta); transition: color .2s var(--ease-out); }
+.mt-entrada-ver { font-size: 1.3rem; color: var(--gris); padding-top: 6px; transition: transform .25s var(--ease-out), color .2s; }
+@media (max-width: 640px) {
+  .mt-entrada { grid-template-columns: 1fr; gap: 10px; }
+  .mt-entrada-anio { font-size: 1.4rem; }
+  .mt-entrada-ver { display: none; }
+}
+
+/* Ficha */
+.fm-cuerpo { padding: clamp(24px, 4vw, 48px); }
+.fm-cuerpo--lamina { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+.fm-lamina { display: block; padding: 10px; background: #fff; border-radius: 4px; box-shadow: 0 10px 28px -14px rgba(30, 35, 24, .45); cursor: zoom-in; }
+.fm-lamina img { width: 100%; display: block; }
+.fm-texto h2 { margin: 0 0 .5em; font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+.fm-texto .chips { margin-bottom: 18px; }
+.fm-datos { margin: 0 0 24px; border-top: 1px solid var(--linea); }
+.fm-datos div { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--linea); }
+.fm-datos dt { font-family: var(--mono); font-size: .76rem; color: var(--gris); padding-top: 3px; }
+.fm-datos dd { margin: 0; color: var(--tinta); }
+.fm-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin: 0; }
+.fm-peso { font-family: var(--mono); font-size: .76rem; color: var(--gris); }
+@media (max-width: 860px) {
+  .fm-cuerpo--lamina { grid-template-columns: 1fr; }
+  .fm-lamina { max-width: 420px; }
+}
+
+/* ---------- Ficha de actividades y stands (mismo estilo que la de proyectos) ----------
+   La foto ocupa todo el alto de la columna de texto, así no quedan huecos a ningún lado. */
+dialog.detalle { width: min(1180px, 100% - 32px); max-height: calc(100dvh - 48px); border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.3); }
+.dt-cuerpo { padding: clamp(24px, 4vw, 48px); }
+.dt-cuerpo--fotos { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 48px); align-items: center; }
+.dt-fotos.detalle-galeria { position: relative; aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden; background: var(--arena); }
+.dt-fotos.detalle-galeria img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: cover; }
+.dt-donde { margin: 0 0 20px; padding-bottom: 18px; border-bottom: 1px solid var(--linea); color: var(--gris); font-size: .95rem; line-height: 1.6; }
+.dt-resto { grid-column: 1 / -1; columns: 2; column-gap: clamp(24px, 4vw, 48px); margin-top: 8px; }
+.dt-resto p { margin: 0 0 1em; break-inside: avoid; }
+.dt-resto[hidden] { display: none; }
+.dt-lado { display: flex; flex-direction: column; padding-right: 40px; }
+.dt-lado h2 { margin: 0 0 .5em; font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+.dt-lado .fm-datos { margin-bottom: 20px; }
+.dt-cuerpo .detalle-texto { padding: 0; }
+.dt-cuerpo .detalle-texto p:first-child { margin-top: 0; }
+.dt-cuerpo .detalle-texto p:last-child { margin-bottom: 0; }
+.dt-miniaturas { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; padding-top: 24px; }
+.dt-miniaturas button { aspect-ratio: 4 / 3; padding: 0; border: 0; border-radius: 4px; overflow: hidden; cursor: pointer; opacity: .55; outline-offset: 2px; transition: opacity .2s var(--ease-out); }
+.dt-miniaturas button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dt-miniaturas button[aria-current="true"] { opacity: 1; outline: 2px solid var(--bosque); }
+@media (hover: hover) { .dt-miniaturas button:hover { opacity: 1; } }
+.dt-fotos .indice { bottom: 12px; left: auto; right: 12px; transform: none; font-family: var(--mono); font-size: .74rem; }
+@media (max-width: 860px) {
+  dialog.detalle { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
+  .dt-cuerpo--fotos { grid-template-columns: 1fr; }
+  .dt-lado { padding-right: 0; }
+}
+
+/* ---------- Movimiento: material científico y fichas ----------
+   Listado (solo la primera carga): cada lámina se posa como una hoja que se deja sobre la mesa,
+   con un leve giro que se endereza; en el registro la raya se dibuja y las entradas suben detrás. */
+@keyframes mt-posa { from { opacity: 0; transform: translateY(22px) rotate(-1.5deg); } to { opacity: 1; transform: none; } }
+.mt-entra .mt-lamina-hoja { animation: mt-posa .8s var(--ease-out) calc(var(--i, 0) * 90ms) both paused; }
+.mt-entra .mt-lamina > :not(.mt-lamina-hoja) { animation: cn-aparece .6s var(--ease-out) calc(var(--i, 0) * 90ms + 260ms) both paused; }
+.mt-entra.mt-registro::before { animation: cn-raya-x .9s var(--ease-in-out) both; }
+.mt-entra .mt-entrada { --d: 14px; animation: cn-sube .6s var(--ease-out) calc(var(--i, 0) * 70ms + 200ms) both paused; }
+.mt-entra .mt-visto, .mt-entra .mt-visto > * { animation-play-state: running !important; }
+
+/* Fichas: la caja entra y su contenido la sigue por partes, como en la de proyectos */
+dialog.ficha-material[open] { animation: ficha-abre 240ms var(--ease-out); }
+.fm-anim .fm-lamina { animation: mt-posa .7s var(--ease-out) 60ms both; }
+.fm-anim .fm-texto > * { --d: 10px; animation: cn-sube .55s var(--ease-out) both; }
+.fm-anim .fm-texto > :nth-child(1) { animation-delay: 120ms; }
+.fm-anim .fm-texto > :nth-child(2) { animation-delay: 160ms; }
+.fm-anim .fm-texto > :nth-child(3) { animation-delay: 220ms; }
+.fm-anim .fm-texto > :nth-child(4) { animation-delay: 270ms; }
+.fm-anim .fm-texto > :nth-child(n+5) { animation-delay: 320ms; }
+.dt-anim .dt-fotos { animation: cn-corte .8s var(--ease-in-out) both; }
+.dt-anim .dt-lado > *, .dt-anim .dt-resto { --d: 10px; animation: cn-sube .55s var(--ease-out) both; }
+.dt-anim .dt-lado > :nth-child(1) { animation-delay: 140ms; }
+.dt-anim .dt-lado > :nth-child(2) { animation-delay: 180ms; }
+.dt-anim .dt-lado > :nth-child(3) { animation-delay: 240ms; }
+.dt-anim .dt-lado > :nth-child(4) { animation-delay: 290ms; }
+.dt-anim .dt-lado > :nth-child(n+5), .dt-anim .dt-resto { animation-delay: 340ms; }
+@media (prefers-reduced-motion: reduce) {
+  dialog.ficha-material[open] { animation: none; }
+}
