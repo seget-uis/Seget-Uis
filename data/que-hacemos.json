@@ -1,0 +1,35 @@
+{
+  "nota": "Secciones de 'Qué hacemos' en la portada. Al tocar una sección se muestran sus fotos, que cambian solas cada 4 segundos. Las fotos van en assets/img/que-hacemos/. Cada foto lleva 'alt', una descripción corta de lo que se ve.",
+  "secciones": [
+    {
+      "titulo": "Formación",
+      "texto": "Talleres, cursos y charlas para interpretar datos y estructuras: brújulas, cortes geológicos, proyección estereográfica, mecanismos focales e interpretación sísmica.",
+      "fotos": [
+        { "src": "assets/img/que-hacemos/formacion-1.jpg", "alt": "Integrantes del semillero trabajando en modelos de arcilla en el taller de Riedel" },
+        { "src": "assets/img/que-hacemos/formacion-2.jpg", "alt": "Taller de análisis de esfuerzos con el programa Win-Tensor" },
+        { "src": "assets/img/que-hacemos/formacion-3.jpg", "alt": "Estudiante dibujando un corte geológico durante el curso" },
+        { "src": "assets/img/que-hacemos/formacion-4.jpg", "alt": "Taller de interpretación sísmica en el salón de clase" }
+      ]
+    },
+    {
+      "titulo": "Campo",
+      "texto": "Salidas a afloramientos de Santander y Antioquia para medir, dibujar e interpretar fallas, pliegues y deformación en las rocas.",
+      "fotos": [
+        { "src": "assets/img/que-hacemos/campo-1.jpg", "alt": "Salida de campo a la vía Zapatoca, frente a rocas plegadas" },
+        { "src": "assets/img/que-hacemos/campo-2.jpg", "alt": "Integrante midiendo con brújula en un afloramiento" },
+        { "src": "assets/img/que-hacemos/campo-3.jpg", "alt": "Salida de campo a Río Claro, en Antioquia" },
+        { "src": "assets/img/que-hacemos/campo-4.jpg", "alt": "Grupo del semillero observando un afloramiento en la vía Zapatoca" }
+      ]
+    },
+    {
+      "titulo": "Apropiación social",
+      "texto": "Jornadas con colegios y comunidades, como Los Santos y Cepitá, para que la gente conozca la geología del territorio que habita.",
+      "fotos": [
+        { "src": "assets/img/que-hacemos/apropiacion-1.jpg", "alt": "Jornada de geología con la comunidad de Cepitá" },
+        { "src": "assets/img/que-hacemos/apropiacion-2.jpg", "alt": "Niños de Cepitá trabajando sobre un mapa con integrantes del semillero" },
+        { "src": "assets/img/que-hacemos/apropiacion-3.jpg", "alt": "Stand del semillero en la feria de la Facultad de Salud" },
+        { "src": "assets/img/que-hacemos/apropiacion-4.jpg", "alt": "Jornada con la comunidad en La Laguna, Los Santos" }
+      ]
+    }
+  ]
+}

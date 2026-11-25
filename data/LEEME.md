@@ -123,3 +123,14 @@ Aviso de **próximo evento** en la portada (debajo de la foto principal). Copie 
 
 Enlaces de publicaciones de Instagram, las más recientes primero (se muestran 3 en la portada).
 Si la lista está vacía, la portada muestra un botón hacia @seget.uis.
+
+## que-hacemos.json
+
+Las tres secciones de "Qué hacemos" en la portada (Formación, Campo y Apropiación social). Al tocar una sección se muestran sus fotos, que cambian solas cada 4 segundos.
+
+- Las fotos van en `assets/img/que-hacemos/`. Se pueden poner las que se quieran por sección.
+- Cada foto lleva `alt`: una descripción corta de lo que se ve, para quien no puede ver la imagen.
+
+```json
+{ "src": "assets/img/que-hacemos/campo-5.jpg", "alt": "Integrantes midiendo una falla en la vía a Zapatoca" }
+```
