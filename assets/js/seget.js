@@ -269,7 +269,7 @@ function chipCategoria(c) {
   return `<span class="chip" data-cat="${esc(c)}">${esc(c)}</span>`;
 }
 
-// conTipo: la etiqueta de tipo solo se muestra cuando la lista mezcla tipos de actividad
+// conTipo: el tipo de actividad solo se nombra en la ficha cuando la lista mezcla tipos (la tarjeta no lleva etiqueta)
 function tarjetaActividad(a, conTipo = true) {
   const foto = a.imagenes && a.imagenes[0];
   const n = (a.imagenes || []).length;
@@ -282,7 +282,6 @@ function tarjetaActividad(a, conTipo = true) {
       ${n > 1 ? `<span class="conteo">${n} fotos</span>` : ""}
     </div>
     <div class="actividad-cuerpo">
-      ${conTipo ? `<span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>` : ""}
       <h3>${esc(a.titulo)}</h3>
       <div class="actividad-meta">${esc(a.fecha)}${a.lugar ? " · " + esc(a.lugar) : ""}</div>
     </div>`;
@@ -486,7 +485,11 @@ async function paginaInicio() {
   if (acts) {
     const lista = ordenar(acts);
     const cont = $("#ultimas");
-    lista.slice(0, 3).forEach((a) => cont.append(tarjetaActividad(a)));
+    // La charla, el taller y la salida de campo más recientes: se actualiza solo al añadir una actividad nueva
+    ["Charla", "Taller", "Salida de campo"]
+      .map((c) => lista.find((a) => a.categoria === c))
+      .filter(Boolean)
+      .forEach((a) => cont.append(tarjetaActividad(a)));
     const salidas = acts.filter((a) => a.categoria === "Salida de campo" || a.categoria === "Apropiación social").length;
     $("#c-actividades").textContent = acts.length;
     $("#c-salidas").textContent = salidas;
@@ -640,6 +643,20 @@ async function paginaActividades() {
   }
   aplicarModo();
   pintar();
+  entradaLista(cont);
+}
+
+// Al llegar a la página (desde Inicio o el menú): el título y el texto suben y las tarjetas entran
+// una tras otra. Solo la primera vez; los filtros ya tienen su propia transición.
+function entradaLista(cont) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !cont.animate) return;
+  const curva = "cubic-bezier(.23, 1, .32, 1)";
+  [$(".cabecera .migas"), $(".cabecera h1"), $(".cabecera .lead"), $(".filtros-grupo")].filter(Boolean).forEach((el, i) => {
+    el.animate([{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], { duration: 560, delay: i * 70, easing: curva, fill: "backwards" });
+  });
+  [...cont.children].forEach((el, i) => {
+    el.animate([{ opacity: 0, transform: "translateY(18px)" }, { opacity: 1, transform: "none" }], { duration: 620, delay: 220 + Math.min(i, 8) * 60, easing: curva, fill: "backwards" });
+  });
 }
 
 /* ---------- Equipo: tarjeta con foto; al tocarla se abre la ficha ---------- */
