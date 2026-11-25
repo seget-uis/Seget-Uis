@@ -444,8 +444,6 @@ dialog.detalle::backdrop { background: rgba(30, 35, 24, .6); }
 .destacado-fotos img:first-child { grid-column: span 2; aspect-ratio: 16 / 9; }
 @media (max-width: 860px) { .destacado { grid-template-columns: 1fr; } }
 
-.lista-temas { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 18px 0 0; list-style: none; }
-.lista-temas li { padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--linea); font-size: .88rem; background: var(--papel); }
 
 /* ---------- Citas ---------- */
 .cita { font-family: var(--serif); font-size: clamp(1.25rem, 2.4vw, 1.7rem); line-height: 1.4; color: var(--bosque); border-left: 4px solid var(--falla); padding-left: 22px; margin: 0; }
@@ -692,4 +690,105 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 
 @media (prefers-reduced-motion: reduce) {
   dialog.detalle[open], dialog.ficha-miembro[open], dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation: none; }
+}
+
+/* ==========================================================
+   ¿Quiénes somos? (nosotros.html)
+   ========================================================== */
+
+/* Apertura: título, presentación y fotos en una sola pantalla */
+.cn-apertura { padding: clamp(36px, 5vw, 64px) 0 clamp(48px, 6vw, 88px); }
+.cn-apertura-rejilla { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+.cn-apertura h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); margin-bottom: .4em; }
+.cn-apertura .lead { color: var(--tinta); font-size: 1.2rem; line-height: 1.55; margin: 0 0 1em; max-width: 52ch; }
+.cn-apertura-texto p:not(.lead) { color: var(--gris); font-size: 1.05rem; line-height: 1.65; max-width: 56ch; }
+.cn-apertura-fotos { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; }
+.cn-apertura-fotos img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radio); display: block; }
+.cn-f1 { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+.cn-f3 { aspect-ratio: 4 / 3; }
+
+/* ¿Qué investigamos?: tres estratos, del más claro arriba al más oscuro abajo */
+.cn-estratos { --h: 128px; margin-top: clamp(28px, 4vw, 48px); }
+.cn-lineas-lista { list-style: none; margin: 0; padding: 0; display: grid; }
+.cn-lineas-lista li { box-sizing: border-box; min-height: var(--h); padding: 20px 28px; display: flex; flex-direction: column; justify-content: center; background: var(--capa); }
+.cn-lineas-lista li:nth-child(1) { --capa: #E6E7D6; border-radius: var(--radio) var(--radio) 0 0; }
+.cn-lineas-lista li:nth-child(2) { --capa: var(--verde-claro); }
+.cn-lineas-lista li:nth-child(3) { --capa: #D1D6B8; border-radius: 0 0 var(--radio) var(--radio); }
+.cn-num { display: block; font-family: var(--mono); font-size: .8rem; color: var(--verde); margin-bottom: 14px; }
+.cn-lineas-lista h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); margin: 0; color: var(--bosque); }
+
+/* Temas: índice numerado de cuaderno, alineado a tres columnas */
+.cn-temas-titulo { font-family: var(--mono); font-size: .8rem; font-weight: 400; color: var(--gris); margin: clamp(36px, 5vw, 56px) 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--linea); }
+.cn-temas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); counter-reset: tema; }
+.cn-temas li { position: relative; counter-increment: tema; display: flex; gap: 14px; align-items: baseline; padding: 14px 24px 14px 0; font-size: 1.05rem; }
+.cn-temas li:not(:nth-child(3n+1)) { padding-left: 24px; }
+.cn-temas li::before { content: counter(tema, decimal-leading-zero); font-family: var(--mono); font-size: .76rem; color: var(--gris); transition: color .2s var(--ease-out); }
+.cn-temas li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--linea); transform-origin: left; }
+@media (hover: hover) {
+  .cn-temas li { transition: transform .2s var(--ease-out); }
+  .cn-temas li:hover { transform: translateX(4px); }
+  .cn-temas li:hover::before { color: var(--verde); }
+}
+
+/* ¿Por qué lo hacemos? y las citas */
+.cn-porque-rejilla { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+.cn-porque .lead { max-width: 40ch; }
+.cn-citas { display: grid; gap: 28px; }
+.cn-citas-titulo { font-family: var(--mono); font-size: .8rem; font-weight: 400; color: var(--ocre); margin: 0; }
+.cn-citas .cita { position: relative; border-left: 0; }
+.cn-citas .cita::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--falla); transform-origin: top; }
+
+/* ¿Estás pensando en unirte? */
+.cn-unete-rejilla { display: grid; grid-template-columns: 6fr 5fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
+.cn-unete-foto { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radio); }
+
+@media (max-width: 860px) {
+  .cn-apertura-rejilla, .cn-porque-rejilla, .cn-unete-rejilla { grid-template-columns: 1fr; }
+  .cn-estratos { --h: 150px; }
+  .cn-lineas-lista li { padding: 20px 18px; }
+  .cn-temas { grid-template-columns: 1fr; }
+  .cn-temas li, .cn-temas li:not(:nth-child(3n+1)) { padding-left: 0; padding-right: 0; }
+  .cn-unete-foto { order: 2; }
+}
+
+/* ---------- Movimiento (solo con .cn-anim, que el JS no pone si se pide reducir movimiento) ---------- */
+@keyframes cn-sube { from { opacity: 0; transform: translateY(var(--d, 14px)); } to { opacity: 1; transform: none; } }
+@keyframes cn-aparece { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cn-corte {
+  from { clip-path: polygon(0 0, 0 0, -16% 100%, 0 100%); transform: scale(1.05); }
+  to { clip-path: polygon(0 0, 116% 0, 100% 100%, 0 100%); transform: none; }
+}
+@keyframes cn-deposita { from { opacity: 0; transform: translateY(-36px); } to { opacity: 1; transform: none; } }
+@keyframes cn-raya-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes cn-raya-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+/* Apertura: entra una vez al cargar. Título primero, texto detrás, fotos con corte diagonal */
+.cn-anim .cn-apertura h1 { --d: 18px; animation: cn-sube .7s var(--ease-out) both; }
+.cn-anim .cn-apertura .lead { --d: 10px; animation: cn-sube .6s var(--ease-out) 90ms both; }
+.cn-anim .cn-apertura-texto p:not(.lead) { animation: cn-aparece .6s var(--ease-out) 170ms both; }
+.cn-anim .cn-apertura-texto p:not(.lead) + p { animation-delay: 210ms; }
+.cn-anim .cn-f1 { animation: cn-corte 1s var(--ease-in-out) 120ms both; }
+.cn-anim .cn-f2 { animation: cn-corte .9s var(--ease-in-out) 300ms both; }
+.cn-anim .cn-f3 { animation: cn-corte .9s var(--ease-in-out) 360ms both; }
+
+/* Los bloques de abajo esperan pausados hasta entrar en pantalla (.cn-visto) */
+.cn-anim .cn-lineas-lista li { animation: cn-deposita .7s var(--ease-out) both paused; }
+.cn-anim .cn-lineas-lista li:nth-child(2) { animation-delay: 200ms; }
+.cn-anim .cn-lineas-lista li:nth-child(1) { animation-delay: 360ms; }
+.cn-anim .cn-temas li { animation: cn-aparece .45s var(--ease-out) calc(560ms + var(--i, 0) * 40ms) both paused; }
+.cn-anim .cn-temas li::after { animation: cn-raya-x .7s var(--ease-out) calc(540ms + var(--i, 0) * 40ms) both paused; }
+.cn-anim .cn-citas-titulo { animation: cn-aparece .5s var(--ease-out) both paused; }
+.cn-anim .cn-citas .cita::before { animation: cn-raya-y .7s var(--ease-in-out) both paused; }
+.cn-anim .cn-citas .cita { --d: 8px; animation: cn-sube .7s var(--ease-out) 180ms both paused; }
+.cn-anim .cn-citas .cita + .cita::before { animation-delay: 160ms; }
+.cn-anim .cn-citas .cita + .cita { animation-delay: 320ms; }
+.cn-anim .cn-unete-foto { animation: cn-corte 1s var(--ease-in-out) both paused; }
+.cn-anim .cn-visto, .cn-anim .cn-visto *, .cn-anim .cn-visto *::before, .cn-anim .cn-visto *::after { animation-play-state: running !important; }
+
+/* Móvil estrecho: la marca del encabezado cabe en una línea */
+@media (max-width: 480px) {
+  .marca { gap: 10px; }
+  .marca img { width: 48px; height: 45px; }
+  .marca strong { font-size: 1.45rem; }
+  .marca small { font-size: .68rem; letter-spacing: .02em; white-space: nowrap; }
 }
