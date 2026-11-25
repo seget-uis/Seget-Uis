@@ -83,14 +83,16 @@ async function cargar(ruta) {
   }
 }
 
-/* Divisor de estratos con un pequeño salto de falla */
+/* Divisor de estratos cortado por una falla: el bloque izquierdo queda 10 px más abajo
+   (en la portada baja animado una vez; ver .bloque-izq en el CSS). */
 function estratosSVG(fondo = "var(--arena)", invertido = false) {
-  return `<svg class="estratos${invertido ? " estratos--invertido" : ""}" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true">
-    <rect width="1200" height="46" fill="${fondo}"/>
-    <path d="M0 14 H640 L668 22 H1200 V46 H0Z" fill="#D4A73E"/>
-    <path d="M0 24 H640 L668 32 H1200 V46 H0Z" fill="#8C8A5E"/>
-    <path d="M0 33 H640 L668 41 H1200 V46 H0Z" fill="#2C3A1F"/>
-    <path d="M630 4 L680 46" stroke="#984821" stroke-width="3"/>
+  const capas = `<rect y="16" width="1440" height="11" fill="#D4A73E"/><rect y="27" width="1440" height="11" fill="#984821"/><rect y="38" width="1440" height="30" fill="#2C3A1F"/>`;
+  return `<svg class="estratos${invertido ? " estratos--invertido" : ""}" viewBox="0 0 1440 54" preserveAspectRatio="none" aria-hidden="true">
+    <defs><clipPath id="estr-izq"><path d="M0 0H600L592 54H0Z"/></clipPath><clipPath id="estr-der"><path d="M600 0H1440V54H592Z"/></clipPath></defs>
+    <rect width="1440" height="54" fill="${fondo}"/>
+    <g clip-path="url(#estr-der)">${capas}</g>
+    <g clip-path="url(#estr-izq)"><g class="bloque-izq">${capas}</g></g>
+    <path d="M600 0L592 54" stroke="#984821" stroke-width="2"/>
   </svg>`;
 }
 
