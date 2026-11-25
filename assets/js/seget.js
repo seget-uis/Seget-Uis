@@ -643,46 +643,156 @@ async function paginaIntegrantes() {
   });
 }
 
+/* ---------- Proyectos: una fila por proyecto (texto y cuatro fotos); al tocarla se abre su ficha completa ---------- */
+let fichaProyecto;
+function abrirProyecto(p, rel) {
+  if (!fichaProyecto) {
+    fichaProyecto = document.createElement("dialog");
+    fichaProyecto.className = "ficha-proyecto";
+    fichaProyecto.setAttribute("aria-labelledby", "fp-titulo");
+    document.body.append(fichaProyecto);
+    fichaProyecto.addEventListener("click", (e) => { if (e.target === fichaProyecto) fichaProyecto.close(); });
+    fichaProyecto.addEventListener("close", () => { if (location.hash) history.replaceState(null, "", location.pathname); });
+  }
+  const { fotos, acts } = rel;
+  fichaProyecto.innerHTML = `
+    <button type="button" class="ficha-cerrar" aria-label="Cerrar">×</button>
+    <div class="fp-cuerpo">
+      <p class="fp-dato">${esc(p.anio)} · ${esc(p.lugar)}</p>
+      <h2 id="fp-titulo">${esc(p.titulo)}</h2>
+      <p class="lead">${esc(p.resumen)}</p>
+      <div class="fp-columnas">
+        <div class="fp-texto">${(p.descripcion || []).map((t) => `<p>${esc(t)}</p>`).join("")}</div>
+        ${acts.length ? `<div><h3 class="fp-sub fp-sub--arriba">Actividades del proyecto</h3><ul class="fp-actividades">${acts.map((a, k) => `<li><button type="button" data-a="${k}"><span>${esc(a.titulo)}</span><small>${esc(a.fecha)}</small></button></li>`).join("")}</ul></div>` : ""}
+      </div>
+      ${fotos.length ? `<h3 class="fp-sub">Fotos</h3><div class="fp-fotos">${fotos.map((f, k) => `<button type="button" data-f="${k}" aria-label="Ampliar foto ${k + 1}"><img src="${esc(f.src)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
+      ${(p.videos || []).length ? `<h3 class="fp-sub">Videos</h3><div class="fp-videos">${p.videos.map(videoHTML).join("")}</div>` : ""}
+    </div>`;
+  $(".ficha-cerrar", fichaProyecto).addEventListener("click", () => fichaProyecto.close());
+  fichaProyecto.querySelectorAll("[data-f]").forEach((b) => b.addEventListener("click", () => { const f = fotos[b.dataset.f]; abrirDetalle(f.a, f.i, false); }));
+  fichaProyecto.querySelectorAll("[data-a]").forEach((b) => b.addEventListener("click", () => abrirDetalle(acts[b.dataset.a], 0, false)));
+  if (!fichaProyecto.open) fichaProyecto.showModal();
+  fichaProyecto.scrollTop = 0;
+  // El contenido entra por partes al abrir; las fotos y los videos, cuando se llega a ellos
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+    const abierta = performance.now();
+    fichaProyecto.classList.add("fp-anim");
+    fichaProyecto.querySelectorAll(".fp-fotos button").forEach((el, i) => el.style.setProperty("--i", Math.min(i, 8)));
+    const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
+      if (!e.isIntersecting) return;
+      // Si ya se ve al abrir, espera a que entren el título y el texto
+      if (performance.now() - abierta < 400) e.target.style.setProperty("--base", "380ms");
+      e.target.classList.add("fp-visto"); io.unobserve(e.target);
+    }), { root: fichaProyecto, threshold: 0.15 });
+    fichaProyecto.querySelectorAll(".fp-fotos, .fp-videos").forEach((el) => io.observe(el));
+  }
+  history.replaceState(null, "", "#" + p.id);
+}
+
 async function paginaProyectos() {
   const [proys, acts] = await Promise.all([cargar("data/proyectos.json"), cargar("data/actividades.json")]);
   const cont = $("#lista-proyectos");
   if (!proys) { cont.innerHTML = '<p class="vacio">No se pudieron cargar los proyectos.</p>'; return; }
-  cont.innerHTML = "";
-  proys.forEach((p) => {
-    const relacionadas = (acts || []).filter((a) => a.proyecto === p.id);
-    const fotos = relacionadas.flatMap((a) => (a.imagenes || []).map((src, i) => ({ a, src, i }))).slice(0, 8);
-    const bloque = document.createElement("section");
-    bloque.className = "proyecto-bloque";
-    bloque.id = p.id;
-    const el = document.createElement("article");
-    el.className = "proyecto";
-    bloque.append(el);
-    el.innerHTML = `
-      <div class="proyecto-portada"><img src="${esc(p.portada)}" alt="" loading="lazy"></div>
-      <div>
-        <span class="etiqueta">Proyecto ${esc(p.anio)}</span>
-        <h2>${esc(p.titulo)}</h2>
-        <p class="lead">${esc(p.resumen)}</p>
-        <dl class="ficha">
-          <dt>Modalidad</dt><dd>${esc(p.modalidad)}</dd>
-          <dt>Lugar</dt><dd>${esc(p.lugar)}</dd>
-          ${(p.aliados || []).length ? `<dt>Aliados</dt><dd>${p.aliados.map(esc).join(", ")}</dd>` : ""}
-        </dl>
-        ${(p.descripcion || []).map((t) => `<p>${esc(t)}</p>`).join("")}
-        ${fotos.length ? `<div class="mini-galeria">${fotos.map((f, k) => `<button type="button" data-k="${k}" aria-label="Ver foto"><img src="${esc(f.src)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
-      </div>`;
-    el.querySelectorAll(".mini-galeria button").forEach((b) => {
-      const f = fotos[b.dataset.k];
-      b.addEventListener("click", () => abrirDetalle(f.a, f.i));
-    });
-    if ((p.videos || []).length) {
-      const v = document.createElement("div");
-      v.className = "rejilla rejilla--2 mt-3";
-      v.innerHTML = p.videos.map(videoHTML).join("");
-      bloque.append(v);
-    }
-    cont.append(bloque);
+  const datos = proys.map((p) => {
+    const rel = (acts || []).filter((a) => a.proyecto === p.id);
+    return { p, acts: rel, fotos: rel.flatMap((a) => (a.imagenes || []).map((src, i) => ({ a, src, i }))) };
   });
+  const cuenta = (n, uno, varios) => (n ? `${n} ${n === 1 ? uno : varios}` : "");
+  cont.innerHTML = datos.map(({ p, acts: rel, fotos }, k) => {
+    const portada = fotos.find((f) => f.src === p.portada);
+    const cuatro = [portada, ...fotos.filter((f) => f !== portada)].filter(Boolean).slice(0, 4);
+    return `
+    <article class="py-portada" id="${esc(p.id)}">
+      <button type="button" class="py-boton" data-k="${k}" aria-label="Ver el proyecto ${esc(p.titulo)}">
+        <div class="py-panel">
+          <p class="py-dato">${esc(p.anio)} · ${esc(p.lugar)}</p>
+          <h2>${esc(p.titulo)}</h2>
+          <p class="py-resumen">${esc(p.resumen)}</p>
+          <p class="py-pie"><span>${[cuenta(fotos.length, "foto", "fotos"), cuenta((p.videos || []).length, "video", "videos"), cuenta(rel.length, "actividad", "actividades")].filter(Boolean).join(" · ")}</span><span class="py-ver">Ver proyecto</span></p>
+        </div>
+        <div class="py-fotos" data-n="${cuatro.length}">${cuatro.map((f) => `<span><img src="${esc(f.src)}" alt="" loading="lazy"></span>`).join("")}</div>
+      </button>
+    </article>`;
+  }).join("");
+  cont.querySelectorAll(".py-boton").forEach((b) => b.addEventListener("click", () => { const d = datos[b.dataset.k]; abrirProyecto(d.p, d); }));
+  // Cada fila se anima una sola vez al entrar en pantalla (nada con movimiento reducido)
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("py-anim");
+    const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("py-visto"); io.unobserve(e.target); }
+    }), { threshold: 0.25 });
+    cont.querySelectorAll(".py-portada").forEach((el) => io.observe(el));
+  }
+  rotarFotosProyectos(cont, datos);
+  // proyectos.html#id abre directamente la ficha de ese proyecto
+  const desdeHash = datos.find((d) => "#" + d.p.id === location.hash);
+  if (desdeHash) abrirProyecto(desdeHash.p, desdeHash);
+}
+
+// Las cuatro fotos de cada proyecto cambian solas, una casilla a la vez, con un fundido.
+// Se detienen al pasar el cursor o con el botón de pausa, y no se mueven con movimiento reducido.
+function rotarFotosProyectos(cont, datos) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const filas = [...cont.querySelectorAll(".py-portada")].map((art, k) => {
+    const casillas = [...art.querySelectorAll(".py-fotos span")];
+    const vistas = casillas.map((c) => c.querySelector("img").getAttribute("src"));
+    const resto = datos[k].fotos.map((f) => f.src).filter((src) => !vistas.includes(src));
+    return { art, casillas, vistas, resto, paso: 0, visible: false, encima: false };
+  }).filter((f) => f.resto.length && f.casillas.length === 4);
+  if (!filas.length) return;
+
+  const barra = document.createElement("div");
+  barra.className = "py-controles";
+  const pausa = document.createElement("button");
+  pausa.type = "button";
+  pausa.className = "qh-pausa py-pausa";
+  barra.append(pausa);
+  cont.prepend(barra);
+  let pausado = false, reloj = null, turno = 0;
+  const ORDEN = [0, 3, 1, 2]; // en diagonal, para que el cambio se reparta por la hoja
+
+  function rotular() {
+    pausa.textContent = pausado ? "▶ Reanudar fotos" : "❚❚ Pausar fotos";
+    pausa.setAttribute("aria-pressed", String(pausado));
+  }
+  function cambiar(f) {
+    const n = ORDEN[f.paso % 4];
+    f.paso++;
+    const casilla = f.casillas[n];
+    const nueva = f.resto.shift();
+    f.resto.push(f.vistas[n]);
+    f.vistas[n] = nueva;
+    const im = new Image();
+    im.alt = ""; im.decoding = "async"; im.className = "py-entra";
+    im.onload = () => {
+      casilla.append(im);
+      requestAnimationFrame(() => requestAnimationFrame(() => im.classList.add("py-lista")));
+      setTimeout(() => { [...casilla.querySelectorAll("img")].slice(0, -1).forEach((x) => x.remove()); im.classList.remove("py-entra", "py-lista"); }, 900);
+    };
+    im.src = nueva;
+  }
+  function programar() {
+    clearTimeout(reloj);
+    if (pausado || document.hidden) return;
+    reloj = setTimeout(() => {
+      const activas = filas.filter((f) => f.visible && !f.encima);
+      if (activas.length) cambiar(activas[turno++ % activas.length]);
+      programar();
+    }, 2600);
+  }
+  const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
+    const f = filas.find((x) => x.art === e.target);
+    if (f) f.visible = e.isIntersecting;
+  }), { threshold: 0.4 });
+  filas.forEach((f) => {
+    io.observe(f.art);
+    f.art.addEventListener("mouseenter", () => { f.encima = true; });
+    f.art.addEventListener("mouseleave", () => { f.encima = false; });
+  });
+  pausa.addEventListener("click", () => { pausado = !pausado; rotular(); programar(); });
+  document.addEventListener("visibilitychange", programar);
+  rotular();
+  programar();
 }
 
 /* ---------- Material científico (pósters, tesis y artículos) ---------- */
