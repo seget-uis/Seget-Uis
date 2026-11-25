@@ -673,6 +673,19 @@ function abrirProyecto(p, rel) {
   fichaProyecto.querySelectorAll("[data-a]").forEach((b) => b.addEventListener("click", () => abrirDetalle(acts[b.dataset.a], 0, false)));
   if (!fichaProyecto.open) fichaProyecto.showModal();
   fichaProyecto.scrollTop = 0;
+  // El contenido entra por partes al abrir; las fotos y los videos, cuando se llega a ellos
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+    const abierta = performance.now();
+    fichaProyecto.classList.add("fp-anim");
+    fichaProyecto.querySelectorAll(".fp-fotos button").forEach((el, i) => el.style.setProperty("--i", Math.min(i, 8)));
+    const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
+      if (!e.isIntersecting) return;
+      // Si ya se ve al abrir, espera a que entren el título y el texto
+      if (performance.now() - abierta < 400) e.target.style.setProperty("--base", "380ms");
+      e.target.classList.add("fp-visto"); io.unobserve(e.target);
+    }), { root: fichaProyecto, threshold: 0.15 });
+    fichaProyecto.querySelectorAll(".fp-fotos, .fp-videos").forEach((el) => io.observe(el));
+  }
   history.replaceState(null, "", "#" + p.id);
 }
 
@@ -710,9 +723,76 @@ async function paginaProyectos() {
     }), { threshold: 0.25 });
     cont.querySelectorAll(".py-portada").forEach((el) => io.observe(el));
   }
+  rotarFotosProyectos(cont, datos);
   // proyectos.html#id abre directamente la ficha de ese proyecto
   const desdeHash = datos.find((d) => "#" + d.p.id === location.hash);
   if (desdeHash) abrirProyecto(desdeHash.p, desdeHash);
+}
+
+// Las cuatro fotos de cada proyecto cambian solas, una casilla a la vez, con un fundido.
+// Se detienen al pasar el cursor o con el botón de pausa, y no se mueven con movimiento reducido.
+function rotarFotosProyectos(cont, datos) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const filas = [...cont.querySelectorAll(".py-portada")].map((art, k) => {
+    const casillas = [...art.querySelectorAll(".py-fotos span")];
+    const vistas = casillas.map((c) => c.querySelector("img").getAttribute("src"));
+    const resto = datos[k].fotos.map((f) => f.src).filter((src) => !vistas.includes(src));
+    return { art, casillas, vistas, resto, paso: 0, visible: false, encima: false };
+  }).filter((f) => f.resto.length && f.casillas.length === 4);
+  if (!filas.length) return;
+
+  const barra = document.createElement("div");
+  barra.className = "py-controles";
+  const pausa = document.createElement("button");
+  pausa.type = "button";
+  pausa.className = "qh-pausa py-pausa";
+  barra.append(pausa);
+  cont.prepend(barra);
+  let pausado = false, reloj = null, turno = 0;
+  const ORDEN = [0, 3, 1, 2]; // en diagonal, para que el cambio se reparta por la hoja
+
+  function rotular() {
+    pausa.textContent = pausado ? "▶ Reanudar fotos" : "❚❚ Pausar fotos";
+    pausa.setAttribute("aria-pressed", String(pausado));
+  }
+  function cambiar(f) {
+    const n = ORDEN[f.paso % 4];
+    f.paso++;
+    const casilla = f.casillas[n];
+    const nueva = f.resto.shift();
+    f.resto.push(f.vistas[n]);
+    f.vistas[n] = nueva;
+    const im = new Image();
+    im.alt = ""; im.decoding = "async"; im.className = "py-entra";
+    im.onload = () => {
+      casilla.append(im);
+      requestAnimationFrame(() => requestAnimationFrame(() => im.classList.add("py-lista")));
+      setTimeout(() => { [...casilla.querySelectorAll("img")].slice(0, -1).forEach((x) => x.remove()); im.classList.remove("py-entra", "py-lista"); }, 900);
+    };
+    im.src = nueva;
+  }
+  function programar() {
+    clearTimeout(reloj);
+    if (pausado || document.hidden) return;
+    reloj = setTimeout(() => {
+      const activas = filas.filter((f) => f.visible && !f.encima);
+      if (activas.length) cambiar(activas[turno++ % activas.length]);
+      programar();
+    }, 2600);
+  }
+  const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
+    const f = filas.find((x) => x.art === e.target);
+    if (f) f.visible = e.isIntersecting;
+  }), { threshold: 0.4 });
+  filas.forEach((f) => {
+    io.observe(f.art);
+    f.art.addEventListener("mouseenter", () => { f.encima = true; });
+    f.art.addEventListener("mouseleave", () => { f.encima = false; });
+  });
+  pausa.addEventListener("click", () => { pausado = !pausado; rotular(); programar(); });
+  document.addEventListener("visibilitychange", programar);
+  rotular();
+  programar();
 }
 
 /* ---------- Material científico (pósters, tesis y artículos) ---------- */

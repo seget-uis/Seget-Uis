@@ -498,6 +498,28 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 .py-anim .py-resumen { animation: cn-aparece .6s var(--ease-out) 180ms both paused; }
 .py-anim .py-pie { animation: cn-aparece .6s var(--ease-out) 260ms both paused; }
 .py-anim .py-visto *, .py-anim .py-visto { animation-play-state: running !important; }
+
+/* Ficha del proyecto: la caja entra (ficha-abre) y su contenido la sigue por partes,
+   del título hacia abajo; las fotos llegan en ola corta y los videos al verse */
+.fp-anim .fp-dato { animation: cn-aparece .4s var(--ease-out) 80ms both; }
+.fp-anim .fp-cuerpo h2 { --d: 12px; animation: cn-sube .55s var(--ease-out) 100ms both; }
+.fp-anim .fp-cuerpo > .lead { --d: 8px; animation: cn-sube .55s var(--ease-out) 170ms both; }
+.fp-anim .fp-columnas > * { --d: 10px; animation: cn-sube .6s var(--ease-out) 240ms both; }
+.fp-anim .fp-columnas > .fp-texto { animation-delay: 300ms; }
+.fp-anim .fp-actividades li { position: relative; border-bottom: 0; }
+.fp-anim .fp-actividades li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--linea); transform-origin: left; animation: cn-raya-x .6s var(--ease-out) 380ms both; }
+.fp-anim .fp-actividades li + li::after { animation-delay: 440ms; }
+.fp-anim .fp-fotos button { --d: 12px; animation: cn-sube .5s var(--ease-out) calc(var(--base, 0ms) + var(--i, 0) * 35ms) both paused; }
+.fp-anim .fp-videos > * { --d: 12px; animation: cn-sube .6s var(--ease-out) var(--base, 0ms) both paused; }
+.fp-anim .fp-videos > * + * { animation-delay: calc(var(--base, 0ms) + 80ms); }
+.fp-anim .fp-visto > * { animation-play-state: running !important; }
+
+/* Rotación de fotos en el listado: la nueva se funde encima de la anterior */
+.py-controles { display: flex; justify-content: flex-end; padding: 14px 0 0; }
+.py-pausa { position: static; background: var(--arena); }
+.py-fotos span { position: relative; }
+.py-fotos img.py-entra { position: absolute; inset: 0; opacity: 0; transition: opacity .8s var(--ease-in-out), transform .5s var(--ease-out); }
+.py-fotos img.py-entra.py-lista { opacity: 1; }
 /* ---------- Bloque destacado ---------- */
 .destacado { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
 .destacado-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
