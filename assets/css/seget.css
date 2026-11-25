@@ -1003,3 +1003,10 @@ dialog.visor .next { right: clamp(8px, 2vw, 24px); }
   dialog.visor .nav-foto { top: auto; bottom: 12px; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) { dialog.visor[open] { animation: none; } }
+
+/* Inicio: en vez de "Ver todas", un enlace a cada sección del menú */
+.secciones-actividad { display: flex; flex-wrap: wrap; gap: 6px 22px; justify-content: flex-end; }
+.secciones-actividad a { font-weight: 600; color: var(--bosque); text-decoration: none; padding: 6px 0; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size .3s var(--ease-out), color .2s; }
+@media (hover: hover) { .secciones-actividad a:hover { color: var(--verde); background-size: 100% 1.5px; } }
+.secciones-actividad a:focus-visible { outline: 3px solid var(--ocre); outline-offset: 3px; border-radius: 2px; }
+@media (max-width: 760px) { .secciones-actividad { justify-content: flex-start; } }
