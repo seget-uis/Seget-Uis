@@ -547,7 +547,7 @@ dialog.detalle::backdrop { background: rgba(30, 35, 24, .6); }
 .chip[data-cat="Stand"] { --u: var(--u-stand); }
 .chip[data-cat="Apropiación social"] { --u: var(--u-charla); }
 .chip[data-cat="Póster"] { --u: var(--u-taller); }
-.chip[data-cat="Tesis"], .chip[data-cat="En desarrollo"], .chip[data-cat="Terminada"] { --u: var(--u-curso); }
+.chip[data-cat="Tesis"] { --u: var(--u-curso); }
 .chip[data-cat="Artículo"] { --u: var(--u-salida); }
 .chip--desarrollo, .chip--terminada { border-radius: 4px; }
 
