@@ -485,7 +485,11 @@ async function paginaInicio() {
   if (acts) {
     const lista = ordenar(acts);
     const cont = $("#ultimas");
-    lista.slice(0, 3).forEach((a) => cont.append(tarjetaActividad(a)));
+    // La charla, el taller y la salida de campo más recientes: se actualiza solo al añadir una actividad nueva
+    ["Charla", "Taller", "Salida de campo"]
+      .map((c) => lista.find((a) => a.categoria === c))
+      .filter(Boolean)
+      .forEach((a) => cont.append(tarjetaActividad(a)));
     const salidas = acts.filter((a) => a.categoria === "Salida de campo" || a.categoria === "Apropiación social").length;
     $("#c-actividades").textContent = acts.length;
     $("#c-salidas").textContent = salidas;
