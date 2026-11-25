@@ -72,6 +72,7 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
   "anio": "2026",
   "autores": ["Nombre Apellido", "Nombre Apellido"],
   "director": "",
+  "codirector": "",
   "evento": "Nombre del evento, o \"Trabajo de grado, Escuela de Geología UIS\" para una tesis",
   "lugar": "Ciudad",
   "resumen": "Resumen corto (dos o tres frases).",
@@ -86,7 +87,7 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
 - `imagen`: foto o vista previa del póster o de la portada. Guárdela en `assets/img/material/`. Si está vacía se muestra un ícono de documento.
 - `archivo`: el PDF. Guárdelo en `assets/docs/material/` o pegue un enlace de Google Drive. Si está vacío, no aparece el botón de descarga.
 - `enlace`: opcional, por ejemplo el DOI del artículo o el repositorio de la UIS.
-- `director`: solo para tesis.
+- `director` y `codirector`: solo para tesis. Cada uno sale en su propia línea de la ficha.
 - `estado`: solo para tesis. Escriba `"En desarrollo"` si la tesis aún no se ha terminado; la tarjeta muestra una etiqueta "En desarrollo", sale primero y en la pestaña Tesis aparecen los botones Todas / Terminadas / En desarrollo. En `anio` ponga el año en que empezó. Para una tesis terminada, borre el campo o déjelo vacío.
 - Los bloques que tienen `"ejemplo": true` **no se muestran** en la página. Sirven de plantilla; para verlos abra `material.html?ejemplos`. Bórrelos cuando agregue trabajos reales.
 - Mientras no haya trabajos reales, la página muestra "Muy pronto".
