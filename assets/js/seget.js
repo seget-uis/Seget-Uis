@@ -205,9 +205,23 @@ function rutaPagina(p) {
   }
   return [];
 }
+/* ¿Quiénes somos?: cada bloque se anima una sola vez al entrar en pantalla.
+   Con movimiento reducido no se añade la clase y todo aparece quieto. */
+function animarNosotros() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  document.documentElement.classList.add("cn-anim");
+  const io = new IntersectionObserver((entradas) => {
+    entradas.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("cn-visto"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".cn-lineas, .cn-citas, .cn-unete").forEach((s) => io.observe(s));
+  document.querySelectorAll(".cn-temas li").forEach((li, i) => li.style.setProperty("--i", i));
+}
+
 function dibujarMigas(extra) {
   const p = document.body.dataset.pagina;
-  let nav = $(".cabecera .migas");
+  let nav = $(".cabecera .migas, .cn-apertura .migas");
   const etiqueta = $(".cabecera .etiqueta");
   if (!nav && !etiqueta) return;
   if (!nav) {
@@ -226,7 +240,8 @@ function dibujarMigas(extra) {
 }
 
 /* ---------- Actividades ---------- */
-function tarjetaActividad(a) {
+// conTipo: la etiqueta de tipo solo se muestra cuando la lista mezcla tipos de actividad
+function tarjetaActividad(a, conTipo = true) {
   const foto = a.imagenes && a.imagenes[0];
   const n = (a.imagenes || []).length;
   const b = document.createElement("button");
@@ -238,16 +253,16 @@ function tarjetaActividad(a) {
       ${n > 1 ? `<span class="conteo">${n} fotos</span>` : ""}
     </div>
     <div class="actividad-cuerpo">
-      <span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>
+      ${conTipo ? `<span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>` : ""}
       <h3>${esc(a.titulo)}</h3>
       <div class="actividad-meta">${esc(a.fecha)}${a.lugar ? " · " + esc(a.lugar) : ""}</div>
     </div>`;
-  b.addEventListener("click", () => abrirDetalle(a));
+  b.addEventListener("click", () => abrirDetalle(a, 0, conTipo));
   return b;
 }
 
 let dialogo;
-function abrirDetalle(a, inicio = 0) {
+function abrirDetalle(a, inicio = 0, conTipo = true) {
   if (!dialogo) {
     dialogo = document.createElement("dialog");
     dialogo.className = "detalle";
@@ -265,7 +280,7 @@ function abrirDetalle(a, inicio = 0) {
       <span class="indice">${i + 1} / ${imgs.length}</span>` : ""}
     </div>` : ""}
     <div class="detalle-texto">
-      <span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>
+      ${conTipo ? `<span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>` : ""}
       <h2>${esc(a.titulo)}</h2>
       <div class="detalle-datos">
         <span><b>Fecha:</b> ${esc(a.fecha)}</span>
@@ -523,7 +538,8 @@ async function paginaActividades() {
     const varios = t && location.hash ? t.plural.toLowerCase() : "actividades";
     $("#total-actividades").textContent = `${vis.length} ${vis.length === 1 ? uno : varios}`;
     if (!vis.length) { cont.innerHTML = '<p class="vacio">No hay actividades con ese filtro.</p>'; return; }
-    vis.forEach((a) => cont.append(tarjetaActividad(a)));
+    const mixto = estado.cat === "Todas" && new Set(vis.map((a) => a.categoria)).size > 1;
+    vis.forEach((a) => cont.append(tarjetaActividad(a, mixto)));
   }
   aplicarModo();
   pintar();
@@ -829,6 +845,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   const p = document.body.dataset.pagina;
   if (p === "inicio") { paginaInicio(); queHacemos(); }
+  if (p === "nosotros") animarNosotros();
   dibujarMigas();
   sombraHeader();
   indicadorFiltros();
