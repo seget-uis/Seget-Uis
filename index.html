@@ -50,28 +50,21 @@
     </div>
   </section>
 
-  <section class="seccion">
-    <div class="contenedor">
-      <span class="etiqueta">Qué hacemos</span>
-      <h2>Entender la Tierra y <em class="acento">compartirlo</em></h2>
-      <p class="lead">Somos estudiantes de Geología que se reúnen cada semana para aprender, investigar y divulgar la geología estructural.</p>
-      <div class="rejilla rejilla--3 mt-3">
-        <div class="tarjeta">
-          <span class="num">01</span>
-          <h3>Formación</h3>
-          <p>Talleres, cursos y charlas para interpretar datos y estructuras: brújulas, cortes geológicos, proyección estereográfica, mecanismos focales e interpretación sísmica.</p>
-        </div>
-        <div class="tarjeta">
-          <span class="num">02</span>
-          <h3>Campo</h3>
-          <p>Salidas a afloramientos de Santander y Antioquia para medir, dibujar e interpretar fallas, pliegues y deformación en las rocas.</p>
-        </div>
-        <div class="tarjeta">
-          <span class="num">03</span>
-          <h3>Apropiación social</h3>
-          <p>Jornadas con colegios y comunidades, como Los Santos y Cepitá, para que la gente conozca la geología del territorio que habita.</p>
-        </div>
+  <section class="seccion" id="que-hacemos" aria-labelledby="qh-titulo">
+    <div class="contenedor qh">
+      <div>
+        <h2 id="qh-titulo">Entender la Tierra y <em>compartirlo</em></h2>
+        <p class="lead">Somos estudiantes de Geología que se reúnen cada semana para aprender, investigar y divulgar la geología estructural.</p>
+        <ul class="qh-lista">
+          <li class="activa"><button type="button" aria-expanded="true" aria-controls="qh-1"><span class="num">01</span><b>Formación</b></button>
+            <div class="qh-detalle" id="qh-1"><div><p>Talleres, cursos y charlas para interpretar datos y estructuras: brújulas, cortes geológicos, proyección estereográfica, mecanismos focales e interpretación sísmica.</p><div class="qh-puntos" aria-hidden="true"></div></div></div></li>
+          <li><button type="button" aria-expanded="false" aria-controls="qh-2"><span class="num">02</span><b>Campo</b></button>
+            <div class="qh-detalle" id="qh-2"><div><p>Salidas a afloramientos de Santander y Antioquia para medir, dibujar e interpretar fallas, pliegues y deformación en las rocas.</p><div class="qh-puntos" aria-hidden="true"></div></div></div></li>
+          <li><button type="button" aria-expanded="false" aria-controls="qh-3"><span class="num">03</span><b>Apropiación social</b></button>
+            <div class="qh-detalle" id="qh-3"><div><p>Jornadas con colegios y comunidades, como Los Santos y Cepitá, para que la gente conozca la geología del territorio que habita.</p><div class="qh-puntos" aria-hidden="true"></div></div></div></li>
+        </ul>
       </div>
+      <div class="qh-panel" aria-live="off"></div>
     </div>
   </section>
 

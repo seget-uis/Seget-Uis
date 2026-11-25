@@ -196,6 +196,35 @@ function dibujarFooter() {
   document.body.append(f);
 }
 
+/* ---------- Ruta de navegación (reemplaza la etiqueta roja sobre el título) ---------- */
+function rutaPagina(p) {
+  for (const m of MENU) {
+    if (m.id === p && (!m.hijos || m.href)) return [m];
+    const h = (m.hijos || []).find((x) => x.id === p && !x.href.includes("#"));
+    if (h) return [m, h];
+  }
+  return [];
+}
+function dibujarMigas(extra) {
+  const p = document.body.dataset.pagina;
+  let nav = $(".cabecera .migas");
+  const etiqueta = $(".cabecera .etiqueta");
+  if (!nav && !etiqueta) return;
+  if (!nav) {
+    nav = document.createElement("nav");
+    nav.className = "migas";
+    nav.setAttribute("aria-label", "Ruta de navegación");
+    etiqueta.replaceWith(nav);
+  }
+  const pasos = [{ texto: "Inicio", href: "index.html" }];
+  rutaPagina(p).forEach((m) => pasos.push({ texto: m.texto, href: m.href }));
+  if (p === "404") pasos.push({ texto: "Página no encontrada" });
+  if (extra) pasos.push({ texto: extra });
+  nav.innerHTML = `<ol>${pasos.map((x, i) => i === pasos.length - 1
+    ? `<li><span aria-current="page">${esc(x.texto)}</span></li>`
+    : `<li>${x.href ? `<a href="${esc(x.href)}">${esc(x.texto)}</a>` : esc(x.texto)}</li>`).join("")}</ol>`;
+}
+
 /* ---------- Actividades ---------- */
 function tarjetaActividad(a) {
   const foto = a.imagenes && a.imagenes[0];
@@ -281,6 +310,63 @@ document.addEventListener("click", (e) => {
 const ordenar = (lista) => [...lista].sort((x, y) => (y.fechaFin || "").localeCompare(x.fechaFin || ""));
 
 /* ---------- Páginas ---------- */
+/* ---------- Qué hacemos (portada) ----------
+   Al tocar una sección se muestran sus fotos (data/que-hacemos.json), que cambian
+   solas cada 4 s. Hay botón de pausa, y con "reducir movimiento" no cambian solas. */
+async function queHacemos() {
+  const raiz = $("#que-hacemos");
+  if (!raiz) return;
+  const datos = await cargar("data/que-hacemos.json");
+  const secciones = (datos && datos.secciones) || [];
+  const items = [...raiz.querySelectorAll(".qh-lista li")];
+  const panel = $(".qh-panel", raiz);
+  if (!secciones.length || !panel) { if (panel) panel.hidden = true; return; }
+  const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pausa = document.createElement("button");
+  pausa.type = "button";
+  pausa.className = "qh-pausa";
+  panel.append(pausa);
+  let s = 0, k = 0, imgs = [], reloj = null, pausado = quieto;
+
+  function rotular() {
+    pausa.textContent = pausado ? "▶ Reanudar fotos" : "❚❚ Pausar fotos";
+    pausa.setAttribute("aria-pressed", String(pausado));
+    raiz.classList.toggle("pausado", pausado);
+  }
+  function programar() {
+    clearTimeout(reloj);
+    if (!pausado && imgs.length > 1) reloj = setTimeout(() => { k = (k + 1) % imgs.length; mostrar(); }, 4000);
+  }
+  function mostrar() {
+    imgs.forEach((im, n) => im.classList.toggle("visible", n === k));
+    const p = $(".qh-puntos", items[s]);
+    if (p) p.innerHTML = imgs.length > 1 ? imgs.map((_, n) => `<i class="${n < k ? "visto" : n === k ? "actual" : ""}"></i>`).join("") : "";
+    programar();
+  }
+  function elegir(n) {
+    items.forEach((li, i) => {
+      li.classList.toggle("activa", i === n);
+      $("button", li).setAttribute("aria-expanded", String(i === n));
+      const p = $(".qh-puntos", li); if (p && i !== n) p.innerHTML = "";
+    });
+    s = n; k = 0;
+    panel.querySelectorAll("img").forEach((x) => x.remove());
+    imgs = ((secciones[n] || {}).fotos || []).map((f) => {
+      const im = new Image();
+      im.src = f.src; im.alt = f.alt || ""; im.decoding = "async";
+      panel.prepend(im);
+      return im;
+    });
+    pausa.hidden = imgs.length < 2;
+    mostrar();
+  }
+  items.forEach((li, n) => $("button", li).addEventListener("click", () => elegir(n)));
+  pausa.addEventListener("click", () => { pausado = !pausado; rotular(); mostrar(); });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) clearTimeout(reloj); else programar(); });
+  rotular();
+  elegir(0);
+}
+
 async function paginaInicio() {
   const [acts, equipo, noticias] = await Promise.all([
     cargar("data/actividades.json"), cargar("data/integrantes.json"), cargar("data/noticias.json"),
@@ -411,6 +497,7 @@ async function paginaActividades() {
     if (cabecera.h1) cabecera.h1.textContent = fijo ? TIPOS_ACTIVIDAD[estado.cat].plural : original.h1;
     if (cabecera.lead) cabecera.lead.textContent = fijo && TIPOS_ACTIVIDAD[estado.cat].lead ? TIPOS_ACTIVIDAD[estado.cat].lead + " Toca una para ver sus fotos." : original.lead;
     document.title = fijo ? `${TIPOS_ACTIVIDAD[estado.cat].plural} · SEGET UIS` : original.titulo;
+    dibujarMigas(fijo ? TIPOS_ACTIVIDAD[estado.cat].plural : "");
     const base = lista.filter((a) => estado.cat === "Todas" || a.categoria === estado.cat);
     const ans = ["Todos", ...new Set(base.map(anio))];
     if (!ans.includes(estado.anio)) estado.anio = "Todos";
@@ -442,23 +529,47 @@ async function paginaActividades() {
   pintar();
 }
 
-function tarjetaIntegrante(m, compacto) {
-  const foto = m.foto
-    ? `<img class="foto" src="${esc(m.foto)}" alt="Foto de ${esc(m.nombre)}" loading="lazy">`
-    : `<div class="foto foto--vacia" aria-hidden="true">${esc(iniciales(m.nombre))}</div>`;
-  if (compacto) return `<div class="integrante">${foto}<div><h3>${esc(m.nombre)}</h3></div></div>`;
+/* ---------- Equipo: tarjeta con foto; al tocarla se abre la ficha ---------- */
+function fotoMiembro(m) {
+  return m.foto
+    ? `<div class="miembro-foto"><img src="${esc(m.foto)}" alt="Foto de ${esc(m.nombre)}" loading="lazy"></div>`
+    : `<div class="miembro-foto"><span class="iniciales" aria-hidden="true">${esc(iniciales(m.nombre))}</span></div>`;
+}
+const rolMiembro = (m) => [m.cargo, (m.periodos || []).map(String).join(" · ")].filter(Boolean).join(" · ");
+
+function tarjetaIntegrante(m, i) {
+  return `<button type="button" class="miembro" data-i="${i}" aria-haspopup="dialog">
+    ${fotoMiembro(m)}
+    <div class="miembro-texto"><h3>${esc(m.nombre)}</h3><span class="rol">${esc(rolMiembro(m))}</span></div>
+  </button>`;
+}
+
+let fichaMiembro;
+function abrirMiembro(m) {
+  if (!fichaMiembro) {
+    fichaMiembro = document.createElement("dialog");
+    fichaMiembro.className = "ficha-miembro";
+    fichaMiembro.setAttribute("aria-labelledby", "ficha-nombre");
+    document.body.append(fichaMiembro);
+    fichaMiembro.addEventListener("click", (e) => { if (e.target === fichaMiembro) fichaMiembro.close(); });
+  }
   const enlaces = [
-    m.linkedin ? `<a href="${esc(m.linkedin)}" target="_blank" rel="noopener" aria-label="LinkedIn de ${esc(m.nombre)}">${ICONOS.linkedin}</a>` : "",
-    m.email ? `<a href="mailto:${esc(m.email)}" aria-label="Correo de ${esc(m.nombre)}">${ICONOS.correo}</a>` : "",
-    m.cvlac ? `<a href="${esc(m.cvlac)}" target="_blank" rel="noopener" aria-label="CvLAC de ${esc(m.nombre)}">${ICONOS.cvlac}</a>` : "",
+    m.email ? `<a href="mailto:${esc(m.email)}">Correo</a>` : "",
+    m.linkedin ? `<a href="${esc(m.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>` : "",
+    m.cvlac ? `<a href="${esc(m.cvlac)}" target="_blank" rel="noopener">CvLAC</a>` : "",
   ].join("");
-  return `<article class="integrante">
-    ${foto}
-    <h3>${esc(m.nombre)}</h3>
-    <div class="cargo">${esc(m.cargo)}</div>
-    ${m.descripcion ? `<p>${esc(m.descripcion)}</p>` : `<p class="pendiente">Descripción próximamente.</p>`}
-    ${enlaces ? `<div class="enlaces">${enlaces}</div>` : ""}
-  </article>`;
+  fichaMiembro.innerHTML = `<div class="ficha-cuerpo">
+    ${fotoMiembro(m)}
+    <div class="ficha-texto">
+      <button type="button" class="ficha-cerrar" aria-label="Cerrar">×</button>
+      <h2 id="ficha-nombre">${esc(m.nombre)}</h2>
+      <span class="rol">${esc(rolMiembro(m))}</span>
+      ${m.descripcion ? `<p>${esc(m.descripcion)}</p>` : `<p class="pendiente">Descripción próximamente.</p>`}
+      ${enlaces ? `<div class="ficha-enlaces">${enlaces}</div>` : ""}
+    </div>
+  </div>`;
+  $(".ficha-cerrar", fichaMiembro).addEventListener("click", () => fichaMiembro.close());
+  fichaMiembro.showModal();
 }
 
 async function paginaIntegrantes() {
@@ -469,19 +580,22 @@ async function paginaIntegrantes() {
   const todos = datos.integrantes || [];
   const actuales = todos.filter((m) => (m.periodos || []).map(String).includes(hoy));
   const anteriores = todos.filter((m) => !actuales.includes(m));
-  const grupo = (titulo, html, clase = "") => `<h2 class="grupo-titulo">${titulo}</h2><div class="integrantes${clase}">${html}</div>`;
+  const docentes = datos.docentes || [];
+  const fichas = [...docentes, ...actuales];
+  const grupo = (titulo, html, clase = "integrantes") => `<h2 class="grupo-titulo">${titulo}</h2><div class="${clase}">${html}</div>`;
   const anterior = (m) => {
-    const foto = m.foto
-      ? `<img class="foto" src="${esc(m.foto)}" alt="Foto de ${esc(m.nombre)}" loading="lazy">`
-      : `<div class="foto foto--vacia" aria-hidden="true">${esc(iniciales(m.nombre))}</div>`;
     const cargo = m.cargo && m.cargo !== "Integrante" ? `${esc(m.cargo)} · ` : "";
-    return `<div class="integrante">${foto}<div><h3>${esc(m.nombre)}</h3><span class="periodo-integrante">${cargo}${(m.periodos || []).map(esc).join(", ")}</span></div></div>`;
+    return `<li><b>${esc(m.nombre)}</b><span>${cargo}${(m.periodos || []).map(esc).join(" · ")}</span></li>`;
   };
   cont.innerHTML = [
-    (datos.docentes || []).length ? grupo(datos.docentes.length > 1 ? "Docentes" : "Docente", datos.docentes.map((m) => tarjetaIntegrante(m)).join("")) : "",
-    grupo("Miembros actuales", actuales.map((m) => tarjetaIntegrante(m)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
-    anteriores.length ? grupo("Antiguos miembros", anteriores.map(anterior).join(""), " integrantes--compacto") : "",
+    docentes.length ? grupo(docentes.length > 1 ? "Docentes" : "Docente", docentes.map((m, i) => tarjetaIntegrante(m, i)).join("")) : "",
+    grupo("Miembros actuales", actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
+    anteriores.length ? `<h2 class="grupo-titulo">Antiguos miembros</h2><ul class="antiguos">${anteriores.map(anterior).join("")}</ul>` : "",
   ].join("");
+  cont.addEventListener("click", (e) => {
+    const b = e.target.closest(".miembro");
+    if (b) abrirMiembro(fichas[Number(b.dataset.i)]);
+  });
 }
 
 async function paginaProyectos() {
@@ -680,7 +794,8 @@ document.addEventListener("DOMContentLoaded", () => {
     n.outerHTML = estratosSVG(n.dataset.estratos || "var(--arena)", n.hasAttribute("data-invertido"));
   });
   const p = document.body.dataset.pagina;
-  if (p === "inicio") paginaInicio();
+  if (p === "inicio") { paginaInicio(); queHacemos(); }
+  dibujarMigas();
   if (p === "actividades" || p === "stands") paginaActividades();
   if (p === "integrantes") paginaIntegrantes();
   if (p === "proyectos") paginaProyectos();
