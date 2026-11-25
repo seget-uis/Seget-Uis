@@ -87,10 +87,10 @@ async function cargar(ruta) {
 function estratosSVG(fondo = "var(--arena)", invertido = false) {
   return `<svg class="estratos${invertido ? " estratos--invertido" : ""}" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true">
     <rect width="1200" height="46" fill="${fondo}"/>
-    <path d="M0 14 H640 L668 22 H1200 V46 H0Z" fill="#e2a72e"/>
-    <path d="M0 24 H640 L668 32 H1200 V46 H0Z" fill="#9c8f4e"/>
-    <path d="M0 33 H640 L668 41 H1200 V46 H0Z" fill="#1f3b2a"/>
-    <path d="M630 4 L680 46" stroke="#c4472b" stroke-width="3"/>
+    <path d="M0 14 H640 L668 22 H1200 V46 H0Z" fill="#D4A73E"/>
+    <path d="M0 24 H640 L668 32 H1200 V46 H0Z" fill="#8C8A5E"/>
+    <path d="M0 33 H640 L668 41 H1200 V46 H0Z" fill="#2C3A1F"/>
+    <path d="M630 4 L680 46" stroke="#984821" stroke-width="3"/>
   </svg>`;
 }
 
