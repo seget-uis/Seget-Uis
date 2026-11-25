@@ -539,8 +539,13 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 }
 .instagram-vacio h3 { margin: 0 0 4px; }
 .instagram-vacio p { margin: 0; color: var(--gris); }
-.instagram-rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; align-items: start; }
-.instagram-rejilla blockquote { margin: 0 !important; min-width: 0 !important; width: 100% !important; }
+/* Tres publicaciones del mismo ancho, repartidas en todo el contenedor y centradas en su columna
+   (el código de Instagram pone márgenes y anchos propios en línea; aquí se anulan) */
+.instagram-rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 3vw, 40px); align-items: start; justify-items: stretch; }
+.instagram-rejilla > blockquote, .instagram-rejilla > iframe, .instagram-rejilla .instagram-media { margin: 0 auto !important; min-width: 0 !important; max-width: 100% !important; width: 100% !important; }
+@media (max-width: 900px) {
+  .instagram-rejilla { grid-template-columns: minmax(0, 480px); justify-content: center; }
+}
 
 /* ---------- Encabezado de página interna ---------- */
 .cabecera { padding: clamp(40px, 6vw, 72px) 0 clamp(28px, 4vw, 48px); }
