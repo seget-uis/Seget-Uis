@@ -786,6 +786,40 @@ async function paginaMaterial() {
   pintar();
 }
 
+/* ---------- Microinteracciones ---------- */
+// Sombra de la barra superior al bajar por la página
+function sombraHeader() {
+  const h = $(".header");
+  if (!h) return;
+  const revisar = () => h.classList.toggle("con-sombra", window.scrollY > 8);
+  window.addEventListener("scroll", revisar, { passive: true });
+  revisar();
+}
+// Marco que se desliza hasta el año o filtro elegido
+function indicadorFiltros() {
+  document.querySelectorAll(".filtros").forEach((raiz) => {
+    const ind = document.createElement("span");
+    ind.className = "filtro-indicador sin-transicion";
+    ind.setAttribute("aria-hidden", "true");
+    let primera = true;
+    const mover = () => {
+      const b = raiz.querySelector('.filtro[aria-pressed="true"]');
+      if (!ind.isConnected) raiz.prepend(ind);
+      raiz.classList.toggle("con-indicador", !!b);
+      ind.hidden = !b;
+      if (!b || !b.offsetWidth) return;
+      ind.style.width = b.offsetWidth + "px";
+      ind.style.height = b.offsetHeight + "px";
+      ind.style.transform = `translate(${b.offsetLeft}px, ${b.offsetTop}px)`;
+      if (primera) { primera = false; requestAnimationFrame(() => ind.classList.remove("sin-transicion")); }
+    };
+    new MutationObserver(() => requestAnimationFrame(mover))
+      .observe(raiz, { subtree: true, childList: true, attributes: true, attributeFilter: ["aria-pressed", "hidden"] });
+    window.addEventListener("resize", () => { ind.classList.add("sin-transicion"); mover(); requestAnimationFrame(() => ind.classList.remove("sin-transicion")); });
+    mover();
+  });
+}
+
 /* ---------- Arranque ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   dibujarHeader();
@@ -796,6 +830,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const p = document.body.dataset.pagina;
   if (p === "inicio") { paginaInicio(); queHacemos(); }
   dibujarMigas();
+  sombraHeader();
+  indicadorFiltros();
   if (p === "actividades" || p === "stands") paginaActividades();
   if (p === "integrantes") paginaIntegrantes();
   if (p === "proyectos") paginaProyectos();
