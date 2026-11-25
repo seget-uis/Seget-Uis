@@ -240,6 +240,28 @@ function dibujarMigas(extra) {
 }
 
 /* ---------- Actividades ---------- */
+/* Cambio de filtro: la lista actual se desvanece rápido y las tarjetas nuevas entran
+   con una pequeña subida, escalonada solo en las primeras. Si se pulsa otro filtro a mitad
+   del cambio, gana el último. Con movimiento reducido el cambio es inmediato. */
+let turnoTransicion = 0;
+function transicion(cont, render) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !cont.animate) { render(); return; }
+  const turno = ++turnoTransicion;
+  cont.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+  const salida = cont.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: "ease-in", fill: "forwards" });
+  salida.finished.then(() => {
+    if (turno !== turnoTransicion) return;
+    render();
+    salida.cancel();
+    [...cont.children].forEach((el, i) => {
+      el.animate(
+        [{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }],
+        { duration: 320, delay: Math.min(i, 5) * 40, easing: "cubic-bezier(.23, 1, .32, 1)", fill: "backwards" }
+      );
+    });
+  }).catch(() => {});
+}
+
 // conTipo: la etiqueta de tipo solo se muestra cuando la lista mezcla tipos de actividad
 function tarjetaActividad(a, conTipo = true) {
   const foto = a.imagenes && a.imagenes[0];
@@ -497,7 +519,7 @@ async function paginaActividades() {
       estado[clave] = b.dataset.v;
       raiz.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
       if (clave === "cat") aplicarModo();
-      pintar();
+      transicion(cont, pintar);
     });
   };
   botones($("#filtro-cat"), cats, "cat", texto);
@@ -526,7 +548,7 @@ async function paginaActividades() {
     estado.anio = "Todos";
     $("#filtro-cat").querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x.dataset.v === estado.cat));
     aplicarModo();
-    pintar();
+    transicion(cont, pintar);
     window.scrollTo({ top: 0 });
   });
 
@@ -753,7 +775,7 @@ async function paginaMaterial() {
     estado.anio = "Todos";
     filtroFase.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
     pintarAnios();
-    pintar();
+    transicion(cont, pintar);
   });
   const enFase = (t) => estado.tipo !== "Tesis" || estado.fase === "Todas" || (estado.fase === "En desarrollo") === enDesarrollo(t);
   function pintarFase() {
@@ -774,14 +796,14 @@ async function paginaMaterial() {
     history.replaceState(null, "", "#" + TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo).hash);
     pintarFase();
     pintarAnios();
-    pintar();
+    transicion(cont, pintar);
   });
   filtroAnio.addEventListener("click", (e) => {
     const b = e.target.closest(".filtro");
     if (!b) return;
     estado.anio = b.dataset.v;
     filtroAnio.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
-    pintar();
+    transicion(cont, pintar);
   });
   // Los años salen solo de los trabajos del tipo elegido
   function pintarAnios() {
