@@ -9,5 +9,6 @@ Copiadas tal cual de sus repositorios oficiales (2026-11-25) para que las sesion
 | `design-taste-frontend` | https://github.com/Leonxlnx/taste-skill | d1a2bb4 | MIT |
 
 Notas:
-- Impeccable trae hooks (`.claude/settings.json`) que ejecutan su motor en cada edición. **No se han añadido**: el motor es un binario que se descarga de GitHub Releases, así que solo se ejecuta cuando se invoca la skill a mano.
+- Impeccable trae hooks que ejecutan su motor tras cada edición. **No se han añadido**: el motor es un binario que se descarga de GitHub Releases (verificado con `engine-checksums.txt`) y solo se ejecuta cuando se invoca la skill o `impeccable detect`.
+- La telemetría anónima de Impeccable está desactivada con `IMPECCABLE_NO_TELEMETRY=1` en `.claude/settings.json`.
 - Para actualizar, vuelve a copiar la carpeta desde el repositorio original.

@@ -2,7 +2,18 @@
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest"]
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--headless",
+        "--isolated",
+        "--browser",
+        "chromium",
+        "--executable-path",
+        "${PLAYWRIGHT_CHROMIUM_PATH:-/opt/pw-browsers/chromium}",
+        "--output-dir",
+        "pruebas/resultados/mcp"
+      ]
     }
   }
 }
