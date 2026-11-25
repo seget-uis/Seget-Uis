@@ -643,6 +643,20 @@ async function paginaActividades() {
   }
   aplicarModo();
   pintar();
+  entradaLista(cont);
+}
+
+// Al llegar a la página (desde Inicio o el menú): el título y el texto suben y las tarjetas entran
+// una tras otra. Solo la primera vez; los filtros ya tienen su propia transición.
+function entradaLista(cont) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !cont.animate) return;
+  const curva = "cubic-bezier(.23, 1, .32, 1)";
+  [$(".cabecera .migas"), $(".cabecera h1"), $(".cabecera .lead"), $(".filtros-grupo")].filter(Boolean).forEach((el, i) => {
+    el.animate([{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], { duration: 560, delay: i * 70, easing: curva, fill: "backwards" });
+  });
+  [...cont.children].forEach((el, i) => {
+    el.animate([{ opacity: 0, transform: "translateY(18px)" }, { opacity: 1, transform: "none" }], { duration: 620, delay: 220 + Math.min(i, 8) * 60, easing: curva, fill: "backwards" });
+  });
 }
 
 /* ---------- Equipo: tarjeta con foto; al tocarla se abre la ficha ---------- */
