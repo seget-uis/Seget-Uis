@@ -262,6 +262,13 @@ function transicion(cont, render) {
   }).catch(() => {});
 }
 
+// Etiqueta de la ficha: el estado de una tesis usa la misma etiqueta que su tarjeta
+function chipCategoria(c) {
+  if (c === "En desarrollo") return '<span class="chip chip--desarrollo">En desarrollo</span>';
+  if (c === "Terminada") return '<span class="chip chip--terminada">Terminada</span>';
+  return `<span class="chip" data-cat="${esc(c)}">${esc(c)}</span>`;
+}
+
 // conTipo: la etiqueta de tipo solo se muestra cuando la lista mezcla tipos de actividad
 function tarjetaActividad(a, conTipo = true) {
   const foto = a.imagenes && a.imagenes[0];
@@ -302,7 +309,7 @@ function abrirDetalle(a, inicio = 0, conTipo = true) {
       <span class="indice">${i + 1} / ${imgs.length}</span>` : ""}
     </div>` : ""}
     <div class="detalle-texto">
-      ${conTipo ? `<span class="chip" data-cat="${esc(a.categoria)}">${esc(a.categoria)}</span>` : ""}
+      ${conTipo ? chipCategoria(a.categoria) : ""}
       <h2>${esc(a.titulo)}</h2>
       <div class="detalle-datos">
         <span><b>Fecha:</b> ${esc(a.fecha)}</span>
