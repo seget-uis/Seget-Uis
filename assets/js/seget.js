@@ -367,6 +367,42 @@ function repartirTexto() {
   resto.hidden = !resto.children.length;
 }
 
+// Visor de fotos: solo la foto grande, con flechas, contador y teclado
+let visor;
+function abrirVisor(fotos, inicio = 0) {
+  if (!fotos.length) return;
+  if (!visor) {
+    visor = document.createElement("dialog");
+    visor.className = "visor";
+    visor.setAttribute("aria-label", "Visor de fotos");
+    document.body.append(visor);
+    visor.addEventListener("click", (e) => { if (e.target === visor || e.target.classList.contains("visor-marco")) visor.close(); });
+  }
+  let i = inicio;
+  const varias = fotos.length > 1;
+  visor.innerHTML = `
+    <button class="cerrar" aria-label="Cerrar">×</button>
+    <div class="visor-marco"><img class="visor-foto" alt=""></div>
+    ${varias ? `<button class="nav-foto prev" aria-label="Foto anterior">‹</button>
+    <button class="nav-foto next" aria-label="Foto siguiente">›</button>
+    <span class="visor-indice" aria-live="polite"></span>` : ""}`;
+  const foto = $(".visor-foto", visor);
+  const mostrar = (d) => {
+    i = (i + d + fotos.length) % fotos.length;
+    foto.src = fotos[i].src; foto.alt = fotos[i].alt || "";
+    if (varias) $(".visor-indice", visor).textContent = `${i + 1} / ${fotos.length}`;
+    if (d && foto.animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) foto.animate([{ opacity: .35, transform: `translateX(${d * 12}px)` }, { opacity: 1, transform: "none" }], { duration: 240, easing: "cubic-bezier(.23, 1, .32, 1)" });
+  };
+  $(".cerrar", visor).addEventListener("click", () => visor.close());
+  if (varias) {
+    $(".prev", visor).addEventListener("click", () => mostrar(-1));
+    $(".next", visor).addEventListener("click", () => mostrar(1));
+    visor.onkeydown = (e) => { if (e.key === "ArrowLeft") mostrar(-1); if (e.key === "ArrowRight") mostrar(1); };
+  } else visor.onkeydown = null;
+  mostrar(0);
+  visor.showModal();
+}
+
 function videoHTML(id) {
   // Muestra la miniatura y solo carga YouTube al hacer clic (más liviano)
   return `<button type="button" class="video" data-video="${esc(id)}" aria-label="Reproducir video">
@@ -701,7 +737,7 @@ function abrirProyecto(p, rel) {
       ${(p.videos || []).length ? `<h3 class="fp-sub">Videos</h3><div class="fp-videos">${p.videos.map(videoHTML).join("")}</div>` : ""}
     </div>`;
   $(".ficha-cerrar", fichaProyecto).addEventListener("click", () => fichaProyecto.close());
-  fichaProyecto.querySelectorAll("[data-f]").forEach((b) => b.addEventListener("click", () => { const f = fotos[b.dataset.f]; abrirDetalle(f.a, f.i, false); }));
+  fichaProyecto.querySelectorAll("[data-f]").forEach((b) => b.addEventListener("click", () => { const f = fotos[b.dataset.f]; abrirVisor(fotos.map((x) => ({ src: x.src, alt: `Foto de ${x.a.titulo}` })), +b.dataset.f); }));
   fichaProyecto.querySelectorAll("[data-a]").forEach((b) => b.addEventListener("click", () => abrirDetalle(acts[b.dataset.a], 0, false)));
   if (!fichaProyecto.open) fichaProyecto.showModal();
   fichaProyecto.scrollTop = 0;
