@@ -207,7 +207,7 @@ em.acento { font-style: italic; color: var(--verde); }
   .hero { grid-template-columns: 1fr; min-height: 0; }
   .hero-foto { order: -1; }
   .hero-recorte { height: 42vh; min-height: 260px; clip-path: polygon(0 0, 100% 0, 100% 84%, 0 100%); }
-  .hero-foto figcaption { left: auto; right: 12px; top: 12px; bottom: auto; max-width: calc(100% - 24px); padding: 6px 10px; font-size: .74rem; line-height: 1.35; background: rgba(30, 35, 24, .64); }
+  .hero-foto figcaption { left: auto; right: 12px; top: 12px; bottom: auto; max-width: calc(100% - 24px); padding: 6px 10px; font-size: .78rem; line-height: 1.35; background: rgba(30, 35, 24, .64); }
   .hero-falla { display: none; }
   .hero-texto { padding: 24px 16px 48px; }
   .hero h1 { font-size: 2.6rem; }
@@ -630,4 +630,61 @@ dialog.ficha-miembro::backdrop { background: rgba(30, 35, 24, .6); }
 @media (max-width: 860px) {
   .qh { grid-template-columns: 1fr; }
   .qh-panel { min-height: 0; aspect-ratio: 4 / 3; order: 2; }
+}
+
+/* =========================================================
+   Fase 4: animaciones y microinteracciones
+   Todas duran menos de 300 ms y usan la curva ease-out (Emil Kowalski).
+   Con "reducir movimiento" se apagan (regla global más arriba).
+   ========================================================= */
+
+/* Tarjetas: suben un poco y la foto se acerca dentro del marco */
+.actividad { transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out); }
+.actividad-foto img { transition: transform 400ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .actividad:hover .actividad-foto img { transform: scale(1.04); }
+}
+.actividad:active { transform: scale(.98); }
+
+/* Botones: se hunden un poco al presionarlos */
+.boton, .filtro, .pestana, .nav-desplegar, .cerrar, .ficha-cerrar, .nav-foto, .qh-pausa {
+  transition-property: transform, background-color, color, border-color, box-shadow;
+  transition-duration: 160ms; transition-timing-function: var(--ease-out);
+}
+.boton:active, .filtro:active, .pestana:active, .nav-desplegar:active, .cerrar:active, .ficha-cerrar:active, .qh-pausa:active { transform: scale(.97); }
+
+/* Menú desplegable: crece un poco desde su propio botón */
+@media (min-width: 861px) {
+  .nav-panel {
+    transform-origin: top center; transform: translate(-50%, -4px) scale(.96);
+    transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out), visibility 160ms;
+  }
+  .nav-grupo:hover .nav-panel, .nav-grupo:focus-within .nav-panel, .nav-grupo.abierto .nav-panel { transform: translate(-50%, 0) scale(1); }
+}
+
+/* Fichas (actividades, material y equipo): aparecen creciendo apenas, sin rebote */
+dialog.detalle[open], dialog.ficha-miembro[open] { animation: ficha-abre 220ms var(--ease-out); }
+dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation: velo-abre 220ms var(--ease-out); }
+@keyframes ficha-abre { from { opacity: 0; transform: scale(.96); } }
+@keyframes velo-abre { from { opacity: 0; } }
+
+/* Años y filtros: el marco de la ficha elegida se desliza hasta la nueva */
+.filtros.con-indicador { position: relative; isolation: isolate; }
+.filtros.con-indicador .filtro[aria-pressed="true"] { border-color: transparent; box-shadow: none; background: transparent; }
+.filtro-indicador {
+  position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none;
+  border: 1.5px solid var(--bosque); border-radius: 4px; background: var(--papel); box-shadow: inset 0 -2px 0 var(--bosque);
+  transition: transform 260ms var(--ease-out), width 260ms var(--ease-out), height 260ms var(--ease-out);
+}
+.filtro-indicador.sin-transicion { transition: none; }
+
+/* Barra superior: sombra suave al bajar por la página */
+.header { transition: box-shadow 240ms var(--ease-out); }
+.header.con-sombra { box-shadow: 0 8px 20px -12px rgba(30, 35, 24, .4); }
+
+/* "En desarrollo": punto fijo (el latido infinito distraía y era un patrón genérico) */
+.chip--desarrollo::before { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.detalle[open], dialog.ficha-miembro[open], dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation: none; }
 }
