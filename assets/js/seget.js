@@ -875,11 +875,11 @@ async function paginaIntegrantes() {
   const actuales = todos.filter((m) => (m.periodos || []).map(String).includes(hoy));
   const docentes = datos.docentes || [];
   const fichas = [...docentes, ...actuales];
-  const titulo = (texto, n, unidad) => `<h2 class="grupo-titulo">${texto}${n ? ` <small>${n} ${unidad}</small>` : ""}</h2>`;
+  const titulo = (texto) => `<h2 class="grupo-titulo">${texto}</h2>`;
   const grupo = (cabeza, html, clase = "integrantes") => `${cabeza}<div class="${clase}">${html}</div>`;
   cont.innerHTML = [
     docentes.length ? grupo(titulo(docentes.length > 1 ? "Docentes" : "Docente"), docentes.map((m, i) => tarjetaIntegrante(m, i, true)).join(""), "integrantes integrantes--docentes") : "",
-    grupo(titulo(`Integrantes ${esc(hoy)}`, actuales.length, actuales.length === 1 ? "estudiante" : "estudiantes"), actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>', "integrantes integrantes--estudiantes"),
+    grupo(titulo(`Integrantes ${esc(hoy)}`), actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>', "integrantes integrantes--estudiantes"),
   ].join("");
   revelar(".grupo-titulo, .miembro", cont);
   cont.addEventListener("click", (e) => {
