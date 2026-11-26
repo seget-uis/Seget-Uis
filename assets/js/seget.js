@@ -758,7 +758,8 @@ const rolMiembro = (m) => [m.cargo, (m.periodos || []).map(String).join(" · ")]
 // En la tarjeta va solo el cargo; los años y la descripción completa están en la ficha.
 // Los docentes muestran además el inicio de su descripción.
 function tarjetaIntegrante(m, i, conResumen = false) {
-  return `<button type="button" class="miembro" data-i="${i}" aria-haspopup="dialog">
+  const lider = /líder/i.test(m.cargo || "") ? " es-lider" : "";
+  return `<button type="button" class="miembro${lider}" data-i="${i}" aria-haspopup="dialog">
     ${fotoMiembro(m)}
     <div class="miembro-texto"><h3>${esc(m.nombre)}</h3><span class="rol">${esc(m.cargo || "")}</span>${conResumen && m.descripcion ? `<span class="resumen">${esc(m.descripcion)}</span>` : ""}</div>
   </button>`;
@@ -799,19 +800,13 @@ async function paginaIntegrantes() {
   const hoy = String(datos.periodoActual);
   const todos = datos.integrantes || [];
   const actuales = todos.filter((m) => (m.periodos || []).map(String).includes(hoy));
-  const anteriores = todos.filter((m) => !actuales.includes(m));
   const docentes = datos.docentes || [];
   const fichas = [...docentes, ...actuales];
   const titulo = (texto, n, unidad) => `<h2 class="grupo-titulo">${texto}${n ? ` <small>${n} ${unidad}</small>` : ""}</h2>`;
   const grupo = (cabeza, html, clase = "integrantes") => `${cabeza}<div class="${clase}">${html}</div>`;
-  const anterior = (m) => {
-    const cargo = m.cargo && m.cargo !== "Integrante" ? `${esc(m.cargo)} · ` : "";
-    return `<li><b>${esc(m.nombre)}</b><span>${cargo}${(m.periodos || []).map(esc).join(" · ")}</span></li>`;
-  };
   cont.innerHTML = [
     docentes.length ? grupo(titulo(docentes.length > 1 ? "Docentes" : "Docente"), docentes.map((m, i) => tarjetaIntegrante(m, i, true)).join(""), "integrantes integrantes--docentes") : "",
-    grupo(titulo(`Integrantes ${esc(hoy)}`, actuales.length, actuales.length === 1 ? "estudiante" : "estudiantes"), actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
-    anteriores.length ? `${titulo("Antiguos miembros", anteriores.length, anteriores.length === 1 ? "persona" : "personas")}<ul class="antiguos">${anteriores.map(anterior).join("")}</ul>` : "",
+    grupo(titulo(`Integrantes ${esc(hoy)}`, actuales.length, actuales.length === 1 ? "estudiante" : "estudiantes"), actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>', "integrantes integrantes--estudiantes"),
   ].join("");
   cont.addEventListener("click", (e) => {
     const b = e.target.closest(".miembro");

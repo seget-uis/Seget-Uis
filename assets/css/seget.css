@@ -784,14 +784,43 @@ dialog.galeria::backdrop { background: rgba(20, 24, 16, .96); animation: cn-apar
   .integrantes, .integrantes--docentes { grid-template-columns: 1fr; gap: 8px; }
   .integrantes--docentes .miembro { padding: 16px; }
   .integrantes--docentes .miembro > .miembro-foto { width: 72px; }
-  .antiguos { columns: 2; column-gap: 16px; }
-  .antiguos b { font-size: .92rem; }
 }
 @media (hover: hover) and (pointer: fine) {
   .miembro:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(44,58,31,.06), 0 16px 34px rgba(44,58,31,.16); }
   .miembro:hover .miembro-foto img { transform: scale(1.03); }
 }
 .miembro:active { transform: scale(.98); }
+
+/* Docentes: franja ocre e iniciales en bosque con anillo ocre */
+.integrantes--docentes .miembro { position: relative; background: #FBF8EF; padding: 28px 24px 24px; }
+.integrantes--docentes .miembro::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; background: var(--ocre); }
+.integrantes--docentes .miembro > .miembro-foto { background: var(--bosque); box-shadow: 0 0 0 3px #FBF8EF, 0 0 0 5px var(--ocre); }
+.integrantes--docentes .miembro-foto .iniciales { color: var(--ocre-claro); }
+.integrantes--docentes .rol { color: var(--falla); }
+/* Estudiantes: tarjetas verticales; las iniciales rotan los colores de la paleta */
+.integrantes--estudiantes { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.integrantes--estudiantes .miembro { flex-direction: column; justify-content: flex-start; text-align: center; padding: 28px 18px 24px; gap: 16px; background: #FBF8EF; }
+.integrantes--estudiantes .miembro > .miembro-foto { width: 104px; }
+.integrantes--estudiantes .miembro > .miembro-foto .iniciales { font-size: 2.3rem; }
+.integrantes--estudiantes .miembro-texto { flex: none; width: 100%; }
+.integrantes--estudiantes .miembro h3 { font-size: 1.15rem; }
+.integrantes--estudiantes .miembro:nth-child(4n+1) .miembro-foto { background: var(--ocre-claro); }
+.integrantes--estudiantes .miembro:nth-child(4n+1) .iniciales { color: var(--bosque); }
+.integrantes--estudiantes .miembro:nth-child(4n+2) .miembro-foto { background: var(--verde); }
+.integrantes--estudiantes .miembro:nth-child(4n+2) .iniciales { color: #fff; }
+.integrantes--estudiantes .miembro:nth-child(4n+3) .miembro-foto { background: var(--falla); }
+.integrantes--estudiantes .miembro:nth-child(4n+3) .iniciales { color: #fff; }
+.integrantes--estudiantes .miembro:nth-child(4n) .miembro-foto { background: var(--bosque); }
+.integrantes--estudiantes .miembro:nth-child(4n) .iniciales { color: var(--ocre-claro); }
+.miembro.es-lider { border-color: var(--ocre); box-shadow: inset 0 0 0 1px var(--ocre); }
+.miembro.es-lider .rol { color: var(--falla); }
+@media (max-width: 640px) {
+  .integrantes--estudiantes { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .integrantes--estudiantes .miembro { padding: 20px 12px; gap: 12px; }
+  .integrantes--estudiantes .miembro > .miembro-foto { width: 76px; }
+  .integrantes--estudiantes .miembro > .miembro-foto .iniciales { font-size: 1.7rem; }
+  .integrantes--estudiantes .miembro h3 { font-size: 1rem; }
+}
 
 dialog.ficha-miembro { width: min(860px, 100% - 24px); border: 0; padding: 0; border-radius: 10px; background: var(--papel); color: var(--tinta); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
 dialog.ficha-miembro::backdrop { background: rgba(30, 35, 24, .6); }
@@ -814,11 +843,6 @@ dialog.ficha-miembro::backdrop { background: rgba(30, 35, 24, .6); }
   .ficha-texto h2 { font-size: 1.6rem; }
 }
 
-/* Antiguos miembros: lista compacta */
-.antiguos { list-style: none; margin: 0; padding: 0; columns: 3 240px; column-gap: 32px; }
-.antiguos li { break-inside: avoid; padding: 10px 0; border-bottom: 1px solid var(--linea); }
-.antiguos b { font-weight: 600; }
-.antiguos span { display: block; font-family: var(--mono); font-size: .76rem; color: var(--gris); }
 .grupo-titulo { font-family: var(--serif); font-weight: 500; font-size: clamp(1.5rem, 2.6vw, 1.9rem); letter-spacing: -.01em; text-transform: none; color: var(--bosque); margin: 48px 0 20px; }
 
 /* ---------- Qué hacemos (portada): lista a la izquierda, fotos a la derecha ---------- */
