@@ -895,11 +895,11 @@ function abrirProyecto(p, rel) {
         <div class="fp-texto">${(p.descripcion || []).map((t) => `<p>${esc(t)}</p>`).join("")}</div>
         ${acts.length ? `<div><h3 class="fp-sub fp-sub--arriba">Actividades del proyecto</h3><ul class="fp-actividades">${acts.map((a, k) => `<li><button type="button" data-a="${k}"><span>${esc(a.titulo)}</span><small>${esc(a.fecha)}</small></button></li>`).join("")}</ul></div>` : ""}
       </div>
-      ${fotos.length ? `<h3 class="fp-sub">Fotos</h3><div class="fp-fotos">${tres.map((f, k) => {
+      ${fotos.length ? `<h3 class="fp-sub">Fotos <small>${fotos.length}</small></h3><div class="fp-fotos">${tres.map((f, k) => {
         const resto = k === 2 && fotos.length > 3 ? fotos.length - 3 : 0;
         return `<button type="button" data-f="${k}" aria-label="${resto ? `Ver las ${fotos.length} fotos` : `Ampliar foto ${k + 1}`}"><img src="${esc(f.src)}" alt="" loading="lazy">${resto ? `<span class="fp-mas" aria-hidden="true"><span><b>+${resto}</b>ver todas</span></span>` : ""}</button>`;
       }).join("")}</div>` : ""}
-      ${(p.videos || []).length ? `<h3 class="fp-sub">Videos</h3><div class="fp-videos">${p.videos.map(videoHTML).join("")}</div>` : ""}
+      ${(p.videos || []).length ? `<h3 class="fp-sub">Videos <small>${p.videos.length}</small></h3><div class="fp-videos">${p.videos.map(videoHTML).join("")}</div>` : ""}
     </div>`;
   $(".ficha-cerrar", fichaProyecto).addEventListener("click", () => fichaProyecto.close());
   const miniaturas = [...fichaProyecto.querySelectorAll("[data-f]")];
