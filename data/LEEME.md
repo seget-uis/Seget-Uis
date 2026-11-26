@@ -38,7 +38,7 @@ Copie un bloque al inicio de la lista:
 ## integrantes.json
 
 Hay dos listas: `docentes` e `integrantes`. Cada estudiante aparece una sola vez, con los años en que ha estado en `periodos`.
-Quien tenga el año de `periodoActual` sale en "Miembros actuales"; los demás salen en "Antiguos miembros" con sus años.
+Quien tenga el año de `periodoActual` sale en "Integrantes"; los demás no se muestran en la web, pero se conservan en el archivo como registro.
 
 ```json
 {

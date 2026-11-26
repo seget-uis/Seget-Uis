@@ -1,5 +1,5 @@
 {
-  "nota": "Cada estudiante aparece una sola vez. 'periodos' lista los años en que ha estado; quien tenga el año de 'periodoActual' sale en Integrantes, los demás en Integrantes anteriores. Las fotos van en assets/img/integrantes/. Deje un campo vacío (\"\") si no hay dato.",
+  "nota": "Cada estudiante aparece una sola vez. 'periodos' lista los años en que ha estado; solo quien tenga el año de 'periodoActual' sale en la página; los demás se conservan aquí como registro. Las fotos van en assets/img/integrantes/. Deje un campo vacío (\"\") si no hay dato.",
   "periodoActual": "2026",
   "docentes": [
     {
