@@ -994,7 +994,7 @@ function chipsMaterial(t) {
 }
 
 const autoresDe = (t) => (t.autores || []).filter(Boolean);
-const pesoArchivo = { "assets/docs/material/geoeducacion-cepita.pdf": "16 MB", "assets/docs/material/fotogrametria-modelamiento-3d.pdf": "7 MB" };
+const pesoArchivo = { "assets/docs/material/geologia-del-ciclismo.pdf": "31 MB", "assets/docs/material/geoeducacion-cepita.pdf": "16 MB", "assets/docs/material/fotogrametria-modelamiento-3d.pdf": "7 MB" };
 
 // Pósters: la lámina completa en vertical, con su título entero debajo.
 // Tesis y artículos: una entrada de registro, con el año al margen como en un índice.

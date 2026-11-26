@@ -1,5 +1,19 @@
 [
   {
+    "titulo": "Geología del ciclismo: control estructural y morfológico en los escenarios icónicos del ciclismo",
+    "tipo": "Póster",
+    "anio": "2026",
+    "autores": [
+      "Juan Sebastián Luengas Jaimes"
+    ],
+    "evento": "XVII Semana Técnica de Geología, Ingeniería Geológica y Geociencias",
+    "lugar": "Universidad Industrial de Santander, Bucaramanga",
+    "resumen": "",
+    "imagen": "assets/img/material/geologia-del-ciclismo.jpg",
+    "archivo": "assets/docs/material/geologia-del-ciclismo.pdf",
+    "enlace": ""
+  },
+  {
     "titulo": "Análisis neotectónico de la Formación Bucaramanga: geología de rescate en la zona de Girón, Santander",
     "tipo": "Tesis",
     "estado": "En desarrollo",
