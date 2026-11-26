@@ -219,6 +219,55 @@ function animarNosotros() {
   document.querySelectorAll(".cn-temas li").forEach((li, i) => li.style.setProperty("--i", i));
 }
 
+/* ---------- Aparición al entrar en pantalla ----------
+   Para los bloques que no tienen una animación propia: suben un poco y aparecen, en cascada entre hermanos.
+   Al terminar se quita la clase, para que las transiciones de hover del elemento vuelvan a ser las suyas. */
+let observadorRevela;
+function revelar(selector, raiz = document) {
+  if (quietoMov() || !("IntersectionObserver" in window)) return;
+  document.documentElement.classList.add("rv");
+  observadorRevela ||= new IntersectionObserver((entradas) => entradas.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    observadorRevela.unobserve(el);
+    el.classList.add("rv-visto");
+    const espera = 700 + (parseFloat(el.style.getPropertyValue("--i")) || 0) * 70;
+    setTimeout(() => { el.classList.remove("rv-el", "rv-visto"); el.style.removeProperty("--i"); }, espera + 50);
+  }), { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+  const grupos = new Map();
+  raiz.querySelectorAll(selector).forEach((el) => {
+    if (el.classList.contains("rv-el")) return;
+    const n = grupos.get(el.parentElement) || 0;
+    grupos.set(el.parentElement, n + 1);
+    el.style.setProperty("--i", Math.min(n, 6));
+    el.classList.add("rv-el");
+    observadorRevela.observe(el);
+  });
+}
+
+// Las cifras de la portada cuentan desde cero cuando se ven
+function contarCifras() {
+  const nums = [...document.querySelectorAll(".cifra strong")];
+  if (!nums.length || quietoMov() || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((entradas) => {
+    if (!entradas.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    nums.forEach((el, i) => {
+      const meta = parseInt(el.textContent, 10);
+      if (!meta) return;
+      const t0 = performance.now() + i * 90, dur = 1100;
+      el.textContent = "0";
+      const paso = (t) => {
+        const k = Math.min(1, Math.max(0, (t - t0) / dur));
+        el.textContent = Math.round(meta * (1 - Math.pow(1 - k, 3)));
+        if (k < 1) requestAnimationFrame(paso);
+      };
+      requestAnimationFrame(paso);
+    });
+  }, { threshold: 0.4 });
+  io.observe(nums[0].closest(".cifras"));
+}
+
 function dibujarMigas(extra) {
   const p = document.body.dataset.pagina;
   let nav = $(".cabecera .migas, .cn-apertura .migas");
@@ -589,6 +638,8 @@ async function paginaInicio() {
   }
   dibujarInstagram(noticias);
   dibujarProximoEvento();
+  contarCifras();
+  revelar("#ultimas > *");
 }
 
 /* ---------- Próximo evento (portada) ----------
@@ -808,6 +859,7 @@ async function paginaIntegrantes() {
     docentes.length ? grupo(titulo(docentes.length > 1 ? "Docentes" : "Docente"), docentes.map((m, i) => tarjetaIntegrante(m, i, true)).join(""), "integrantes integrantes--docentes") : "",
     grupo(titulo(`Integrantes ${esc(hoy)}`, actuales.length, actuales.length === 1 ? "estudiante" : "estudiantes"), actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>', "integrantes integrantes--estudiantes"),
   ].join("");
+  revelar(".grupo-titulo, .miembro", cont);
   cont.addEventListener("click", (e) => {
     const b = e.target.closest(".miembro");
     if (b) abrirMiembro(fichas[Number(b.dataset.i)]);
@@ -1147,4 +1199,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (p === "integrantes") paginaIntegrantes();
   if (p === "proyectos") paginaProyectos();
   if (p === "material") paginaMaterial();
+  // Lo que no tiene animación propia entra al aparecer en pantalla
+  if (p !== "actividades" && p !== "stands") revelar(".cabecera .migas, .cabecera h1, .cabecera .lead, .filtros-grupo");
+  revelar([
+    ".cifra", "#que-hacemos h2", "#que-hacemos .lead", ".qh-lista > li", ".bloque-fallado",
+    ".destacado-fotos img", ".destacado > div:not(.destacado-fotos) > *", ".destacado > .cita",
+    ".encabezado-seccion > *", "#instagram", ".seccion > .contenedor > h2",
+    ".cn-lineas-cabeza", ".cn-temas-titulo", ".cn-porque-rejilla > div:first-child > *", ".cn-unete-rejilla > div > *",
+    ".footer-rejilla > *",
+  ].join(", "));
 });

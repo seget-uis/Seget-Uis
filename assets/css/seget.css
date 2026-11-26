@@ -1032,12 +1032,22 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 .cn-anim .cn-apertura-texto p { --d: 10px; animation: cn-sube .6s var(--ease-out) 120ms both; }
 .cn-anim .cn-apertura-texto p + p { animation-delay: 200ms; }
 .cn-anim .cn-f1 { animation: cn-foto .9s var(--ease-out) 80ms both; }
-.cn-anim .cn-apertura::after { transform-origin: top; animation: cn-raya-y .8s var(--ease-in-out) 300ms both; }
+/* Las líneas de óxido se trazan siguiendo su diagonal, de arriba abajo, sin deformarse */
+@keyframes cn-oxido-8 { from { clip-path: polygon(calc(100% - 8px) 0, 100% 0, 100% 0, calc(100% - 8px) 0); } }
+@keyframes cn-oxido-5 { from { clip-path: polygon(calc(100% - 5px) 0, 100% 0, 100% 0, calc(100% - 5px) 0); } }
+.cn-anim .cn-apertura::after { animation: cn-oxido-8 .9s var(--ease-in-out) 350ms both; }
 
 /* Los bloques de abajo esperan pausados hasta entrar en pantalla (.cn-visto) */
-.cn-anim .cn-lineas-lista li { animation: cn-deposita .7s var(--ease-out) both paused; }
-.cn-anim .cn-lineas-lista li:nth-child(2) { animation-delay: 200ms; }
-.cn-anim .cn-lineas-lista li:nth-child(1) { animation-delay: 360ms; }
+/* Las líneas se depositan como estratos: de abajo hacia arriba, cada capa se extiende de izquierda a derecha y luego aparece su texto */
+@keyframes cn-capa { from { clip-path: inset(0 100% 0 0); transform: translateX(-12px); } to { clip-path: inset(0 0 0 0); transform: none; } }
+.cn-anim .cn-lineas-lista li { animation: cn-capa .8s var(--ease-in-out) both paused; }
+.cn-anim .cn-lineas-lista li:nth-child(3) { animation-delay: 100ms; }
+.cn-anim .cn-lineas-lista li:nth-child(2) { animation-delay: 300ms; }
+.cn-anim .cn-lineas-lista li:nth-child(1) { animation-delay: 500ms; }
+.cn-anim .cn-lineas-lista li > * { --d: 8px; animation: cn-sube .5s var(--ease-out) both paused; }
+.cn-anim .cn-lineas-lista li:nth-child(3) > * { animation-delay: 560ms; }
+.cn-anim .cn-lineas-lista li:nth-child(2) > * { animation-delay: 760ms; }
+.cn-anim .cn-lineas-lista li:nth-child(1) > * { animation-delay: 960ms; }
 .cn-anim .cn-temas li { animation: cn-aparece .45s var(--ease-out) calc(560ms + var(--i, 0) * 40ms) both paused; }
 .cn-anim .cn-temas li::after { animation: cn-raya-x .7s var(--ease-out) calc(540ms + var(--i, 0) * 40ms) both paused; }
 .cn-anim .cn-citas-titulo { animation: cn-aparece .5s var(--ease-out) both paused; }
@@ -1046,7 +1056,7 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 .cn-anim .cn-citas .cita + .cita::before { animation-delay: 160ms; }
 .cn-anim .cn-citas .cita + .cita { animation-delay: 320ms; }
 .cn-anim .cn-unete-foto { animation: cn-foto .9s var(--ease-out) both paused; }
-.cn-anim .cn-unete::after { transform-origin: top; animation: cn-raya-y .8s var(--ease-in-out) 250ms both paused; }
+.cn-anim .cn-unete::after { animation: cn-oxido-5 .9s var(--ease-in-out) 300ms both paused; }
 .cn-anim .cn-visto::after, .cn-anim .cn-visto, .cn-anim .cn-visto *, .cn-anim .cn-visto *::before, .cn-anim .cn-visto *::after { animation-play-state: running !important; }
 
 /* Móvil estrecho: la marca del encabezado cabe en una línea */
@@ -1194,3 +1204,8 @@ dialog.visor .next { right: clamp(8px, 2vw, 24px); }
 
 /* Proyectos: la lista arranca pegada a la cabecera */
 .cabecera + .seccion.py-seccion { padding-top: 0 !important; }
+
+/* ---------- Aparición al entrar en pantalla (la pone el JS en lo que no tiene animación propia) ---------- */
+.rv .rv-el { opacity: 0; transform: translateY(16px); }
+.rv .rv-el.rv-visto { opacity: 1; transform: none; transition: opacity .6s var(--ease-out), transform .7s var(--ease-out); transition-delay: calc(var(--i, 0) * 70ms); }
+.cifra strong { font-variant-numeric: tabular-nums; }
