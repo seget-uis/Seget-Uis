@@ -70,6 +70,7 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
   "titulo": "Título del póster",
   "tipo": "Póster",
   "anio": "2026",
+  "fecha": "2026-11-12",
   "autores": ["Nombre Apellido", "Nombre Apellido"],
   "director": "",
   "codirector": "",
@@ -84,6 +85,7 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
 
 - `tipo`: escriba exactamente `Póster`, `Tesis` o `Artículo`. `Tesis` sale en la página como "Trabajos de grado". En el menú, Material científico tiene una opción para cada tipo y la página muestra solo los del tipo elegido.
 - `anio`: los botones de año se crean solos con los años de la pestaña elegida (aparecen cuando hay trabajos de dos años o más).
+- `fecha`: fecha en que se presentó o publicó (`AAAA-MM-DD`, o `AAAA-MM` si no se sabe el día). La página ordena siempre del más reciente al más antiguo, sin importar en qué lugar de la lista se copie el bloque. Si falta, ordena por `anio`.
 - `imagen`: foto o vista previa del póster o de la portada. Guárdela en `assets/img/material/`. Si está vacía se muestra un ícono de documento.
 - `archivo`: el PDF. Guárdelo en `assets/docs/material/` o pegue un enlace de Google Drive. Si está vacío, no aparece el botón de descarga.
 - `enlace`: opcional, por ejemplo el DOI del artículo o el repositorio de la UIS.

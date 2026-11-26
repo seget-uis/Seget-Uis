@@ -994,6 +994,8 @@ const TIPOS_MATERIAL = [
   { tipo: "Artículo", texto: "Artículos", lead: "Los artículos publicados por integrantes del semillero. Toca uno para ver más detalles.", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
 ];
 
+// Orden: lo más reciente primero, por "fecha" (AAAA-MM-DD o AAAA-MM) o, si no hay, por el año
+const fechaOrden = (t) => String(t.fecha || t.anio || "");
 const enDesarrollo = (t) => String(t.estado || "").toLowerCase() === "en desarrollo";
 // La pestaña ya dice el tipo, así que la tarjeta no lo repite: en las tesis solo va el estado.
 const estadoTesis = (t) => (t.tipo === "Tesis" ? (enDesarrollo(t) ? "En desarrollo" : "Terminado") : "");
@@ -1084,7 +1086,7 @@ async function paginaMaterial() {
   const verEjemplos = new URLSearchParams(location.search).has("ejemplos");
   const lista = todos
     .filter((t) => (verEjemplos || !t.ejemplo) && TIPOS_MATERIAL.some((x) => x.tipo === t.tipo))
-    .sort((x, y) => (enDesarrollo(y) - enDesarrollo(x)) || String(y.anio || "").localeCompare(String(x.anio || "")));
+    .sort((x, y) => (enDesarrollo(y) - enDesarrollo(x)) || fechaOrden(y).localeCompare(fechaOrden(x)));
   if (!lista.length) {
     $(".filtros-grupo").hidden = true;
     cont.classList.remove("rejilla", "rejilla--3");
