@@ -638,20 +638,37 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 .chip[data-cat="Artículo"] { --u: var(--u-salida); }
 .chip--desarrollo, .chip--terminada { border-radius: 4px; }
 
-/* ---------- Equipo: tarjetas con foto y ficha al tocar ---------- */
-.integrantes { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+/* ---------- Equipo: fichas horizontales con foto redonda; al tocarlas se abre la ficha completa ---------- */
+.integrantes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.integrantes--docentes { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
 .miembro {
-  all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column;
+  all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 18px; padding: 14px 16px; text-align: left;
   background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); overflow: hidden;
   transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
 }
+.integrantes--docentes .miembro { padding: 22px; }
 .miembro:focus-visible { outline: 3px solid var(--falla); outline-offset: 2px; }
-.miembro-foto { aspect-ratio: 1; overflow: hidden; border-bottom: 1px solid var(--linea); background: var(--verde-claro); }
+.miembro-foto { overflow: hidden; background: var(--verde-claro); }
+.miembro > .miembro-foto { flex: none; width: 56px; aspect-ratio: 1; border-radius: 50%; }
+.integrantes--docentes .miembro > .miembro-foto { width: 96px; }
 .miembro-foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms var(--ease-out); }
 .miembro-foto .iniciales { width: 100%; height: 100%; display: grid; place-items: center; font-family: var(--serif); font-size: 3rem; color: var(--verde); }
-.miembro-texto { padding: 16px 18px 18px; }
-.miembro h3 { font-size: 1.12rem; line-height: 1.2; margin: 0; }
-.rol { display: block; margin-top: 6px; font-family: var(--mono); font-size: .76rem; color: var(--falla); }
+.miembro > .miembro-foto .iniciales { font-size: 1.25rem; }
+.integrantes--docentes .miembro > .miembro-foto .iniciales { font-size: 2rem; }
+.miembro-texto { flex: 1; min-width: 0; }
+.miembro h3 { font-size: 1.05rem; line-height: 1.2; margin: 0; }
+.integrantes--docentes .miembro h3 { font-size: 1.25rem; }
+.rol { display: block; margin-top: 6px; font-family: var(--mono); font-size: .76rem; color: var(--gris); }
+.miembro .resumen { margin-top: 8px; font-size: .9rem; line-height: 1.45; color: var(--gris); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.grupo-titulo small { margin-left: 8px; font-family: var(--mono); font-size: .8rem; font-weight: 400; letter-spacing: 0; color: var(--gris); }
+.cabecera .lead { max-width: 72ch; text-wrap: pretty; }
+@media (max-width: 640px) {
+  .integrantes, .integrantes--docentes { grid-template-columns: 1fr; gap: 8px; }
+  .integrantes--docentes .miembro { padding: 16px; }
+  .integrantes--docentes .miembro > .miembro-foto { width: 72px; }
+  .antiguos { columns: 2; column-gap: 16px; }
+  .antiguos b { font-size: .92rem; }
+}
 @media (hover: hover) and (pointer: fine) {
   .miembro:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(44,58,31,.06), 0 16px 34px rgba(44,58,31,.16); }
   .miembro:hover .miembro-foto img { transform: scale(1.03); }
