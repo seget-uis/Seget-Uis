@@ -255,6 +255,18 @@ function revelar(selector, raiz = document) {
 }
 
 // Las cifras de la portada cuentan desde cero cuando se ven
+/* Franja de cifras: al ver la mayor parte, se traza la falla y el bloque izquierdo se hunde (una vez) */
+function fallarCifras() {
+  const cf = $(".cf");
+  if (!cf || quietoMov() || !("IntersectionObserver" in window)) return;
+  cf.classList.add("cf-anim");
+  const io = new IntersectionObserver((entradas) => {
+    if (!entradas.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    cf.classList.add("cf-visto");
+  }, { threshold: 0.6 });
+  io.observe(cf);
+}
 function contarCifras() {
   const nums = [...document.querySelectorAll(".cifra strong")];
   if (!nums.length || quietoMov() || !("IntersectionObserver" in window)) return;
@@ -648,6 +660,7 @@ async function paginaInicio() {
   dibujarInstagram(noticias);
   dibujarProximoEvento();
   contarCifras();
+  fallarCifras();
   revelar("#ultimas > *");
 }
 
