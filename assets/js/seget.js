@@ -402,6 +402,94 @@ function abrirVisor(fotos, inicio = 0) {
   visor.showModal();
 }
 
+// Visor de todas las fotos de un proyecto. La miniatura tocada crece hasta su lugar y al cerrar vuelve a ella.
+// Las fotos pasan solas cada 4,5 s con una barra ocre bajo la miniatura activa; se detienen al pasar el cursor,
+// al tocar o al usar el teclado. Se puede deslizar con el dedo. Con movimiento reducido: solo fundidos y sin pasar solas.
+let galeria;
+function abrirGaleria(fotos, inicio = 0, titulo = "", miniaturas = []) {
+  if (!fotos.length) return;
+  const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const CURVA = "cubic-bezier(.23, 1, .32, 1)", PASO = 4500;
+  if (!galeria) {
+    galeria = document.createElement("dialog");
+    galeria.className = "galeria";
+    galeria.setAttribute("aria-label", "Fotos del proyecto");
+    document.body.append(galeria);
+    galeria.addEventListener("cancel", (e) => { e.preventDefault(); galeria.cerrar(); });
+  }
+  const g = galeria;
+  let i = inicio, img, pausado = false, cerrando = false;
+  const varias = fotos.length > 1;
+  g.innerHTML = `<div class="gl${reducir ? "" : " gl-entra"}">
+    <div class="gl-barra"><span class="gl-titulo">${esc(titulo)}${varias ? '<b aria-live="polite"></b>' : ""}</span><button type="button" class="gl-cerrar" aria-label="Cerrar">×</button></div>
+    <div class="gl-escena"><img alt="">${varias ? `<button type="button" class="gl-nav gl-prev" aria-label="Foto anterior">‹</button><button type="button" class="gl-nav gl-next" aria-label="Foto siguiente">›</button>` : ""}</div>
+    ${varias ? `<div class="gl-tira">${fotos.map((f, n) => `<button type="button" style="--i:${Math.min(n, 12)}" aria-label="Foto ${n + 1}"><img src="${esc(f.src)}" alt="" loading="lazy"><i></i></button>`).join("")}</div>` : ""}
+  </div>`;
+  img = $(".gl-escena img", g);
+  img.src = fotos[i].src; img.alt = fotos[i].alt || "";
+  // Mueve la foto grande desde (o hacia) una miniatura: translate + scale, sin tocar el tamaño real
+  const flip = (mini, el, dur, volver) => {
+    const a = mini.getBoundingClientRect(), b = el.getBoundingClientRect();
+    if (!a.width || !b.width) return null;
+    const t = `translate(${a.left + a.width / 2 - (b.left + b.width / 2)}px, ${a.top + a.height / 2 - (b.top + b.height / 2)}px) scale(${a.width / b.width})`;
+    return el.animate(volver ? [{ transform: "none" }, { transform: t }] : [{ transform: t }, { transform: "none" }], { duration: dur, easing: CURVA, fill: volver ? "forwards" : "none" });
+  };
+  const barra = () => g.querySelectorAll(".gl-tira i").forEach((x, k) => {
+    x.getAnimations().forEach((an) => an.cancel());
+    if (k !== i || reducir) return;
+    const an = x.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: PASO, easing: "linear", fill: "forwards" });
+    if (pausado) an.pause();
+    an.onfinish = () => ir(1);
+  });
+  const marcar = () => {
+    if (!varias) return;
+    $(".gl-titulo b", g).textContent = `${i + 1} / ${fotos.length}`;
+    g.querySelectorAll(".gl-tira button").forEach((b, k) => b.setAttribute("aria-current", String(k === i)));
+    $(".gl-tira button[aria-current='true']", g).scrollIntoView({ inline: "center", block: "nearest", behavior: reducir ? "auto" : "smooth" });
+    barra();
+  };
+  const ir = (d, a) => {
+    const n = a ?? (i + d + fotos.length) % fotos.length;
+    if (n === i || cerrando) return;
+    const dir = a != null ? Math.sign(a - i) : d;
+    i = n;
+    const nueva = img.cloneNode();
+    nueva.src = fotos[i].src; nueva.alt = fotos[i].alt || "";
+    img.after(nueva);
+    const vieja = img; img = nueva;
+    const dx = reducir ? 0 : 28 * dir;
+    vieja.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: `translateX(${-dx}px)` }], { duration: 260, easing: CURVA, fill: "forwards" }).onfinish = () => vieja.remove();
+    nueva.animate([{ opacity: 0, transform: `translateX(${dx}px)` }, { opacity: 1, transform: "none" }], { duration: 320, easing: CURVA });
+    marcar();
+  };
+  const pausar = (v) => { pausado = v; g.querySelectorAll(".gl-tira i").forEach((x) => x.getAnimations().forEach((an) => (v ? an.pause() : an.play()))); };
+  g.cerrar = () => {
+    if (cerrando) return;
+    cerrando = true;
+    const mini = miniaturas[i];
+    const fin = () => { g.close(); cerrando = false; };
+    const an = !reducir && mini && mini.isConnected ? flip(mini, img, 280, true) : null;
+    g.animate([{ opacity: 1 }, { opacity: 0 }], { duration: an ? 280 : 200, easing: CURVA }).onfinish = fin;
+  };
+  $(".gl-cerrar", g).addEventListener("click", g.cerrar);
+  if (varias) {
+    $(".gl-prev", g).addEventListener("click", () => { pausar(true); ir(-1); });
+    $(".gl-next", g).addEventListener("click", () => { pausar(true); ir(1); });
+    g.querySelectorAll(".gl-tira button").forEach((b, n) => b.addEventListener("click", () => { pausar(true); ir(0, n); }));
+    g.onkeydown = (e) => { if (e.key === "ArrowLeft") { pausar(true); ir(-1); } if (e.key === "ArrowRight") { pausar(true); ir(1); } };
+    const escena = $(".gl-escena", g);
+    escena.onpointerenter = (e) => { if (e.pointerType === "mouse") pausar(true); };
+    escena.onpointerleave = (e) => { if (e.pointerType === "mouse") pausar(false); };
+    let x0 = null;
+    escena.onpointerdown = (e) => { if (e.target.closest(".gl-nav")) return; x0 = e.clientX; pausar(true); };
+    escena.onpointerup = (e) => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) ir(dx < 0 ? 1 : -1); };
+  } else g.onkeydown = null;
+  g.showModal();
+  marcar();
+  const desde = miniaturas[inicio];
+  if (!reducir && desde) img.decode().catch(() => {}).then(() => flip(desde, img, 460));
+}
+
 function videoHTML(id) {
   // Muestra la miniatura y solo carga YouTube al hacer clic (más liviano)
   return `<button type="button" class="video" data-video="${esc(id)}" aria-label="Reproducir video">
@@ -743,21 +831,32 @@ function abrirProyecto(p, rel) {
     fichaProyecto.addEventListener("close", () => { if (location.hash) history.replaceState(null, "", location.pathname); });
   }
   const { fotos, acts } = rel;
+  const fondo = p.portada || (fotos[0] && fotos[0].src) || "";
+  const tres = fotos.slice(0, 3);
   fichaProyecto.innerHTML = `
     <button type="button" class="ficha-cerrar" aria-label="Cerrar">×</button>
+    <header class="fp-portada"${fondo ? ` style="background-image:url('${esc(fondo)}')"` : ""}>
+      <div class="fp-portada-texto">
+        <p class="fp-dato">${esc(p.anio)} · ${esc(p.lugar)}</p>
+        <h2 id="fp-titulo">${esc(p.titulo)}</h2>
+        <p class="lead">${esc(p.resumen)}</p>
+      </div>
+      <span class="fp-lugar" aria-hidden="true">${esc(lugarCorto(p.lugar))}</span>
+    </header>
     <div class="fp-cuerpo">
-      <p class="fp-dato">${esc(p.anio)} · ${esc(p.lugar)}</p>
-      <h2 id="fp-titulo">${esc(p.titulo)}</h2>
-      <p class="lead">${esc(p.resumen)}</p>
       <div class="fp-columnas">
         <div class="fp-texto">${(p.descripcion || []).map((t) => `<p>${esc(t)}</p>`).join("")}</div>
         ${acts.length ? `<div><h3 class="fp-sub fp-sub--arriba">Actividades del proyecto</h3><ul class="fp-actividades">${acts.map((a, k) => `<li><button type="button" data-a="${k}"><span>${esc(a.titulo)}</span><small>${esc(a.fecha)}</small></button></li>`).join("")}</ul></div>` : ""}
       </div>
-      ${fotos.length ? `<h3 class="fp-sub">Fotos</h3><div class="fp-fotos">${fotos.map((f, k) => `<button type="button" data-f="${k}" aria-label="Ampliar foto ${k + 1}"><img src="${esc(f.src)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
+      ${fotos.length ? `<h3 class="fp-sub">Fotos</h3><div class="fp-fotos">${tres.map((f, k) => {
+        const resto = k === 2 && fotos.length > 3 ? fotos.length - 3 : 0;
+        return `<button type="button" data-f="${k}" aria-label="${resto ? `Ver las ${fotos.length} fotos` : `Ampliar foto ${k + 1}`}"><img src="${esc(f.src)}" alt="" loading="lazy">${resto ? `<span class="fp-mas" aria-hidden="true"><span><b>+${resto}</b>ver todas</span></span>` : ""}</button>`;
+      }).join("")}</div>` : ""}
       ${(p.videos || []).length ? `<h3 class="fp-sub">Videos</h3><div class="fp-videos">${p.videos.map(videoHTML).join("")}</div>` : ""}
     </div>`;
   $(".ficha-cerrar", fichaProyecto).addEventListener("click", () => fichaProyecto.close());
-  fichaProyecto.querySelectorAll("[data-f]").forEach((b) => b.addEventListener("click", () => { const f = fotos[b.dataset.f]; abrirVisor(fotos.map((x) => ({ src: x.src, alt: `Foto de ${x.a.titulo}` })), +b.dataset.f); }));
+  const miniaturas = [...fichaProyecto.querySelectorAll("[data-f]")];
+  miniaturas.forEach((b) => b.addEventListener("click", () => abrirGaleria(fotos.map((x) => ({ src: x.src, alt: `Foto de ${x.a.titulo}` })), +b.dataset.f, p.titulo, miniaturas)));
   fichaProyecto.querySelectorAll("[data-a]").forEach((b) => b.addEventListener("click", () => abrirDetalle(acts[b.dataset.a], 0, false)));
   if (!fichaProyecto.open) fichaProyecto.showModal();
   fichaProyecto.scrollTop = 0;
@@ -777,6 +876,9 @@ function abrirProyecto(p, rel) {
   history.replaceState(null, "", "#" + p.id);
 }
 
+// "Cepitá, Cañón del Chicamocha (Santander)" → "Cepitá": la etiqueta corta que va sobre la foto
+const lugarCorto = (l = "") => l.split(/[,(]/)[0].trim();
+
 async function paginaProyectos() {
   const [proys, acts] = await Promise.all([cargar("data/proyectos.json"), cargar("data/actividades.json")]);
   const cont = $("#lista-proyectos");
@@ -787,10 +889,11 @@ async function paginaProyectos() {
   });
   const cuenta = (n, uno, varios) => (n ? `${n} ${n === 1 ? uno : varios}` : "");
   cont.innerHTML = datos.map(({ p, acts: rel, fotos }, k) => {
-    const portada = fotos.find((f) => f.src === p.portada);
-    const cuatro = [portada, ...fotos.filter((f) => f !== portada)].filter(Boolean).slice(0, 4);
+    const fondo = p.portada || (fotos[0] && fotos[0].src) || "";
     return `
     <article class="py-portada" id="${esc(p.id)}">
+      ${fondo ? `<div class="py-fondo" style="background-image:url('${esc(fondo)}')"></div>` : ""}
+      <span class="py-lugar" aria-hidden="true">${esc(lugarCorto(p.lugar))}</span>
       <button type="button" class="py-boton" data-k="${k}" aria-label="Ver el proyecto ${esc(p.titulo)}">
         <div class="py-panel">
           <p class="py-dato">${esc(p.anio)} · ${esc(p.lugar)}</p>
@@ -798,7 +901,6 @@ async function paginaProyectos() {
           <p class="py-resumen">${esc(p.resumen)}</p>
           <p class="py-pie"><span>${[cuenta(fotos.length, "foto", "fotos"), cuenta((p.videos || []).length, "video", "videos"), cuenta(rel.length, "actividad", "actividades")].filter(Boolean).join(" · ")}</span><span class="py-ver">Ver proyecto</span></p>
         </div>
-        <div class="py-fotos" data-n="${cuatro.length}">${cuatro.map((f) => `<span><img src="${esc(f.src)}" alt="" loading="lazy"></span>`).join("")}</div>
       </button>
     </article>`;
   }).join("");
@@ -811,76 +913,9 @@ async function paginaProyectos() {
     }), { threshold: 0.25 });
     cont.querySelectorAll(".py-portada").forEach((el) => io.observe(el));
   }
-  rotarFotosProyectos(cont, datos);
   // proyectos.html#id abre directamente la ficha de ese proyecto
   const desdeHash = datos.find((d) => "#" + d.p.id === location.hash);
   if (desdeHash) abrirProyecto(desdeHash.p, desdeHash);
-}
-
-// Las cuatro fotos de cada proyecto cambian solas, una casilla a la vez, con un fundido.
-// Se detienen al pasar el cursor o con el botón de pausa, y no se mueven con movimiento reducido.
-function rotarFotosProyectos(cont, datos) {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const filas = [...cont.querySelectorAll(".py-portada")].map((art, k) => {
-    const casillas = [...art.querySelectorAll(".py-fotos span")];
-    const vistas = casillas.map((c) => c.querySelector("img").getAttribute("src"));
-    const resto = datos[k].fotos.map((f) => f.src).filter((src) => !vistas.includes(src));
-    return { art, casillas, vistas, resto, paso: 0, visible: false, encima: false };
-  }).filter((f) => f.resto.length && f.casillas.length === 4);
-  if (!filas.length) return;
-
-  const barra = document.createElement("div");
-  barra.className = "py-controles";
-  const pausa = document.createElement("button");
-  pausa.type = "button";
-  pausa.className = "qh-pausa py-pausa";
-  barra.append(pausa);
-  cont.prepend(barra);
-  let pausado = false, reloj = null, turno = 0;
-  const ORDEN = [0, 3, 1, 2]; // en diagonal, para que el cambio se reparta por la hoja
-
-  function rotular() {
-    pausa.textContent = pausado ? "▶ Reanudar fotos" : "❚❚ Pausar fotos";
-    pausa.setAttribute("aria-pressed", String(pausado));
-  }
-  function cambiar(f) {
-    const n = ORDEN[f.paso % 4];
-    f.paso++;
-    const casilla = f.casillas[n];
-    const nueva = f.resto.shift();
-    f.resto.push(f.vistas[n]);
-    f.vistas[n] = nueva;
-    const im = new Image();
-    im.alt = ""; im.decoding = "async"; im.className = "py-entra";
-    im.onload = () => {
-      casilla.append(im);
-      requestAnimationFrame(() => requestAnimationFrame(() => im.classList.add("py-lista")));
-      setTimeout(() => { [...casilla.querySelectorAll("img")].slice(0, -1).forEach((x) => x.remove()); im.classList.remove("py-entra", "py-lista"); }, 900);
-    };
-    im.src = nueva;
-  }
-  function programar() {
-    clearTimeout(reloj);
-    if (pausado || document.hidden) return;
-    reloj = setTimeout(() => {
-      const activas = filas.filter((f) => f.visible && !f.encima);
-      if (activas.length) cambiar(activas[turno++ % activas.length]);
-      programar();
-    }, 2600);
-  }
-  const io = new IntersectionObserver((entradas) => entradas.forEach((e) => {
-    const f = filas.find((x) => x.art === e.target);
-    if (f) f.visible = e.isIntersecting;
-  }), { threshold: 0.4 });
-  filas.forEach((f) => {
-    io.observe(f.art);
-    f.art.addEventListener("mouseenter", () => { f.encima = true; });
-    f.art.addEventListener("mouseleave", () => { f.encima = false; });
-  });
-  pausa.addEventListener("click", () => { pausado = !pausado; rotular(); programar(); });
-  document.addEventListener("visibilitychange", programar);
-  rotular();
-  programar();
 }
 
 /* ---------- Material científico (pósters, tesis y artículos) ---------- */

@@ -300,8 +300,12 @@ em.acento { font-style: italic; color: var(--verde); }
 .actividad-foto .sin-foto svg { width: 56px; height: 56px; opacity: .6; }
 .actividad-foto .conteo {
   position: absolute; right: 10px; bottom: 10px; background: rgba(30,35,24,.75); color: #fff;
-  font-size: .75rem; padding: 3px 9px; border-radius: 999px;
+  font-family: var(--mono); font-size: .72rem; padding: 4px 9px; border-left: 3px solid var(--ocre); border-radius: 0 4px 4px 0;
 }
+/* Franja ocre arriba de cada tarjeta, cortada por un pequeño salto de falla */
+.actividad { position: relative; }
+.actividad::before { content: ""; position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 6px; background: var(--ocre); clip-path: polygon(0 0, 62% 0, 62% 100%, 0 100%, 0 0, 62.6% 0, 100% 0, 100% 100%, 62.6% 100%); }
+.actividad::after { content: ""; position: absolute; z-index: 2; left: 62.3%; top: 0; width: 1.5px; height: 10px; background: var(--falla); transform: skewX(-8deg); }
 .actividad-cuerpo { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .actividad-cuerpo h3 { font-size: 1.12rem; margin: 0; }
 .actividad-meta { font-size: .85rem; color: var(--gris); }
@@ -445,32 +449,42 @@ dialog.detalle::backdrop { background: rgba(30, 35, 24, .6); }
 .integrantes--compacto .foto { width: 44px; height: 44px; margin: 0; border-width: 2px; font-size: 1.1rem; flex: none; }
 .integrantes--compacto h3 { font-size: .95rem; margin: 0; }
 
-/* ---------- Proyectos ---------- */
-/* Cada proyecto: texto a la izquierda y una hoja de contactos de cuatro fotos a la derecha.
-   Las fotos se mantienen cerca de su tamaño real porque varias son de baja resolución. */
-.py-seccion { padding-top: 0; }
-#lista-proyectos { border-top: 2px solid var(--bosque); }
-.py-portada { border-bottom: 1px solid var(--linea); scroll-margin-top: calc(var(--alto-header) + 16px); }
-.py-boton { display: grid; grid-template-columns: 6fr 6fr; gap: clamp(24px, 5vw, 80px); align-items: center; width: 100%; padding: clamp(32px, 4vw, 56px) 0; border: 0; background: none; cursor: pointer; text-align: left; font: inherit; color: inherit; }
-.py-dato { font-family: var(--mono); font-size: .8rem; color: var(--verde); margin: 0 0 12px; }
-.py-panel h2 { font-size: clamp(1.6rem, 2.6vw, 2.3rem); margin: 0 0 .45em; transition: color .2s var(--ease-out); }
-.py-resumen { color: var(--gris); margin: 0 0 22px; max-width: 52ch; }
-.py-pie { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; margin: 0; padding-top: 14px; border-top: 1px solid var(--linea); font-size: .88rem; color: var(--gris); max-width: 52ch; }
-.py-ver { font-weight: 600; color: var(--bosque); white-space: nowrap; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size .3s var(--ease-out); }
+/* ---------- Proyectos ----------
+   Cada proyecto ocupa todo el ancho sobre su foto de portada, con un bloque de tinta translúcido
+   que termina en una falla de óxido. La falla zigzaguea: cada proyecto arranca donde termina el anterior
+   y los pares van en espejo (foto limpia a la izquierda, texto a la derecha). */
+.py-seccion { padding: 0 !important; }
+.py-portada { position: relative; isolation: isolate; overflow: hidden; scroll-margin-top: var(--alto-header); }
+.py-fondo { position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: center; }
+.py-portada::before, .py-portada::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.py-portada::before { background: rgba(30, 35, 24, .86); clip-path: polygon(0 0, 52% 0, 46% 100%, 0 100%); }
+.py-portada::after { background: var(--falla); clip-path: polygon(calc(52% - 3px) 0, calc(52% + 3px) 0, calc(46% + 3px) 100%, calc(46% - 3px) 100%); }
+.py-portada:nth-child(even)::before { clip-path: polygon(46% 0, 100% 0, 100% 100%, 52% 100%); }
+.py-portada:nth-child(even)::after { clip-path: polygon(calc(46% - 3px) 0, calc(46% + 3px) 0, calc(52% + 3px) 100%, calc(52% - 3px) 100%); }
+.py-boton { display: grid; grid-template-columns: 5fr 7fr; width: min(var(--ancho), 100% - 2 * var(--margen)); margin: 0 auto; min-height: 520px; align-items: center; padding: clamp(56px, 7vw, 96px) 0; border: 0; background: none; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.py-portada:nth-child(even) .py-boton { grid-template-columns: 7fr 5fr; }
+.py-portada:nth-child(even) .py-panel { grid-column: 2; padding-left: clamp(16px, 3vw, 48px); }
+.py-dato { font-family: var(--mono); font-size: .8rem; color: var(--ocre-claro); margin: 0 0 12px; }
+.py-panel h2 { font-size: clamp(1.6rem, 2.6vw, 2.3rem); margin: 0 0 .45em; color: #fff; }
+.py-resumen { color: #E6E0CC; margin: 0 0 22px; max-width: 52ch; }
+.py-pie { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; margin: 0; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, .2); font-size: .88rem; color: #CFC9B4; max-width: 52ch; }
+.py-ver { font-weight: 600; color: var(--ocre); white-space: nowrap; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size .3s var(--ease-out); }
 .py-ver::after { content: " →"; }
-.py-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 640px; justify-self: end; width: 100%; }
-.py-fotos span { aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; background: var(--verde-claro); }
-.py-fotos img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease-out); }
-@media (hover: hover) {
-  .py-boton:hover h2 { color: var(--verde); }
-  .py-boton:hover .py-fotos img { transform: scale(1.03); }
-  .py-boton:hover .py-ver { background-size: 100% 1.5px; }
-}
-.py-boton:active .py-fotos { transform: scale(.995); }
-.py-boton:focus-visible { outline: 3px solid var(--ocre); outline-offset: 4px; border-radius: var(--radio); }
+.py-lugar { position: absolute; top: 24px; right: max(var(--margen), calc((100% - var(--ancho)) / 2)); font-family: var(--mono); font-size: .76rem; color: var(--papel); background: rgba(30, 35, 24, .72); border-left: 3px solid var(--ocre); border-radius: 0 4px 4px 0; padding: 9px 14px; }
+.py-portada:nth-child(even) .py-lugar { right: auto; left: max(var(--margen), calc((100% - var(--ancho)) / 2)); }
+@media (hover: hover) and (pointer: fine) { .py-boton:hover .py-ver { background-size: 100% 1.5px; } }
+.py-boton:focus-visible { outline: 3px solid var(--ocre); outline-offset: -6px; }
+/* Celular: foto limpia arriba, falla casi horizontal y el texto debajo sobre tinta */
 @media (max-width: 860px) {
-  .py-boton { grid-template-columns: 1fr; }
-  .py-fotos { order: -1; justify-self: stretch; max-width: none; }
+  .py-portada { background: #1E2318; }
+  .py-fondo { bottom: auto; height: 260px; }
+  .py-boton, .py-portada:nth-child(even) .py-boton { display: flex; flex-direction: column; min-height: 0; padding: 250px 0 40px; }
+  .py-portada:nth-child(even) .py-panel { padding-left: 0; }
+  .py-portada::before { clip-path: polygon(0 236px, 100% 212px, 100% 100%, 0 100%); }
+  .py-portada::after { clip-path: polygon(0 233px, 100% 209px, 100% 215px, 0 239px); }
+  .py-portada:nth-child(even)::before { clip-path: polygon(0 212px, 100% 236px, 100% 100%, 0 100%); }
+  .py-portada:nth-child(even)::after { clip-path: polygon(0 209px, 100% 233px, 100% 239px, 0 215px); }
+  .py-lugar, .py-portada:nth-child(even) .py-lugar { top: 16px; right: var(--margen); left: auto; }
 }
 
 /* Ficha completa del proyecto */
@@ -505,15 +519,87 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 .fp-columnas > .fp-texto { order: 2; }
 @media (max-width: 860px) { .fp-columnas > .fp-texto { order: 0; } }
 
-/* Movimiento: la raya de arriba se dibuja al cargar; cada fila, al entrar en pantalla,
-   abre sus fotos con el corte diagonal y su texto sube detrás */
-#lista-proyectos { position: relative; border-top: 0; }
-#lista-proyectos::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--bosque); transform-origin: left; }
-.py-anim #lista-proyectos::before { animation: cn-raya-x .9s var(--ease-in-out) both; }
-.py-anim .py-fotos span { animation: cn-corte .9s var(--ease-in-out) both paused; }
-.py-anim .py-fotos span:nth-child(2) { animation-delay: 90ms; }
-.py-anim .py-fotos span:nth-child(3) { animation-delay: 150ms; }
-.py-anim .py-fotos span:nth-child(4) { animation-delay: 190ms; }
+/* Portada de la ficha: la misma foto y el bloque de tinta con la falla que en la lista */
+.fp-portada { position: relative; isolation: isolate; min-height: 340px; display: flex; align-items: flex-end; background: #1E2318 center / cover no-repeat; }
+.fp-portada::before, .fp-portada::after { content: ""; position: absolute; inset: 0; z-index: -1; }
+.fp-portada::before { background: rgba(30, 35, 24, .86); clip-path: polygon(0 0, 62% 0, 54% 100%, 0 100%); }
+.fp-portada::after { background: var(--falla); clip-path: polygon(calc(62% - 3px) 0, calc(62% + 3px) 0, calc(54% + 3px) 100%, calc(54% - 3px) 100%); }
+.fp-portada-texto { width: 54%; padding: clamp(28px, 4vw, 48px) 24px clamp(28px, 4vw, 48px) clamp(24px, 4vw, 48px); }
+.fp-portada .fp-dato { color: var(--ocre-claro); }
+.fp-portada h2 { color: #fff; margin: 0 0 .4em; }
+.fp-portada .lead { color: #E6E0CC; margin: 0; font-size: 1.05rem; }
+.fp-lugar { position: absolute; top: 18px; right: 74px; font-family: var(--mono); font-size: .76rem; color: var(--papel); background: rgba(30, 35, 24, .72); border-left: 3px solid var(--ocre); border-radius: 0 4px 4px 0; padding: 8px 12px; }
+.fp-cuerpo { padding-top: clamp(28px, 4vw, 44px); }
+.fp-sub { color: var(--bosque); display: flex; align-items: center; gap: 10px; }
+.fp-sub::before { content: ""; width: 18px; height: 3px; background: var(--ocre); }
+.fp-actividades button { padding-left: 14px; border-left: 3px solid var(--ocre); }
+.fp-actividades li:nth-child(even) button { border-left-color: var(--falla); }
+@media (hover: hover) { .fp-actividades button:hover { padding-left: 20px; } }
+/* Solo tres fotos; la tercera dice cuántas más hay y abre el visor con todas */
+.fp-fotos { grid-template-columns: repeat(3, 1fr); }
+.fp-fotos button { position: relative; aspect-ratio: 4 / 3; border-radius: 4px; transition: transform 120ms var(--ease-out); }
+.fp-fotos button:active { transform: scale(.98); }
+.fp-fotos button:focus-visible { outline: 3px solid var(--ocre); outline-offset: 2px; }
+.fp-mas { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: rgba(30, 35, 24, .62); color: #fff; font-family: var(--mono); font-size: .9rem; transition: background-color 200ms ease; }
+.fp-mas b { display: block; font-family: var(--serif); font-weight: 400; font-size: 2rem; line-height: 1; }
+@media (hover: hover) and (pointer: fine) { .fp-fotos button:hover .fp-mas { background: rgba(30, 35, 24, .45); } }
+@media (max-width: 860px) {
+  .fp-portada { min-height: 0; flex-direction: column; align-items: stretch; padding-top: 220px; }
+  .fp-portada::before { clip-path: polygon(0 216px, 100% 196px, 100% 100%, 0 100%); }
+  .fp-portada::after { clip-path: polygon(0 213px, 100% 193px, 100% 199px, 0 219px); }
+  .fp-portada-texto { width: auto; padding: 20px 20px 24px; }
+  .fp-lugar { right: auto; left: 16px; }
+  .fp-fotos { gap: 6px; }
+  .fp-mas b { font-size: 1.5rem; }
+}
+
+/* Visor de todas las fotos del proyecto */
+dialog.galeria { width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: hidden; color: var(--papel); }
+dialog.galeria::backdrop { background: rgba(20, 24, 16, .96); animation: cn-aparece 240ms var(--ease-out); }
+.gl { position: absolute; inset: 0; display: grid; grid-template-rows: auto 1fr auto; }
+.gl-barra { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px clamp(16px, 3vw, 32px); font-family: var(--mono); font-size: .8rem; }
+.gl-titulo { color: #CFC9B4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gl-titulo b { color: var(--ocre-claro); font-weight: 400; margin-left: 10px; }
+.gl-cerrar { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(245, 240, 228, .12); color: var(--papel); font-size: 1.4rem; cursor: pointer; transition: background-color 160ms ease; }
+.gl-escena { position: relative; overflow: hidden; touch-action: pan-y; }
+.gl-escena img { position: absolute; inset: 0; margin: auto; max-width: calc(100% - 2 * clamp(16px, 8vw, 120px)); max-height: calc(100% - 24px); object-fit: contain; border-radius: 6px; box-shadow: 0 24px 60px rgba(0, 0, 0, .45); }
+.gl-nav { position: absolute; top: 50%; z-index: 2; width: 48px; height: 48px; margin-top: -24px; border-radius: 50%; border: 0; cursor: pointer; background: rgba(245, 240, 228, .92); color: var(--bosque); font-size: 1.5rem; line-height: 1; transition: transform 140ms var(--ease-out), background-color 160ms ease; }
+.gl-nav:active { transform: scale(.94); }
+.gl-prev { left: clamp(8px, 2vw, 32px); }
+.gl-next { right: clamp(8px, 2vw, 32px); }
+.gl-tira { display: flex; gap: 8px; justify-content: safe center; padding: 14px 16px 22px; overflow-x: auto; scrollbar-width: none; }
+.gl-tira button { position: relative; flex: none; width: 76px; aspect-ratio: 4 / 3; padding: 0; border: 0; border-radius: 4px; overflow: hidden; cursor: pointer; background: #222; opacity: .45; outline: 2px solid transparent; outline-offset: 2px; transition: opacity 200ms ease, outline-color 200ms ease; }
+.gl-tira button[aria-current="true"] { opacity: 1; outline-color: var(--ocre); }
+.gl-tira img { width: 100%; height: 100%; object-fit: cover; }
+.gl-tira i { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--ocre); transform: scaleX(0); transform-origin: left; }
+.gl-cerrar:focus-visible, .gl-nav:focus-visible, .gl-tira button:focus-visible { outline: 3px solid var(--ocre); outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) {
+  .gl-tira button:hover { opacity: .8; }
+  .gl-nav:hover { background: #fff; }
+  .gl-cerrar:hover { background: rgba(245, 240, 228, .22); }
+}
+@keyframes gl-tira-entra { from { opacity: 0; transform: translateY(10px); } }
+.gl-entra .gl-tira button { animation: gl-tira-entra 360ms var(--ease-out) calc(160ms + var(--i) * 30ms) both; }
+.gl-entra .gl-barra { animation: cn-aparece 300ms var(--ease-out) 120ms both; }
+@media (max-width: 860px) {
+  .gl-escena img { max-width: calc(100% - 16px); }
+  .gl-nav { top: auto; bottom: 8px; margin: 0; width: 40px; height: 40px; }
+  .gl-tira button { width: 60px; }
+}
+
+/* Movimiento: cada proyecto, al entrar en pantalla, abre su bloque de tinta desde su lado,
+   traza la falla de arriba abajo y su texto sube detrás (solo en escritorio y sin movimiento reducido) */
+@keyframes py-bloque-izq { from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); } }
+@keyframes py-bloque-der { from { clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); } }
+@keyframes py-falla-impar { from { clip-path: polygon(calc(52% - 3px) 0, calc(52% + 3px) 0, calc(52% + 3px) 0, calc(52% - 3px) 0); } }
+@keyframes py-falla-par { from { clip-path: polygon(calc(46% - 3px) 0, calc(46% + 3px) 0, calc(46% + 3px) 0, calc(46% - 3px) 0); } }
+@media (min-width: 861px) {
+  .py-anim .py-portada::before { animation: py-bloque-izq 700ms var(--ease-out) both paused; }
+  .py-anim .py-portada:nth-child(even)::before { animation-name: py-bloque-der; }
+  .py-anim .py-portada::after { animation: py-falla-impar 560ms var(--ease-out) 320ms both paused; }
+  .py-anim .py-portada:nth-child(even)::after { animation-name: py-falla-par; }
+  .py-anim .py-visto::before, .py-anim .py-visto::after { animation-play-state: running !important; }
+}
 .py-anim .py-dato { animation: cn-aparece .5s var(--ease-out) 80ms both paused; }
 .py-anim .py-panel h2 { --d: 14px; animation: cn-sube .7s var(--ease-out) 40ms both paused; }
 .py-anim .py-resumen { animation: cn-aparece .6s var(--ease-out) 180ms both paused; }
@@ -522,22 +608,28 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 
 /* Ficha del proyecto: la caja entra (ficha-abre) y su contenido la sigue por partes,
    del título hacia abajo; las fotos llegan en ola corta y los videos al verse */
-.fp-anim .fp-dato { animation: cn-aparece .4s var(--ease-out) 80ms both; }
-.fp-anim .fp-cuerpo h2 { --d: 12px; animation: cn-sube .55s var(--ease-out) 100ms both; }
-.fp-anim .fp-cuerpo > .lead { --d: 8px; animation: cn-sube .55s var(--ease-out) 170ms both; }
-.fp-anim .fp-columnas > * { --d: 10px; animation: cn-sube .6s var(--ease-out) 240ms both; }
-.fp-anim .fp-columnas > .fp-texto { animation-delay: 300ms; }
+/* Portada de la ficha: el bloque de tinta entra desde la izquierda, la falla se traza de arriba abajo y luego el texto */
+@keyframes fp-bloque { from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); } }
+@keyframes fp-falla { from { clip-path: polygon(calc(62% - 3px) 0, calc(62% + 3px) 0, calc(62% + 3px) 0, calc(62% - 3px) 0); } }
+@media (min-width: 861px) {
+  .fp-anim .fp-portada::before { animation: fp-bloque 520ms var(--ease-out) 60ms both; }
+  .fp-anim .fp-portada::after { animation: fp-falla 460ms var(--ease-out) 380ms both; }
+}
+.fp-anim .fp-dato { animation: cn-aparece .4s var(--ease-out) 260ms both; }
+.fp-anim .fp-portada h2 { --d: 12px; animation: cn-sube .55s var(--ease-out) 300ms both; }
+.fp-anim .fp-portada .lead { --d: 8px; animation: cn-sube .55s var(--ease-out) 370ms both; }
+.fp-anim .fp-lugar { animation: cn-aparece .4s var(--ease-out) 600ms both; }
+.fp-anim .fp-columnas > * { --d: 10px; animation: cn-sube .6s var(--ease-out) 420ms both; }
+.fp-anim .fp-columnas > .fp-texto { animation-delay: 480ms; }
 .fp-anim .fp-actividades li { position: relative; border-bottom: 0; }
-.fp-anim .fp-actividades li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--linea); transform-origin: left; animation: cn-raya-x .6s var(--ease-out) 380ms both; }
-.fp-anim .fp-actividades li + li::after { animation-delay: 440ms; }
+.fp-anim .fp-actividades li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--linea); transform-origin: left; animation: cn-raya-x .6s var(--ease-out) 560ms both; }
+.fp-anim .fp-actividades li + li::after { animation-delay: 620ms; }
 .fp-anim .fp-fotos button { --d: 12px; animation: cn-sube .5s var(--ease-out) calc(var(--base, 0ms) + var(--i, 0) * 35ms) both paused; }
 .fp-anim .fp-videos > * { --d: 12px; animation: cn-sube .6s var(--ease-out) var(--base, 0ms) both paused; }
 .fp-anim .fp-videos > * + * { animation-delay: calc(var(--base, 0ms) + 80ms); }
 .fp-anim .fp-visto > * { animation-play-state: running !important; }
 
 /* Rotación de fotos en el listado: la nueva se funde encima de la anterior */
-.py-controles { display: flex; justify-content: flex-end; padding: 14px 0 0; }
-.py-pausa { position: static; background: var(--arena); }
 .py-fotos span { position: relative; }
 .py-fotos img.py-entra { position: absolute; inset: 0; opacity: 0; transition: opacity .8s var(--ease-in-out), transform .5s var(--ease-out); }
 .py-fotos img.py-entra.py-lista { opacity: 1; }
@@ -569,9 +661,14 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 }
 
 /* ---------- Encabezado de página interna ---------- */
-.cabecera { padding: clamp(40px, 6vw, 72px) 0 clamp(28px, 4vw, 48px); }
-.cabecera h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); }
-.cabecera .lead { margin: 0; }
+/* Encabezado de las páginas interiores: oliva con curvas de nivel, como un mapa topográfico */
+.cabecera { padding: clamp(40px, 6vw, 72px) 0 clamp(28px, 4vw, 44px); background: var(--bosque) url("../img/curvas-de-nivel.svg") center / cover; color: #E6E0CC; }
+.cabecera h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); color: #fff; }
+.cabecera .lead { margin: 0; color: #E6E0CC; }
+.cabecera .migas, .cabecera .migas [aria-current] { color: #CFC9B4; }
+.cabecera .migas a { color: var(--ocre-claro); text-decoration-color: rgba(233, 207, 139, .5); }
+.cabecera .migas li + li::before { color: rgba(233, 207, 139, .5); }
+.cabecera + .seccion { padding-top: clamp(40px, 5vw, 64px) !important; }
 
 /* ---------- Footer ---------- */
 .footer { background: var(--bosque); color: #D6D0BC; padding: 56px 0 28px; font-size: .92rem; }
@@ -633,7 +730,7 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
   transition: border-color 160ms var(--ease-out), color 160ms var(--ease-out), background-color 160ms var(--ease-out);
 }
 .filtro:hover { border-color: var(--gris); }
-.filtro[aria-pressed="true"] { background: var(--papel); border-color: var(--bosque); color: var(--bosque); font-weight: 500; box-shadow: inset 0 -2px 0 var(--bosque); }
+.filtro[aria-pressed="true"] { background: var(--bosque); border-color: var(--bosque); color: #fff; font-weight: 500; box-shadow: none; }
 
 /* Tipo de material: control segmentado */
 .pestanas { gap: 0; padding: 0; border: 1.5px solid var(--bosque); border-radius: 6px; overflow: hidden; background: transparent; }
@@ -807,10 +904,10 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 
 /* Años y filtros: el marco de la ficha elegida se desliza hasta la nueva */
 .filtros.con-indicador { position: relative; isolation: isolate; }
-.filtros.con-indicador .filtro[aria-pressed="true"] { border-color: transparent; box-shadow: none; background: transparent; }
+.filtros.con-indicador .filtro[aria-pressed="true"] { border-color: transparent; box-shadow: none; background: transparent; color: #fff; }
 .filtro-indicador {
   position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none;
-  border: 1.5px solid var(--bosque); border-radius: 4px; background: var(--papel); box-shadow: inset 0 -2px 0 var(--bosque);
+  border: 1.5px solid var(--bosque); border-radius: 4px; background: var(--bosque);
   transition: transform 260ms var(--ease-out), width 260ms var(--ease-out), height 260ms var(--ease-out);
 }
 .filtro-indicador.sin-transicion { transition: none; }
@@ -1057,3 +1154,6 @@ dialog.visor .next { right: clamp(8px, 2vw, 24px); }
 @media (hover: hover) { .secciones-actividad a:hover { color: var(--verde); background-size: 100% 1.5px; } }
 .secciones-actividad a:focus-visible { outline: 3px solid var(--ocre); outline-offset: 3px; border-radius: 2px; }
 @media (max-width: 760px) { .secciones-actividad { justify-content: flex-start; } }
+
+/* Proyectos: la lista arranca pegada a la cabecera */
+.cabecera + .seccion.py-seccion { padding-top: 0 !important; }
