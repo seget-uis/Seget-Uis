@@ -953,9 +953,8 @@ function tarjetaMaterial(t) {
   } else {
     b.className = "mt-entrada";
     b.innerHTML = `
-      <span class="mt-entrada-anio">${esc(t.anio)}</span>
       <span class="mt-entrada-cuerpo">
-        ${chipsMaterial(t)}
+        <span class="mt-entrada-linea"><span class="mt-entrada-anio">${esc(t.anio)}</span>${chipsMaterial(t)}</span>
         <span class="mt-entrada-titulo">${esc(t.titulo)}</span>
         ${autores ? `<span class="mt-autores">${autoresDe(t).length > 1 ? "Autores" : "Autor"}: ${esc(autores)}</span>` : ""}
         <span class="mt-entrada-meta">${[t.director ? "Director: " + esc(t.director) : "", t.codirector ? "Codirector: " + esc(t.codirector) : "", t.evento ? esc(t.evento) : ""].filter(Boolean).join(" · ")}</span>

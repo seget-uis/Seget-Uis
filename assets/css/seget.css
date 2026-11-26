@@ -1076,14 +1076,15 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 
 .mt-registro { position: relative; max-width: 980px; }
 .mt-registro::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--bosque); transform-origin: left; }
-.mt-entrada { display: grid; grid-template-columns: 96px 1fr 32px; gap: clamp(16px, 3vw, 40px); align-items: start; width: 100%; padding: 26px 0; border: 0; border-bottom: 1px solid var(--linea); background: none; text-align: left; font: inherit; color: inherit; cursor: pointer; }
-.mt-entrada-anio { font-family: var(--serif); font-size: 2rem; line-height: 1; color: var(--verde); padding-top: 4px; }
+.mt-entrada { display: grid; grid-template-columns: 1fr 32px; gap: clamp(16px, 3vw, 40px); align-items: start; width: 100%; padding: 26px 0; border: 0; border-bottom: 1px solid var(--linea); background: none; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.mt-entrada-linea { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mt-entrada-linea .chips { margin: 0; }
+.mt-entrada-anio { font-family: var(--mono); font-size: .82rem; line-height: 1; color: var(--verde); }
 .mt-entrada-cuerpo { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 .mt-entrada-titulo { font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; color: var(--tinta); transition: color .2s var(--ease-out); }
 .mt-entrada-ver { font-size: 1.3rem; color: var(--gris); padding-top: 6px; transition: transform .25s var(--ease-out), color .2s; }
 @media (max-width: 640px) {
   .mt-entrada { grid-template-columns: 1fr; gap: 10px; }
-  .mt-entrada-anio { font-size: 1.4rem; }
   .mt-entrada-ver { display: none; }
 }
 
