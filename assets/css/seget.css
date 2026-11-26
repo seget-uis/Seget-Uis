@@ -304,10 +304,9 @@ em.acento { font-style: italic; color: var(--verde); }
   position: absolute; right: 10px; bottom: 10px; background: rgba(30,35,24,.75); color: #fff;
   font-family: var(--mono); font-size: .72rem; padding: 4px 9px; border-left: 3px solid var(--ocre); border-radius: 0 4px 4px 0;
 }
-/* Franja ocre arriba de cada tarjeta, cortada por un pequeño salto de falla */
+/* Franja ocre arriba de cada tarjeta */
 .actividad { position: relative; }
-.actividad::before { content: ""; position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 6px; background: var(--ocre); clip-path: polygon(0 0, 62% 0, 62% 100%, 0 100%, 0 0, 62.6% 0, 100% 0, 100% 100%, 62.6% 100%); }
-.actividad::after { content: ""; position: absolute; z-index: 2; left: 62.3%; top: 0; width: 1.5px; height: 10px; background: var(--falla); transform: skewX(-8deg); }
+.actividad::before { content: ""; position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 6px; background: var(--ocre); }
 .actividad-cuerpo { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .actividad-cuerpo h3 { font-size: 1.12rem; margin: 0; }
 .actividad-meta { font-size: .85rem; color: var(--gris); }
