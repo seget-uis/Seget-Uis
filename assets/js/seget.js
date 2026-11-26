@@ -667,10 +667,12 @@ function fotoMiembro(m) {
 }
 const rolMiembro = (m) => [m.cargo, (m.periodos || []).map(String).join(" · ")].filter(Boolean).join(" · ");
 
-function tarjetaIntegrante(m, i) {
+// En la tarjeta va solo el cargo; los años y la descripción completa están en la ficha.
+// Los docentes muestran además el inicio de su descripción.
+function tarjetaIntegrante(m, i, conResumen = false) {
   return `<button type="button" class="miembro" data-i="${i}" aria-haspopup="dialog">
     ${fotoMiembro(m)}
-    <div class="miembro-texto"><h3>${esc(m.nombre)}</h3><span class="rol">${esc(rolMiembro(m))}</span></div>
+    <div class="miembro-texto"><h3>${esc(m.nombre)}</h3><span class="rol">${esc(m.cargo || "")}</span>${conResumen && m.descripcion ? `<span class="resumen">${esc(m.descripcion)}</span>` : ""}</div>
   </button>`;
 }
 
@@ -712,15 +714,16 @@ async function paginaIntegrantes() {
   const anteriores = todos.filter((m) => !actuales.includes(m));
   const docentes = datos.docentes || [];
   const fichas = [...docentes, ...actuales];
-  const grupo = (titulo, html, clase = "integrantes") => `<h2 class="grupo-titulo">${titulo}</h2><div class="${clase}">${html}</div>`;
+  const titulo = (texto, n, unidad) => `<h2 class="grupo-titulo">${texto}${n ? ` <small>${n} ${unidad}</small>` : ""}</h2>`;
+  const grupo = (cabeza, html, clase = "integrantes") => `${cabeza}<div class="${clase}">${html}</div>`;
   const anterior = (m) => {
     const cargo = m.cargo && m.cargo !== "Integrante" ? `${esc(m.cargo)} · ` : "";
     return `<li><b>${esc(m.nombre)}</b><span>${cargo}${(m.periodos || []).map(esc).join(" · ")}</span></li>`;
   };
   cont.innerHTML = [
-    docentes.length ? grupo(docentes.length > 1 ? "Docentes" : "Docente", docentes.map((m, i) => tarjetaIntegrante(m, i)).join("")) : "",
-    grupo("Miembros actuales", actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
-    anteriores.length ? `<h2 class="grupo-titulo">Antiguos miembros</h2><ul class="antiguos">${anteriores.map(anterior).join("")}</ul>` : "",
+    docentes.length ? grupo(titulo(docentes.length > 1 ? "Docentes" : "Docente"), docentes.map((m, i) => tarjetaIntegrante(m, i, true)).join(""), "integrantes integrantes--docentes") : "",
+    grupo(titulo(`Integrantes ${esc(hoy)}`, actuales.length, actuales.length === 1 ? "estudiante" : "estudiantes"), actuales.map((m, i) => tarjetaIntegrante(m, docentes.length + i)).join("") || '<p class="vacio">Pronto publicaremos el equipo de este año.</p>'),
+    anteriores.length ? `${titulo("Antiguos miembros", anteriores.length, anteriores.length === 1 ? "persona" : "personas")}<ul class="antiguos">${anteriores.map(anterior).join("")}</ul>` : "",
   ].join("");
   cont.addEventListener("click", (e) => {
     const b = e.target.closest(".miembro");
