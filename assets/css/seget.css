@@ -67,6 +67,8 @@ em.acento { font-style: italic; color: var(--verde); }
 .seccion--papel { background: var(--papel); }
 .seccion--bosque { background: var(--bosque); color: #EDE7D6; }
 .seccion--musgo { background: var(--verde-claro); }
+.seccion--instagram { padding-top: clamp(36px, 4vw, 48px); }
+.seccion--instagram h2 { margin-top: 0; }
 /* Fondo oliva con curvas de nivel, como un mapa topográfico */
 .seccion--curvas { background: var(--bosque) url("../img/curvas-de-nivel.svg") center / cover; color: #E6E0CC; }
 .seccion--curvas h2 { color: #fff; }
