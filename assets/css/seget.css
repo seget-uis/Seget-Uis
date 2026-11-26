@@ -66,6 +66,14 @@ em.acento { font-style: italic; color: var(--verde); }
 .seccion { padding: clamp(56px, 8vw, 96px) 0; }
 .seccion--papel { background: var(--papel); }
 .seccion--bosque { background: var(--bosque); color: #EDE7D6; }
+.seccion--musgo { background: var(--verde-claro); }
+/* Fondo oliva con curvas de nivel, como un mapa topográfico */
+.seccion--curvas { background: var(--bosque) url("../img/curvas-de-nivel.svg") center / cover; color: #E6E0CC; }
+.seccion--curvas h2 { color: #fff; }
+.seccion--curvas em.acento { color: var(--ocre-claro); }
+.seccion--curvas .etiqueta { color: var(--ocre); }
+.seccion--curvas .boton { background: var(--ocre); border-color: var(--ocre); color: var(--bosque); }
+.seccion--curvas .destacado-fotos img { box-shadow: 0 0 0 1px rgba(255, 255, 255, .18); }
 .seccion--bosque h2, .seccion--bosque h3 { color: #fff; }
 
 .etiqueta {
@@ -180,42 +188,55 @@ em.acento { font-style: italic; color: var(--verde); }
 }
 
 /* ---------- Hero ----------
-   Texto a la izquierda y foto a sangre a la derecha, cortada en diagonal.
-   La línea de óxido sigue el borde de la foto como un plano de falla. */
+   La foto ocupa todo el ancho. Encima, un bloque oliva translúcido lleva el texto
+   y termina en un plano de falla diagonal marcado con una línea de óxido.
+   Sobre la foto, notas de libreta de campo: coordenadas, lugar y una anotación. */
 .hero {
   position: relative; overflow: hidden;
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   /* Deja ver la banda de estratos (54 px) en la primera pantalla, para que se vea el movimiento de la falla */
   min-height: min(calc(100svh - var(--alto-header) - 54px), 860px);
 }
+.hero::before, .hero::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; pointer-events: none; }
+.hero::before { z-index: 1; width: 47%; background: rgba(44, 58, 31, .8); clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%); }
+.hero::after { z-index: 2; width: calc(47% + 7px); background: var(--falla); clip-path: polygon(calc(100% - 7px) 0, 100% 0, 86% 100%, calc(86% - 6px) 100%); }
 .hero-texto {
-  position: relative; z-index: 2;
+  position: relative; z-index: 3;
   display: flex; flex-direction: column; justify-content: center; gap: clamp(16px, 2.6vh, 26px);
   padding: clamp(28px, 6vh, 88px) 32px clamp(28px, 5vh, 48px) max(var(--margen), calc((100% * 12 / 5 - var(--ancho)) / 2));
 }
-.hero h1 { font-size: clamp(2.6rem, min(5.2vw, 8vh), 5rem); margin: 0; letter-spacing: -.015em; line-height: 1.05; }
-.hero h1 em { font-style: italic; color: var(--verde); }
-.hero .lead { margin: 0; max-width: 36ch; }
+.hero h1 { font-size: clamp(2.6rem, min(5.2vw, 8vh), 5rem); margin: 0; letter-spacing: -.015em; line-height: 1.05; color: #fff; }
+.hero h1 em { font-style: italic; color: var(--ocre-claro); }
+.hero .lead { margin: 0; max-width: 36ch; color: #E6E0CC; }
 .hero-acciones { display: flex; gap: 12px; flex-wrap: wrap; }
-.hero-foto { position: relative; margin: 0; }
-.hero-recorte { height: 100%; clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%); }
+.hero .boton:not(.boton--claro) { background: var(--ocre); border-color: var(--ocre); color: var(--bosque); }
+.hero .boton--claro { color: #fff; border-color: rgba(255, 255, 255, .8); }
+.hero-foto { position: absolute; inset: 0; z-index: 0; margin: 0; }
+.hero-recorte { height: 100%; }
 .hero-recorte img { width: 100%; height: 100%; object-fit: cover; }
-.hero-foto figcaption {
-  position: absolute; right: 24px; bottom: 24px; max-width: calc(100% - 48px);
-  background: rgba(30, 35, 24, .55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  border-radius: 6px; padding: 9px 14px; font-size: .85rem; color: var(--papel);
+.hero-foto figcaption, .coordenadas {
+  position: absolute; z-index: 3; right: 24px;
+  font-family: var(--mono); font-size: .76rem; letter-spacing: .02em; color: var(--papel);
+  background: rgba(30, 35, 24, .72); border-left: 3px solid var(--ocre); border-radius: 0 4px 4px 0; padding: 9px 14px;
 }
-.hero-foto figcaption b { color: #fff; font-weight: 600; }
-.hero-falla { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.hero-falla line { stroke: var(--falla); stroke-width: 5; }
+.hero-foto figcaption { bottom: 24px; max-width: calc(100% - 48px); }
+.coordenadas { top: 24px; }
+.nota-campo {
+  position: absolute; z-index: 3; left: 66%; top: 34%; display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .76rem; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .6); pointer-events: none;
+}
+.nota-campo::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--ocre); box-shadow: 0 0 0 3px rgba(0, 0, 0, .25); }
+.nota-campo i { display: block; width: 56px; height: 1.5px; background: rgba(255, 255, 255, .85); }
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; min-height: 0; }
-  .hero-foto { order: -1; }
-  .hero-recorte { height: 42vh; min-height: 260px; clip-path: polygon(0 0, 100% 0, 100% 84%, 0 100%); }
-  .hero-foto figcaption { left: auto; right: 12px; top: 12px; bottom: auto; max-width: calc(100% - 24px); padding: 6px 10px; font-size: .78rem; line-height: 1.35; background: rgba(30, 35, 24, .64); }
-  .hero-falla { display: none; }
-  .hero-texto { padding: 24px 16px 48px; }
+  .hero::after, .nota-campo { display: none; }
+  /* En el celular la foto queda arriba y se funde en oliva bajo el texto */
+  .hero::before { inset: 0; width: auto; clip-path: none; background: linear-gradient(180deg, rgba(37, 50, 25, 0) 0, rgba(37, 50, 25, 0) calc(40vh - 40px), rgba(37, 50, 25, .9) calc(40vh + 30px), rgba(37, 50, 25, .95) 100%); }
+  .hero-texto { padding: 40vh 16px 48px; }
   .hero h1 { font-size: 2.6rem; }
+  .hero-foto figcaption, .coordenadas { right: 12px; padding: 6px 10px; }
+  .coordenadas { top: 12px; }
+  .hero-foto figcaption { top: calc(40vh - 70px); bottom: auto; max-width: calc(100% - 24px); }
 }
 
 /* Movimiento de falla al cargar la portada (una sola vez):
@@ -725,6 +746,12 @@ dialog.ficha-miembro::backdrop { background: rgba(30, 35, 24, .6); }
 .qh-puntos i.actual::after { transform-origin: left; animation: qh-avance 4s linear forwards; }
 .qh.pausado .qh-puntos i.actual::after { animation: none; }
 @keyframes qh-avance { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+/* Bloque fallado: dos placas ocre detrás de la foto, la derecha desplazada por una falla */
+.bloque-fallado { position: relative; display: grid; }
+.bloque-fallado::before, .bloque-fallado::after { content: ""; position: absolute; inset: 0; z-index: 0; border-radius: var(--radio); }
+.bloque-fallado::before { background: var(--ocre-claro); transform: translate(22px, 22px); clip-path: polygon(0 0, 58% 0, 52% 100%, 0 100%); }
+.bloque-fallado::after { background: #DDBF76; transform: translate(22px, 36px); clip-path: polygon(58% 0, 100% 0, 100% 100%, 52% 100%); }
+.bloque-fallado .qh-panel { z-index: 1; }
 .qh-panel { position: relative; min-height: 520px; border-radius: var(--radio); overflow: hidden; background: var(--bosque); }
 .qh-panel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 500ms ease; }
 .qh-panel img.visible { opacity: 1; }
@@ -736,7 +763,10 @@ dialog.ficha-miembro::backdrop { background: rgba(30, 35, 24, .6); }
 .qh-pausa:focus-visible { outline: 3px solid var(--ocre); outline-offset: 2px; }
 @media (max-width: 860px) {
   .qh { grid-template-columns: 1fr; }
-  .qh-panel { min-height: 0; aspect-ratio: 4 / 3; order: 2; }
+  .qh-panel { min-height: 0; aspect-ratio: 4 / 3; }
+  .bloque-fallado { order: 2; margin-right: 14px; }
+  .bloque-fallado::before { transform: translate(14px, 14px); }
+  .bloque-fallado::after { transform: translate(14px, 24px); }
 }
 
 /* =========================================================
