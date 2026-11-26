@@ -92,7 +92,7 @@ function estratosSVG(fondo = "var(--arena)", invertido = false) {
     <rect width="1440" height="54" fill="${fondo}"/>
     <g clip-path="url(#estr-der)">${capas}</g>
     <g clip-path="url(#estr-izq)"><g class="bloque-izq">${capas}</g></g>
-    <path d="M600 0L592 54" stroke="#984821" stroke-width="2"/>
+    <path d="M597.6 16L592 54" stroke="#984821" stroke-width="2"/>
   </svg>`;
 }
 
