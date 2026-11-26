@@ -952,15 +952,15 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
    ========================================================== */
 
 /* Apertura: título, presentación y fotos en una sola pantalla */
-.cn-apertura { padding: clamp(36px, 5vw, 64px) 0 clamp(48px, 6vw, 88px); }
-.cn-apertura-rejilla { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
-.cn-apertura h1 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); margin-bottom: .4em; }
-.cn-apertura .lead { color: var(--tinta); font-size: 1.2rem; line-height: 1.55; margin: 0 0 1em; max-width: 52ch; }
-.cn-apertura-texto p:not(.lead) { color: var(--gris); font-size: 1.05rem; line-height: 1.65; max-width: 56ch; }
-.cn-apertura-fotos { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; }
-.cn-apertura-fotos img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radio); display: block; }
-.cn-f1 { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
-.cn-f3 { aspect-ratio: 4 / 3; }
+/* Apertura: texto sobre verde claro a la izquierda; foto de campo a sangre a la derecha, cortada en diagonal con línea de óxido */
+.cn-apertura { position: relative; overflow: hidden; background: var(--verde-claro); }
+.cn-apertura-rejilla { display: grid; grid-template-columns: 1fr 1fr; min-height: 520px; }
+.cn-apertura-texto { align-self: center; padding: clamp(48px, 5vw, 72px) 48px clamp(48px, 5vw, 72px) max(var(--margen), calc(50vw - var(--ancho) / 2)); }
+.cn-apertura-texto p { color: var(--gris); font-size: 1.05rem; line-height: 1.65; max-width: 56ch; margin: 0 0 1em; }
+.cn-apertura-texto p:first-child { font-family: var(--serif); font-size: clamp(1.35rem, 2vw, 1.6rem); line-height: 1.4; color: var(--bosque); max-width: 34ch; }
+.cn-apertura-foto { position: relative; }
+.cn-f1 { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); }
+.cn-apertura::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 6%; background: var(--falla); clip-path: polygon(calc(100% - 8px) 0, 100% 0, 8px 100%, 0 100%); pointer-events: none; }
 
 /* ¿Qué investigamos?: tres estratos, del más claro arriba al más oscuro abajo */
 .cn-estratos { --h: 128px; margin-top: clamp(28px, 4vw, 48px); }
@@ -977,12 +977,12 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 .cn-temas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); counter-reset: tema; }
 .cn-temas li { position: relative; counter-increment: tema; display: flex; gap: 14px; align-items: baseline; padding: 14px 24px 14px 0; font-size: 1.05rem; }
 .cn-temas li:not(:nth-child(3n+1)) { padding-left: 24px; }
-.cn-temas li::before { content: counter(tema, decimal-leading-zero); font-family: var(--mono); font-size: .76rem; color: var(--gris); transition: color .2s var(--ease-out); }
+.cn-temas li::before { content: counter(tema, decimal-leading-zero); font-family: var(--mono); font-size: .76rem; color: var(--falla); transition: color .2s var(--ease-out); }
 .cn-temas li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--linea); transform-origin: left; }
 @media (hover: hover) {
   .cn-temas li { transition: transform .2s var(--ease-out); }
   .cn-temas li:hover { transform: translateX(4px); }
-  .cn-temas li:hover::before { color: var(--verde); }
+  .cn-temas li:hover::before { color: var(--bosque); }
 }
 
 /* ¿Por qué lo hacemos? y las citas */
@@ -994,16 +994,26 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 .cn-citas .cita::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--falla); transform-origin: top; }
 
 /* ¿Estás pensando en unirte? */
-.cn-unete-rejilla { display: grid; grid-template-columns: 6fr 5fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
-.cn-unete-foto { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radio); }
+.cn-porque { background: var(--bosque) url("../img/curvas-de-nivel.svg") center / cover; }
+/* Únete: foto a sangre a la izquierda, cortada en diagonal con línea de óxido (en espejo con la apertura) */
+.cn-unete { position: relative; overflow: hidden; padding: 0 !important; }
+.cn-unete-rejilla { display: grid; grid-template-columns: 1fr 1fr; align-items: center; min-height: 480px; width: 100%; max-width: none; margin: 0; padding: 0; }
+.cn-unete-foto { align-self: stretch; width: 100%; height: 100%; min-height: 480px; object-fit: cover; display: block; clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); }
+.cn-unete-rejilla > div { padding: 56px max(var(--margen), calc(50vw - var(--ancho) / 2)) 56px 32px; }
+.cn-unete::after { content: ""; position: absolute; top: 0; bottom: 0; left: calc(44%); width: 6%; background: var(--falla); clip-path: polygon(calc(100% - 5px) 0, 100% 0, 5px 100%, 0 100%); pointer-events: none; }
 
 @media (max-width: 860px) {
-  .cn-apertura-rejilla, .cn-porque-rejilla, .cn-unete-rejilla { grid-template-columns: 1fr; }
+  .cn-apertura-rejilla, .cn-porque-rejilla, .cn-unete-rejilla { grid-template-columns: 1fr; min-height: 0; }
+  .cn-apertura-texto { padding: 40px var(--margen); }
+  .cn-apertura-foto { height: 260px; }
+  .cn-f1 { clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%); }
+  .cn-apertura::after, .cn-unete::after { display: none; }
+  .cn-unete-foto { min-height: 0; height: 260px; clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%); }
+  .cn-unete-rejilla > div { padding: 32px var(--margen) 48px; }
   .cn-estratos { --h: 150px; }
   .cn-lineas-lista li { padding: 20px 18px; }
   .cn-temas { grid-template-columns: 1fr; }
   .cn-temas li, .cn-temas li:not(:nth-child(3n+1)) { padding-left: 0; padding-right: 0; }
-  .cn-unete-foto { order: 2; }
 }
 
 /* ---------- Movimiento (solo con .cn-anim, que el JS no pone si se pide reducir movimiento) ---------- */
@@ -1018,13 +1028,11 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 @keyframes cn-raya-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
 /* Apertura: entra una vez al cargar. Título primero, texto detrás, fotos con corte diagonal */
-.cn-anim .cn-apertura h1 { --d: 18px; animation: cn-sube .7s var(--ease-out) both; }
-.cn-anim .cn-apertura .lead { --d: 10px; animation: cn-sube .6s var(--ease-out) 90ms both; }
-.cn-anim .cn-apertura-texto p:not(.lead) { animation: cn-aparece .6s var(--ease-out) 170ms both; }
-.cn-anim .cn-apertura-texto p:not(.lead) + p { animation-delay: 210ms; }
-.cn-anim .cn-f1 { animation: cn-corte 1s var(--ease-in-out) 120ms both; }
-.cn-anim .cn-f2 { animation: cn-corte .9s var(--ease-in-out) 300ms both; }
-.cn-anim .cn-f3 { animation: cn-corte .9s var(--ease-in-out) 360ms both; }
+@keyframes cn-foto { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+.cn-anim .cn-apertura-texto p { --d: 10px; animation: cn-sube .6s var(--ease-out) 120ms both; }
+.cn-anim .cn-apertura-texto p + p { animation-delay: 200ms; }
+.cn-anim .cn-f1 { animation: cn-foto .9s var(--ease-out) 80ms both; }
+.cn-anim .cn-apertura::after { transform-origin: top; animation: cn-raya-y .8s var(--ease-in-out) 300ms both; }
 
 /* Los bloques de abajo esperan pausados hasta entrar en pantalla (.cn-visto) */
 .cn-anim .cn-lineas-lista li { animation: cn-deposita .7s var(--ease-out) both paused; }
@@ -1037,8 +1045,9 @@ dialog.detalle[open]::backdrop, dialog.ficha-miembro[open]::backdrop { animation
 .cn-anim .cn-citas .cita { --d: 8px; animation: cn-sube .7s var(--ease-out) 180ms both paused; }
 .cn-anim .cn-citas .cita + .cita::before { animation-delay: 160ms; }
 .cn-anim .cn-citas .cita + .cita { animation-delay: 320ms; }
-.cn-anim .cn-unete-foto { animation: cn-corte 1s var(--ease-in-out) both paused; }
-.cn-anim .cn-visto, .cn-anim .cn-visto *, .cn-anim .cn-visto *::before, .cn-anim .cn-visto *::after { animation-play-state: running !important; }
+.cn-anim .cn-unete-foto { animation: cn-foto .9s var(--ease-out) both paused; }
+.cn-anim .cn-unete::after { transform-origin: top; animation: cn-raya-y .8s var(--ease-in-out) 250ms both paused; }
+.cn-anim .cn-visto::after, .cn-anim .cn-visto, .cn-anim .cn-visto *, .cn-anim .cn-visto *::before, .cn-anim .cn-visto *::after { animation-play-state: running !important; }
 
 /* Móvil estrecho: la marca del encabezado cabe en una línea */
 @media (max-width: 480px) {
