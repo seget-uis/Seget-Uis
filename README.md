@@ -41,3 +41,9 @@ Si quieren la dirección corta `https://seget-uis.github.io/`, el repositorio de
 - Fotos, descripciones y LinkedIn de cada integrante en `data/integrantes.json`.
 - Enlaces de publicaciones de Instagram en `data/noticias.json` y el canal de YouTube en `assets/js/seget.js`.
 - Fechas exactas de las actividades de 2025 (en el acta no aparecen).
+
+## Buscadores y vista previa al compartir
+
+- Cada página tiene su imagen para WhatsApp y redes en `assets/img/compartir/` (1200 × 630).
+- Las etiquetas `og:image`, `og:url` y `canonical` usan la dirección completa `https://seget-uis.github.io/Seget-Uis/`. Si la web cambia de dirección, hay que reemplazarla en todos los `.html`, en `sitemap.xml` y en `robots.txt`.
+- `sitemap.xml` lista las páginas. Para que Google la lea, agréguela en Google Search Console (Sitemaps).
