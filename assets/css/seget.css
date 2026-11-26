@@ -499,7 +499,7 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 .fp-cuerpo h2 { margin: 0 0 .4em; }
 .fp-cuerpo .lead { margin: 0 0 clamp(24px, 3vw, 36px); }
 .fp-columnas { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
-.fp-sub { font-family: var(--mono); font-size: .8rem; font-weight: 400; color: var(--gris); margin: clamp(28px, 4vw, 40px) 0 12px; }
+.fp-sub { font-family: var(--serif); font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -.01em; color: var(--bosque); margin: clamp(32px, 4vw, 48px) 0 14px; }
 .fp-actividades { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--linea); }
 .fp-actividades li { border-bottom: 1px solid var(--linea); }
 .fp-actividades button { width: 100%; display: flex; flex-direction: column; gap: 2px; padding: 12px 0; background: none; border: 0; cursor: pointer; text-align: left; font: inherit; color: var(--tinta); transition: padding-left .25s var(--ease-out); }
@@ -532,8 +532,6 @@ dialog.ficha-proyecto[open] { animation: ficha-abre 240ms var(--ease-out); }
 .fp-portada .lead { color: #E6E0CC; margin: 0; font-size: 1.05rem; }
 .fp-lugar { position: absolute; top: 18px; right: 74px; font-family: var(--mono); font-size: .76rem; color: var(--papel); background: rgba(30, 35, 24, .72); border-left: 3px solid var(--ocre); border-radius: 0 4px 4px 0; padding: 8px 12px; }
 .fp-cuerpo { padding-top: clamp(28px, 4vw, 44px); }
-.fp-sub { color: var(--bosque); display: flex; align-items: center; gap: 10px; }
-.fp-sub::before { content: ""; width: 18px; height: 3px; background: var(--ocre); }
 .fp-actividades button { padding-left: 14px; border-left: 3px solid var(--ocre); }
 .fp-actividades li:nth-child(even) button { border-left-color: var(--falla); }
 @media (hover: hover) { .fp-actividades button:hover { padding-left: 20px; } }
