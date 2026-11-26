@@ -314,7 +314,7 @@ function transicion(cont, render) {
 // Etiqueta de la ficha: el estado de una tesis usa la misma etiqueta que su tarjeta
 function chipCategoria(c) {
   if (c === "En desarrollo") return '<span class="chip chip--desarrollo">En desarrollo</span>';
-  if (c === "Terminada") return '<span class="chip chip--terminada">Terminada</span>';
+  if (c === "Terminado") return '<span class="chip chip--terminada">Terminado</span>';
   return `<span class="chip" data-cat="${esc(c)}">${esc(c)}</span>`;
 }
 
@@ -965,16 +965,16 @@ async function paginaProyectos() {
   if (desdeHash) abrirProyecto(desdeHash.p, desdeHash);
 }
 
-/* ---------- Material científico (pósters, tesis y artículos) ---------- */
+/* ---------- Material científico (pósters, trabajos de grado y artículos) ---------- */
 const TIPOS_MATERIAL = [
   { tipo: "Póster", texto: "Pósters", hash: "posters", uno: "póster", varios: "pósters", vacio: "pósters publicados" },
-  { tipo: "Tesis", texto: "Tesis", hash: "tesis", uno: "tesis", varios: "tesis", vacio: "tesis publicadas" },
+  { tipo: "Tesis", texto: "Trabajos de grado", hash: "tesis", uno: "trabajo de grado", varios: "trabajos de grado", vacio: "trabajos de grado publicados" },
   { tipo: "Artículo", texto: "Artículos", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
 ];
 
 const enDesarrollo = (t) => String(t.estado || "").toLowerCase() === "en desarrollo";
 // La pestaña ya dice el tipo, así que la tarjeta no lo repite: en las tesis solo va el estado.
-const estadoTesis = (t) => (t.tipo === "Tesis" ? (enDesarrollo(t) ? "En desarrollo" : "Terminada") : "");
+const estadoTesis = (t) => (t.tipo === "Tesis" ? (enDesarrollo(t) ? "En desarrollo" : "Terminado") : "");
 function chipsMaterial(t) {
   const est = estadoTesis(t);
   const chips = [
@@ -1034,7 +1034,7 @@ function abrirMaterial(t) {
     [t.tipo === "Artículo" ? "Revista" : t.tipo === "Póster" ? "Evento" : "Programa", t.evento],
     ["Lugar", t.lugar],
   ].filter(([, v]) => v);
-  const accion = t.archivo ? `<a class="boton" href="${esc(t.archivo)}" target="_blank" rel="noopener">${t.tipo === "Póster" ? "Ver el póster en PDF" : t.tipo === "Tesis" ? "Descargar la tesis" : "Leer el artículo"}</a>${pesoArchivo[t.archivo] ? `<small class="fm-peso">${pesoArchivo[t.archivo]}</small>` : ""}` : "";
+  const accion = t.archivo ? `<a class="boton" href="${esc(t.archivo)}" target="_blank" rel="noopener">${t.tipo === "Póster" ? "Ver el póster en PDF" : t.tipo === "Tesis" ? "Descargar el trabajo de grado" : "Leer el artículo"}</a>${pesoArchivo[t.archivo] ? `<small class="fm-peso">${pesoArchivo[t.archivo]}</small>` : ""}` : "";
   const enlace = t.enlace ? `<a class="enlace-flecha" href="${esc(t.enlace)}" target="_blank" rel="noopener">Más información</a>` : "";
   fichaMaterial.innerHTML = `
     <button class="ficha-cerrar" aria-label="Cerrar">×</button>
@@ -1067,16 +1067,16 @@ async function paginaMaterial() {
     $(".filtros-grupo").hidden = true;
     cont.classList.remove("rejilla", "rejilla--3");
     cont.innerHTML = `<div class="instagram-vacio">
-      <div><h3>Muy pronto</h3><p>Estamos reuniendo los pósters, las tesis y los artículos para publicarlos aquí.</p></div>
+      <div><h3>Muy pronto</h3><p>Estamos reuniendo los pósters, los trabajos de grado y los artículos para publicarlos aquí.</p></div>
       <a class="boton" href="mailto:${SEGET.correo}">${ICONOS.correo.replace("<svg", '<svg width="18" height="18"')} Escríbenos</a>
     </div>`;
     return;
   }
   const inicial = TIPOS_MATERIAL.find((x) => "#" + x.hash === location.hash) || TIPOS_MATERIAL[0];
-  const estado = { tipo: inicial.tipo, anio: "Todos", fase: "Todas" };
+  const estado = { tipo: inicial.tipo, anio: "Todos", fase: "Todos" };
   // Filtro de estado (terminadas / en desarrollo): solo en la pestaña de tesis y si hay alguna en desarrollo
   const filtroFase = document.createElement("div");
-  filtroFase.className = "filtros"; filtroFase.setAttribute("role", "group"); filtroFase.setAttribute("aria-label", "Estado de la tesis");
+  filtroFase.className = "filtros"; filtroFase.setAttribute("role", "group"); filtroFase.setAttribute("aria-label", "Estado del trabajo de grado");
   $("#filtro-anio-material").before(filtroFase);
   filtroFase.addEventListener("click", (e) => {
     const b = e.target.closest(".filtro");
@@ -1087,11 +1087,11 @@ async function paginaMaterial() {
     pintarAnios();
     transicion(cont, pintar);
   });
-  const enFase = (t) => estado.tipo !== "Tesis" || estado.fase === "Todas" || (estado.fase === "En desarrollo") === enDesarrollo(t);
+  const enFase = (t) => estado.tipo !== "Tesis" || estado.fase === "Todos" || (estado.fase === "En desarrollo") === enDesarrollo(t);
   function pintarFase() {
     const tesis = lista.filter((t) => t.tipo === "Tesis");
     filtroFase.hidden = estado.tipo !== "Tesis" || !tesis.some(enDesarrollo) || tesis.every(enDesarrollo);
-    filtroFase.innerHTML = ["Todas", "Terminadas", "En desarrollo"].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.fase}" data-v="${v}">${v}</button>`).join("");
+    filtroFase.innerHTML = ["Todos", "Terminados", "En desarrollo"].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.fase}" data-v="${v}">${v}</button>`).join("");
   }
   const pestanas = $("#filtro-tipo");
   const filtroAnio = $("#filtro-anio-material");
@@ -1101,7 +1101,7 @@ async function paginaMaterial() {
     if (!b || b.dataset.v === estado.tipo) return;
     estado.tipo = b.dataset.v;
     estado.anio = "Todos";
-    estado.fase = "Todas";
+    estado.fase = "Todos";
     pestanas.querySelectorAll(".pestana").forEach((x) => x.setAttribute("aria-pressed", x === b));
     history.replaceState(null, "", "#" + TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo).hash);
     pintarFase();

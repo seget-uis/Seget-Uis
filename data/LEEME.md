@@ -82,13 +82,13 @@ Pósters, tesis y artículos del semillero (página **Material científico**). C
 }
 ```
 
-- `tipo`: escriba exactamente `Póster`, `Tesis` o `Artículo`. La página tiene una pestaña para cada uno y muestra solo los de la pestaña elegida.
+- `tipo`: escriba exactamente `Póster`, `Tesis` o `Artículo`. `Tesis` sale en la página como "Trabajos de grado". La página tiene una pestaña para cada uno y muestra solo los de la pestaña elegida.
 - `anio`: los botones de año se crean solos con los años de la pestaña elegida (aparecen cuando hay trabajos de dos años o más).
 - `imagen`: foto o vista previa del póster o de la portada. Guárdela en `assets/img/material/`. Si está vacía se muestra un ícono de documento.
 - `archivo`: el PDF. Guárdelo en `assets/docs/material/` o pegue un enlace de Google Drive. Si está vacío, no aparece el botón de descarga.
 - `enlace`: opcional, por ejemplo el DOI del artículo o el repositorio de la UIS.
 - `director` y `codirector`: solo para tesis. Cada uno sale en su propia línea de la ficha.
-- `estado`: solo para tesis. Escriba `"En desarrollo"` si la tesis aún no se ha terminado; la tarjeta muestra una etiqueta "En desarrollo", sale primero y en la pestaña Tesis aparecen los botones Todas / Terminadas / En desarrollo. En `anio` ponga el año en que empezó. Para una tesis terminada, borre el campo o déjelo vacío.
+- `estado`: solo para tesis. Escriba `"En desarrollo"` si la tesis aún no se ha terminado; la tarjeta muestra una etiqueta "En desarrollo", sale primero y en la pestaña Trabajos de grado aparecen los botones Todos / Terminados / En desarrollo. En `anio` ponga el año en que empezó. Para una tesis terminada, borre el campo o déjelo vacío.
 - Los bloques que tienen `"ejemplo": true` **no se muestran** en la página. Sirven de plantilla; para verlos abra `material.html?ejemplos`. Bórrelos cuando agregue trabajos reales.
 - Mientras no haya trabajos reales, la página muestra "Muy pronto".
 - Para enlazar directo a una pestaña use `material.html#posters`, `material.html#tesis` o `material.html#articulos`.
