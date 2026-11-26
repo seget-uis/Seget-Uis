@@ -255,6 +255,18 @@ function revelar(selector, raiz = document) {
 }
 
 // Las cifras de la portada cuentan desde cero cuando se ven
+/* Franja de cifras: al ver la mayor parte, se traza la falla y el bloque izquierdo se hunde (una vez) */
+function fallarCifras() {
+  const cf = $(".cf");
+  if (!cf || quietoMov() || !("IntersectionObserver" in window)) return;
+  cf.classList.add("cf-anim");
+  const io = new IntersectionObserver((entradas) => {
+    if (!entradas.some((e) => e.isIntersecting)) return;
+    io.disconnect();
+    cf.classList.add("cf-visto");
+  }, { threshold: 0.6 });
+  io.observe(cf);
+}
 function contarCifras() {
   const nums = [...document.querySelectorAll(".cifra strong")];
   if (!nums.length || quietoMov() || !("IntersectionObserver" in window)) return;
@@ -648,6 +660,7 @@ async function paginaInicio() {
   dibujarInstagram(noticias);
   dibujarProximoEvento();
   contarCifras();
+  fallarCifras();
   revelar("#ultimas > *");
 }
 
@@ -981,6 +994,8 @@ const TIPOS_MATERIAL = [
   { tipo: "Artículo", texto: "Artículos", lead: "Los artículos publicados por integrantes del semillero. Toca uno para ver más detalles.", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
 ];
 
+// Orden: lo más reciente primero, por "fecha" (AAAA-MM-DD o AAAA-MM) o, si no hay, por el año
+const fechaOrden = (t) => String(t.fecha || t.anio || "");
 const enDesarrollo = (t) => String(t.estado || "").toLowerCase() === "en desarrollo";
 // La pestaña ya dice el tipo, así que la tarjeta no lo repite: en las tesis solo va el estado.
 const estadoTesis = (t) => (t.tipo === "Tesis" ? (enDesarrollo(t) ? "En desarrollo" : "Terminado") : "");
@@ -994,7 +1009,7 @@ function chipsMaterial(t) {
 }
 
 const autoresDe = (t) => (t.autores || []).filter(Boolean);
-const pesoArchivo = { "assets/docs/material/geoeducacion-cepita.pdf": "16 MB", "assets/docs/material/fotogrametria-modelamiento-3d.pdf": "7 MB" };
+const pesoArchivo = { "assets/docs/material/geologia-del-ciclismo.pdf": "31 MB", "assets/docs/material/geoeducacion-cepita.pdf": "16 MB", "assets/docs/material/fotogrametria-modelamiento-3d.pdf": "7 MB" };
 
 // Pósters: la lámina completa en vertical, con su título entero debajo.
 // Tesis y artículos: una entrada de registro, con el año al margen como en un índice.
@@ -1071,7 +1086,7 @@ async function paginaMaterial() {
   const verEjemplos = new URLSearchParams(location.search).has("ejemplos");
   const lista = todos
     .filter((t) => (verEjemplos || !t.ejemplo) && TIPOS_MATERIAL.some((x) => x.tipo === t.tipo))
-    .sort((x, y) => (enDesarrollo(y) - enDesarrollo(x)) || String(y.anio || "").localeCompare(String(x.anio || "")));
+    .sort((x, y) => (enDesarrollo(y) - enDesarrollo(x)) || fechaOrden(y).localeCompare(fechaOrden(x)));
   if (!lista.length) {
     $(".filtros-grupo").hidden = true;
     cont.classList.remove("rejilla", "rejilla--3");
