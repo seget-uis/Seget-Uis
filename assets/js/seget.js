@@ -41,7 +41,14 @@ const MENU = [
       { href: "stands.html", texto: "Stands y ferias", id: "stands", icono: "stand" },
     ],
   },
-  { href: "material.html", texto: "Material científico", id: "material" },
+  {
+    texto: "Material científico", href: "material.html", id: "material", enlazar: false,
+    hijos: [
+      { href: "material.html#posters", texto: "Pósters", id: "material", icono: "poster" },
+      { href: "material.html#tesis", texto: "Trabajos de grado", id: "material", icono: "birrete" },
+      { href: "material.html#articulos", texto: "Artículos", id: "material", icono: "documento" },
+    ],
+  },
 ];
 
 const ICONOS = {
@@ -63,6 +70,8 @@ const ICONOS = {
   stand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10 5 4h14l2 6M3 10h18M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 13v8M19 13v8M5 21h14"/></svg>',
   chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
   documento: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
+  poster: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>',
+  birrete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 };
 
@@ -280,7 +289,7 @@ function dibujarMigas(extra) {
     etiqueta.replaceWith(nav);
   }
   const pasos = [{ texto: "Inicio", href: "index.html" }];
-  rutaPagina(p).forEach((m) => pasos.push({ texto: m.texto, href: m.href }));
+  rutaPagina(p).forEach((m) => pasos.push({ texto: m.texto, href: m.enlazar === false ? "" : m.href }));
   if (p === "404") pasos.push({ texto: "Página no encontrada" });
   if (extra) pasos.push({ texto: extra });
   nav.innerHTML = `<ol>${pasos.map((x, i) => i === pasos.length - 1
@@ -967,9 +976,9 @@ async function paginaProyectos() {
 
 /* ---------- Material científico (pósters, trabajos de grado y artículos) ---------- */
 const TIPOS_MATERIAL = [
-  { tipo: "Póster", texto: "Pósters", hash: "posters", uno: "póster", varios: "pósters", vacio: "pósters publicados" },
-  { tipo: "Tesis", texto: "Trabajos de grado", hash: "tesis", uno: "trabajo de grado", varios: "trabajos de grado", vacio: "trabajos de grado publicados" },
-  { tipo: "Artículo", texto: "Artículos", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
+  { tipo: "Póster", texto: "Pósters", lead: "Los pósters que hemos presentado en eventos científicos. Filtra por año y toca uno para verlo completo.", hash: "posters", uno: "póster", varios: "pósters", vacio: "pósters publicados" },
+  { tipo: "Tesis", texto: "Trabajos de grado", lead: "Los trabajos de grado de nuestros integrantes, terminados y en desarrollo. Toca uno para ver más detalles.", hash: "tesis", uno: "trabajo de grado", varios: "trabajos de grado", vacio: "trabajos de grado publicados" },
+  { tipo: "Artículo", texto: "Artículos", lead: "Los artículos publicados por integrantes del semillero. Toca uno para ver más detalles.", hash: "articulos", uno: "artículo", varios: "artículos", vacio: "artículos publicados" },
 ];
 
 const enDesarrollo = (t) => String(t.estado || "").toLowerCase() === "en desarrollo";
@@ -1072,8 +1081,19 @@ async function paginaMaterial() {
     </div>`;
     return;
   }
-  const inicial = TIPOS_MATERIAL.find((x) => "#" + x.hash === location.hash) || TIPOS_MATERIAL[0];
+  // La página siempre muestra un solo tipo, el que se eligió en el menú (sin elegir, pósters)
+  const desdeHash = () => TIPOS_MATERIAL.find((x) => "#" + x.hash === location.hash) || TIPOS_MATERIAL[0];
+  const inicial = desdeHash();
+  if (location.hash !== "#" + inicial.hash) history.replaceState(null, "", "#" + inicial.hash);
   const estado = { tipo: inicial.tipo, anio: "Todos", fase: "Todos" };
+  function aplicarTipo() {
+    const info = TIPOS_MATERIAL.find((x) => x.tipo === estado.tipo);
+    const h1 = $(".cabecera h1"), lead = $(".cabecera .lead");
+    if (h1) h1.textContent = info.texto;
+    if (lead) lead.textContent = info.lead;
+    document.title = `${info.texto} · SEGET UIS`;
+    dibujarMigas(info.texto);
+  }
   // Filtro de estado (terminadas / en desarrollo): solo en la pestaña de tesis y si hay alguna en desarrollo
   const filtroFase = document.createElement("div");
   filtroFase.className = "filtros"; filtroFase.setAttribute("role", "group"); filtroFase.setAttribute("aria-label", "Estado del trabajo de grado");
@@ -1094,6 +1114,7 @@ async function paginaMaterial() {
     filtroFase.innerHTML = ["Todos", "Terminados", "En desarrollo"].map((v) => `<button type="button" class="filtro" aria-pressed="${v === estado.fase}" data-v="${v}">${v}</button>`).join("");
   }
   const pestanas = $("#filtro-tipo");
+  pestanas.hidden = true;
   const filtroAnio = $("#filtro-anio-material");
   pestanas.innerHTML = TIPOS_MATERIAL.map((x) => `<button type="button" class="pestana" aria-pressed="${x.tipo === estado.tipo}" data-v="${esc(x.tipo)}">${esc(x.texto)}</button>`).join("");
   pestanas.addEventListener("click", (e) => {
@@ -1130,9 +1151,22 @@ async function paginaMaterial() {
     if (!vis.length) { cont.innerHTML = `<p class="vacio">Todavía no hay ${info.vacio}.</p>`; return; }
     vis.forEach((t) => cont.append(tarjetaMaterial(t)));
   }
+  aplicarTipo();
   pintarFase();
   pintarAnios();
   pintar();
+  // Si se elige otro tipo en el menú estando ya en la página
+  window.addEventListener("hashchange", () => {
+    const info = desdeHash();
+    if (info.tipo === estado.tipo) return;
+    estado.tipo = info.tipo; estado.anio = "Todos"; estado.fase = "Todos";
+    cont.classList.remove("mt-entra");
+    aplicarTipo();
+    pintarFase();
+    pintarAnios();
+    transicion(cont, pintar);
+    window.scrollTo({ top: 0 });
+  });
   // Primera carga: las láminas se posan una a una y el registro se escribe de arriba abajo
   if (!quietoMov() && "IntersectionObserver" in window) {
     cont.classList.add("mt-entra");
