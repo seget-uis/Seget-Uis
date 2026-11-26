@@ -266,17 +266,29 @@ em.acento { font-style: italic; color: var(--verde); }
 /* Franja de cifras cortada por una falla: el bloque izquierdo queda hundido --d respecto al derecho.
    Cada bloque lleva sus barras, sus curvas de nivel y sus cifras, así que todo se desplaza en la falla. */
 .cf { position: relative; --d: 14px; --g: clamp(56px, 8vw, 96px); --barra: 11px; padding-top: var(--g); }
-.cf::before, .cf::after { content: ""; position: absolute; left: 0; right: 0; pointer-events: none;
+/* Los dos bloques ocupan la misma caja (así el corte coincide con la línea);
+   el izquierdo dibuja sus capas --d más abajo. */
+.cf::before, .cf::after { content: ""; position: absolute; left: 0; right: 0; top: var(--g); bottom: 0; pointer-events: none; }
+.cf::before { /* bloque derecho */
   background:
     linear-gradient(var(--ocre), var(--ocre)) left 0 top 0 / 100% var(--barra) no-repeat,
     linear-gradient(var(--falla), var(--falla)) left 0 top var(--barra) / 100% var(--barra) no-repeat,
+    linear-gradient(var(--falla), var(--falla)) left 0 bottom calc(var(--barra) + var(--d)) / 100% var(--barra) no-repeat,
+    linear-gradient(var(--ocre), var(--ocre)) left 0 bottom var(--d) / 100% var(--barra) no-repeat,
+    url("../img/curvas-de-nivel.svg") left 0 top calc(2 * var(--barra)) / 1440px auto no-repeat,
+    linear-gradient(var(--bosque), var(--bosque)) left 0 top calc(2 * var(--barra)) / 100% calc(100% - 4 * var(--barra) - var(--d)) no-repeat;
+  clip-path: polygon(52% 0, 100% 0, 100% 100%, 48% 100%);
+}
+.cf::after { /* bloque izquierdo, hundido */
+  background:
+    linear-gradient(var(--ocre), var(--ocre)) left 0 top var(--d) / 100% var(--barra) no-repeat,
+    linear-gradient(var(--falla), var(--falla)) left 0 top calc(var(--barra) + var(--d)) / 100% var(--barra) no-repeat,
     linear-gradient(var(--falla), var(--falla)) left 0 bottom var(--barra) / 100% var(--barra) no-repeat,
     linear-gradient(var(--ocre), var(--ocre)) left 0 bottom 0 / 100% var(--barra) no-repeat,
-    url("../img/curvas-de-nivel.svg") left 0 top calc(2 * var(--barra)) / 1440px auto no-repeat,
-    linear-gradient(var(--bosque), var(--bosque)) left 0 top calc(2 * var(--barra)) / 100% calc(100% - 4 * var(--barra)) no-repeat;
+    url("../img/curvas-de-nivel.svg") left 0 top calc(2 * var(--barra) + var(--d)) / 1440px auto no-repeat,
+    linear-gradient(var(--bosque), var(--bosque)) left 0 top calc(2 * var(--barra) + var(--d)) / 100% calc(100% - 4 * var(--barra) - var(--d)) no-repeat;
+  clip-path: polygon(0 0, 52% 0, 48% 100%, 0 100%);
 }
-.cf::before { top: var(--g); bottom: var(--d); clip-path: polygon(52% 0, 100% 0, 100% 100%, 48% 100%); }
-.cf::after { top: calc(var(--g) + var(--d)); bottom: 0; clip-path: polygon(0 0, 52% 0, 48% 100%, 0 100%); }
 .cf-linea { position: absolute; z-index: 1; top: var(--g); bottom: 0; left: 0; right: 0; background: var(--falla); pointer-events: none;
   clip-path: polygon(calc(52% - 1.5px) 0, calc(52% + 1.5px) 0, calc(48% + 1.5px) 100%, calc(48% - 1.5px) 100%); }
 .cf-seccion { position: relative; z-index: 2; padding: calc(2 * var(--barra) + 56px) 0 calc(2 * var(--barra) + 56px + var(--d)); }
