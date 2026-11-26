@@ -681,28 +681,36 @@ async function dibujarProximoEvento() {
   if (!e) return;
   const dia = diaDe(e.fecha);
   const faltan = Math.round((dia - hoy) / 86400000);
-  const cuando = faltan === 0 ? "Hoy" : faltan === 1 ? "Mañana" : `Faltan ${faltan} días`;
+  const cuenta = faltan === 0 ? "Hoy" : faltan === 1 ? "Mañana" : `Faltan ${faltan} días`;
+  // Si el título ya empieza por el tipo ("Charla: …"), no se repite debajo
+  const repiteTipo = e.tipo && String(e.titulo || "").toLowerCase().startsWith(String(e.tipo).toLowerCase());
+  const cuando = e.tipo && !repiteTipo ? `<b>${esc(e.tipo)}</b> · ${cuenta.toLowerCase()}` : `<b>${cuenta}</b>`;
   let fechaTexto = dia.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   fechaTexto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+  const mes = dia.toLocaleDateString("es-CO", { month: "short" }).replace(".", "");
+  const diaSemana = dia.toLocaleDateString("es-CO", { weekday: "short" }).replace(".", "");
   const dato = (icono, texto) => texto ? `<li>${ICONOS[icono]}<span>${esc(texto)}</span></li>` : "";
   const enlace = e.enlace ? `<a class="boton" href="${esc(e.enlace)}" target="_blank" rel="noopener">${/instagram\.com/.test(e.enlace) ? ICONOS.instagram.replace("<svg", '<svg width="18" height="18"') + " " : ""}${esc(e.textoEnlace || "Más información")}</a>` : "";
   cont.innerHTML = `
     <div class="contenedor">
       <article class="evento">
-        ${e.imagen ? `<a class="evento-flyer" href="${esc(e.imagen)}" target="_blank" rel="noopener" aria-label="Ver el flyer completo"><img src="${esc(e.imagen)}" alt="Flyer: ${esc(e.titulo)}" loading="lazy"></a>` : ""}
         <div class="evento-cuerpo">
-          <div class="evento-arriba">
-            <span class="etiqueta">Próximo evento</span>
-            <span class="evento-cuenta">${cuando}</span>
+          <div class="ev-cabeza">
+            <time class="ev-fecha" datetime="${esc(e.fecha)}" title="${esc(fechaTexto)}">
+              <span>${esc(mes)}</span><b>${dia.getDate()}</b><small>${esc(diaSemana)} · ${dia.getFullYear()}</small>
+            </time>
+            <div class="ev-titulo">
+              <h2>${esc(e.titulo)}</h2>
+              <p class="ev-cuando">${cuando}</p>
+            </div>
           </div>
-          ${e.tipo ? `<span class="chip" data-cat="${esc(e.tipo)}">${esc(e.tipo)}${e.ejemplo ? " · ejemplo" : ""}</span>` : ""}
-          <h2>${esc(e.titulo)}</h2>
           <ul class="evento-datos">
-            ${dato("calendario", fechaTexto)}${dato("reloj", e.hora)}${dato("lugar", e.lugar)}${dato("persona", e.ponente)}
+            ${dato("reloj", e.hora)}${dato("lugar", e.lugar)}${dato("persona", e.ponente)}
           </ul>
           ${e.descripcion ? `<p>${esc(e.descripcion)}</p>` : ""}
           ${enlace ? `<div class="hero-acciones">${enlace}</div>` : ""}
         </div>
+        ${e.imagen ? `<a class="evento-flyer" href="${esc(e.imagen)}" target="_blank" rel="noopener" aria-label="Ver el flyer completo"><img src="${esc(e.imagen)}" alt="Flyer: ${esc(e.titulo)}" loading="lazy"></a>` : ""}
       </article>
     </div>`;
   cont.hidden = false;
